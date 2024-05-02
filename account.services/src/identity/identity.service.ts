@@ -5,13 +5,18 @@ import { CreateIdentityDto } from './dto/create.identity.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { TokenDto } from './dto/token.dto';
-
+import * as nodemailer from 'nodemailer';
+import { Transporter } from 'nodemailer';
 @Injectable()
 export class IdentityService {
+    emailService: any;
+    
+
     constructor(
         @Inject('IDENTITY_MODEL')
         private identityModel: Model<Identity>,
-        private jwtService:JwtService
+        private jwtService:JwtService,
+       
         ) {}
 
     hello(message){
@@ -22,6 +27,7 @@ export class IdentityService {
         const createIdentity= new this.identityModel(CreateIdentityDto)
         let saveResult = await createIdentity.save();
         console.log(saveResult)
+       
         return saveResult;
     }
 
@@ -57,41 +63,30 @@ export class IdentityService {
             ...userData
         }
     }
-    async login(user:any){
-        //console.log(command)
-        let payload = {
-            id:user._id,
-            name:user.name,
-            username:user.username
-
-        };
-        
-        var token =this.jwtService.sign(payload);
-        var tokenvalue:any =this.jwtService.decode(token);
-        //for refresh token
-        // var date= new Date(tokenvalue.exp*1000);
-        // var refreshTokenDate = new Date(
-        //     date.setDate(date.getDate()+1)
-        // );
-
-        // const tokenData:TokenDto={
-        //     token: token,
-        //     expiresIn:tokenvalue.exp,
-        //     refreshTokenexpiresIn: refreshTokenDate,
-        //     expired:false
-        // }
-console.log(tokenvalue.exp);
-        return{
-            access_token:this.jwtService.sign(payload),
-            expires_in:tokenvalue.exp,
-
-        };
-        //let jsonData =loginResult.toObject();
-        //let {__v, _id, ...userData}=jsonData;
-
-        //return {
-            //id:jsonData._id,
-            //...userData
-        //}
+    async login(user: any) {
+        // Validate user credentials
+        const validatedUser = await this.validateUser(user);
+    
+        if (validatedUser) {
+            // User is validated, generate JWT token
+            const payload = {
+                id: validatedUser.id,
+                First_Name: validatedUser.First_Name,
+                username: validatedUser.username
+            };
+            console.log(payload);
+            const token = this.jwtService.sign(payload);
+            const tokenvalue: any = this.jwtService.decode(token);
+    console.log(tokenvalue);
+    console.log(token);
+            return {
+                access_token: token,
+                expires_in: tokenvalue.exp
+            };
+        } else {
+            // User validation failed, return null or handle the error accordingly
+            return null;
+        }
     }
+    
 }
