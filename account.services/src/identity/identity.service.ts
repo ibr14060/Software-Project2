@@ -30,7 +30,7 @@ export class IdentityService {
             username:loginDto.username,
             password:loginDto.password,
         });
-
+        console.log(loginResult +"mwgoda");
         let jsonData =loginResult.toObject();
         let {__v, _id, ...userData}=jsonData;
 
@@ -80,7 +80,7 @@ export class IdentityService {
         //     refreshTokenexpiresIn: refreshTokenDate,
         //     expired:false
         // }
-
+console.log(tokenvalue.exp);
         return{
             access_token:this.jwtService.sign(payload),
             expires_in:tokenvalue.exp,

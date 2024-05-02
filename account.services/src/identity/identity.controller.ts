@@ -21,11 +21,11 @@ export class IdentityController {
         console.log(command);
         return this.identityService.register(command.body);
     }
-    @UseGuards(LocalAuthGuard)
+    
     @MessagePattern('login')
     async login(command){
-        console.log('command user: ', command.user);
-        return this.identityService.login(command.user);
+        console.log('command user: ', command.body);
+        return this.identityService.login(command.body);
     }
     @UseGuards(JwtAuthGuard)
     @MessagePattern('me')
