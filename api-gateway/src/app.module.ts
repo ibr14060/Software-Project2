@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AccountModule } from './account/account.module';
+import { ProductsModule } from './products/products.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
@@ -21,9 +22,23 @@ import { MongooseModule } from '@nestjs/mongoose';
           }
         }
       }
+      ,
+      {
+        name:'PRODUCT_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'account-consumer',
+          }
+        }
+      }
     ])
     //
-  ,AccountModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductsModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
