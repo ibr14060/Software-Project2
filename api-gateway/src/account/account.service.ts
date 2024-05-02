@@ -4,9 +4,9 @@ import { ClientKafka } from '@nestjs/microservices';
 @Injectable()
 export class AccountService {
     constructor(@Inject('ACC_SERVICE') private readonly accountClient:ClientKafka){}
+// b5aly el methods deh tb3t 7agat using kafka ll acc microservice 
 
-
-    public hello(){
+    public hello(){ 
         return this.accountClient.send('hellofromapi','hello from api').subscribe((data)=>console.log(''));
     }
     public register(command){

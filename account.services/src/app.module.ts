@@ -7,7 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [MongooseModule.forRoot('mongodb+srv://doniaelgendy18:SP2doniaahmed@cluster0.2qvi61q.mongodb.net/',{
     dbName: 'SP2',
   }),
-  IdentityModule],
+  //connect to mongo db
+  IdentityModule], // bcall el module el feh el apis 
   controllers: [AppController],
   providers: [AppService],
 })

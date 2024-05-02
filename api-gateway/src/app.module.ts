@@ -6,6 +6,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
+    // connection el kafka
     ClientsModule.register([
       {
         name:'ACC_SERVICE',
@@ -21,7 +22,8 @@ import { MongooseModule } from '@nestjs/mongoose';
         }
       }
     ])
-  ,AccountModule],
+    //
+  ,AccountModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
