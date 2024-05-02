@@ -10,7 +10,9 @@ export class AccountService {
         return this.accountClient.send('hellofromapi','hello from api').subscribe((data)=>console.log(''));
     }
     public register(command){
+        console.log(command.data);
         return this.accountClient.send('register',command).subscribe((data)=>console.log(command.data));
+        
     }
     public login(command){
         return this.accountClient.send('login',command).subscribe((data)=>console.log(command.data));

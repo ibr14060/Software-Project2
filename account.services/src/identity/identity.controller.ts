@@ -15,11 +15,11 @@ export class IdentityController {
        return this.identityService.hello(req.data)
     }
 
-    @UseGuards(ExistsAuthGuard)
+   
     @MessagePattern('register')
     async register(command){
         console.log(command);
-        return this.identityService.register(command.data);
+        return this.identityService.register(command.body);
     }
     @UseGuards(LocalAuthGuard)
     @MessagePattern('login')

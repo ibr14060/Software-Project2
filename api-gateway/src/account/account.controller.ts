@@ -14,14 +14,15 @@ export class AccountController implements OnModuleInit {
         return this.accountServices.hello();
     }
 
-    @Post('sign-up') // /account/sign-up
-    async regster(@Request()req){
-        return this.accountServices.register({body:req.body.data});
+    @Post('sign-up')
+    async register(@Request() req) {
+        console.log(req.body); // Log the request body
+        return this.accountServices.register({ body: req.body }); // Pass the entire request body to the register method
     }
 
     @Post('sign-in') // /account/sign-in
     async login(@Request()req){
-        return this.accountServices.login({body:req.body.data});
+        return this.accountServices.login({body:req.body});
     }
 
     onModuleInit() {
