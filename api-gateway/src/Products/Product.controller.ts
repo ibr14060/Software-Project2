@@ -1,47 +1,47 @@
 import { Controller, Request, Get, Inject, OnModuleInit, Post } from '@nestjs/common';
-import { ProductsService } from './products.service';
+import { ProductService } from './Product.service';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Controller('products')
-export class ProductsController implements OnModuleInit {
+export class ProductController implements OnModuleInit {
 
     constructor(
-        private productsService: ProductsService,
+        private productService: ProductService,
         @Inject('PRODUCT_SERVICE') private readonly productsClient: ClientKafka
     ) {}
 
     @Get('hello')
     getHello(): any {
-        return this.productsService.hello();
+        return this.productService.hello();
     }
 
     @Post('createProduct')
     async createProduct(@Request() req) {
         console.log(req.body);
-        return this.productsService.createProduct(req.body);
+        return this.productService.createProduct(req.body);
     }
 
     @Post('getProducts')
     async getProducts() {
-        return this.productsService.getProducts();
+        return this.productService.getProducts();
     }
 
     @Post('getProductById')
     async getProductById(@Request() req) {
         console.log(req.body);
-        return this.productsService.getProductById(req.body.id);
+        return this.productService.getProductById(req.body.id);
     }
 
     @Post('editProduct')
     async editProduct(@Request() req) {
         console.log(req.body);
-        return this.productsService.editProduct(req.body.id, req.body);
+        return this.productService.editProduct(req.body.id, req.body);
     }
 
     @Post('deleteProduct')
     async deleteProduct(@Request() req) {
         console.log(req.body);
-        return this.productsService.deleteProduct(req.body.id);
+        return this.productService.deleteProduct(req.body.id);
     }
 
     onModuleInit() {

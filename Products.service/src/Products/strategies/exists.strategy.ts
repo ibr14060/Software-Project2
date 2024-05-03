@@ -1,13 +1,13 @@
 import { Strategy } from "passport-local";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { IdentityService } from "../Product.service";
+import { ProductService } from "../Product.service";
 import { LoginDto } from "../dto/login.dto";
 import { UserAlreadyExistsException } from "../exceptions/userAlreadyExists.exception";
-
+/*
 @Injectable()
 export class ExistsStrategy extends PassportStrategy(Strategy, 'exists'){
-constructor(private readonly identityService:IdentityService){
+constructor(private readonly identityService:ProductService){
     super();
 }
 async validate(username:string, password:string):Promise<any>{
@@ -27,3 +27,4 @@ async validate(username:string, password:string):Promise<any>{
     };
 }
 }
+*/

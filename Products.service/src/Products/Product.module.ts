@@ -5,9 +5,7 @@ import { databaseProviders } from './database/database.providers';
 import { ProductProviders } from './database/Products.providers';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { ExistsStrategy } from './strategies/exists.strategy';
 
 @Module({
   imports:[
@@ -18,7 +16,7 @@ import { ExistsStrategy } from './strategies/exists.strategy';
     })
   ],
   controllers: [ProductController],
-  providers: [ProductService,...ProductProviders ,...databaseProviders, LocalStrategy,JwtStrategy,ExistsStrategy],
+  providers: [ProductService, ...ProductProviders, ...databaseProviders, JwtStrategy],
   exports: [...databaseProviders],
 })
 export class ProductModule {}

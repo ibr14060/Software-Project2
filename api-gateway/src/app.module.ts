@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AccountModule } from './account/account.module';
-import { ProductsModule } from './products/products.module';
+import { ProductModule } from './Products/Product.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
@@ -38,7 +38,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       }
     ])
     //
-  ,AccountModule,ProductsModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })

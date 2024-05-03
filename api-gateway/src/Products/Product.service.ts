@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
     constructor(@Inject('PRODUCT_SERVICE') private readonly productsClient: ClientKafka) {}
 
     public hello() {
