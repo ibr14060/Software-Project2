@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Product } from './interfaces/Product';
 import { CreateProductDto } from './dto/create.Product.dto';
-
+import { EditProductDto } from './dto/edit.Product.dto';
 @Injectable()
 export class ProductService {
     constructor(
@@ -25,8 +25,8 @@ export class ProductService {
         return await this.productModel.findById(productId).exec();
     }
 
-    async editProduct(productId: string, createProductDto: CreateProductDto): Promise<Product> {
-        return await this.productModel.findByIdAndUpdate(productId, createProductDto, { new: true });
+    async editProduct(productId: string, EditProductDto: EditProductDto): Promise<Product> {
+        return await this.productModel.findByIdAndUpdate(productId, EditProductDto, { new: true });
     }
 
     async deleteProduct(productId: string): Promise<Product> {
