@@ -32,7 +32,7 @@ import { MongooseModule } from '@nestjs/mongoose';
             brokers:['localhost:9092']
           },
           consumer:{
-            groupId:'account-consumer',
+            groupId:'product-consumer',
           }
         }
       }

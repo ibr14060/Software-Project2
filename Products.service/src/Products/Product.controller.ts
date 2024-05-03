@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { ProductService } from './product.service';
+import { ProductService } from './Product.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { JwtAuthGuard } from './strategies/jwt-auth.guard';
 
@@ -15,15 +15,22 @@ export class ProductController {
 
     @MessagePattern('createProduct')
     async createProduct(command) {
-        console.log(command);
-        return this.productService.createProduct(command.body);
+        console.log(command +"from product controller");
+        return this.productService.createProduct(command);
     }
 
     @MessagePattern('getProducts')
-    async getProducts(command) {
-        console.log(command);
-        return this.productService.getProducts();
+    async getProducts() {
+        try {
+            console.log("called");
+            const products = await this.productService.getProducts();
+            return products;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            return { statusCode: 500, message: "Error fetching products" };
+        }
     }
+    
 
     @MessagePattern('getProductById')
     async getProductById(command) {

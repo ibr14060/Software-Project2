@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Inject, OnModuleInit, Post } from '@nestjs/common';
+import { Controller, Request, Get, Inject, OnModuleInit, Post, Param, Delete } from '@nestjs/common';
 import { ProductService } from './Product.service';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -17,31 +17,33 @@ export class ProductController implements OnModuleInit {
 
     @Post('createProduct')
     async createProduct(@Request() req) {
-        console.log(req.body);
+        console.log(req.body.ProductName +"from api gateway");
         return this.productService.createProduct(req.body);
     }
 
-    @Post('getProducts')
+    @Get('getProducts')
     async getProducts() {
+        console.log(this.productService.getProducts() +"from api gateway m");
         return this.productService.getProducts();
     }
 
-    @Post('getProductById')
-    async getProductById(@Request() req) {
-        console.log(req.body);
-        return this.productService.getProductById(req.body.id);
+    @Get('getProducts/:id') 
+    async getProductById(@Param('id') id: string) {
+        console.log(id); // Access the 'id' directly from the route parameters
+        return this.productService.getProductById(id);
     }
 
-    @Post('editProduct')
-    async editProduct(@Request() req) {
+    @Post('editProduct/:id') 
+    async editProduct(@Param('id') id: string, @Request() req) {
         console.log(req.body);
-        return this.productService.editProduct(req.body.id, req.body);
+        return this.productService.editProduct(id, req.body); // Pass 'id' as a parameter
     }
-
-    @Post('deleteProduct')
-    async deleteProduct(@Request() req) {
+    
+    // For deleteProduct endpoint
+    @Delete('deleteProduct/:id') // Define the route parameter ':id'
+    async deleteProduct(@Param('id') id: string, @Request() req) {
         console.log(req.body);
-        return this.productService.deleteProduct(req.body.id);
+        return this.productService.deleteProduct(id); // Pass 'id' as a parameter
     }
 
     onModuleInit() {
