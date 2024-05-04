@@ -1,7 +1,7 @@
 import { IsString, IsOptional, IsNumber, IsArray, ValidateNested } from 'class-validator';
 import mongoose from 'mongoose';
 
-export class EditCartDto {
+export class EditWishlistDto {
   @IsString()
   readonly id: string;
 

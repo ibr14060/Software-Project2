@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export class CreateCartDto{
+export class CreateWishlistDto{
 
     readonly products: [string, number][];
     readonly UserID: {

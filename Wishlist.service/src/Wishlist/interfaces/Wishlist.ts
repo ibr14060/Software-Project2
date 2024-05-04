@@ -1,7 +1,7 @@
 
 import { Document } from 'mongoose';
 
-export interface Cart extends Document {
+export interface Wishlist extends Document {
    
    readonly UserID: String;
    readonly products: [string, number][];
