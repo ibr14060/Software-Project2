@@ -21,6 +21,13 @@ export class IdentityController {
         console.log(command);
         return this.identityService.register(command.body);
     }
+
+    @MessagePattern('forgetpassword')
+    async forgetpassword(command){
+        console.log(command.body);
+        console.log('command user: ', command.body.email);
+        return this.identityService.resetPassword(command.body.email);
+    }
     
     @MessagePattern('login')
     async login(command){
@@ -33,5 +40,7 @@ export class IdentityController {
         const {id , ...rest} =command.user;
         return rest;
     }
+
+    
 
 }

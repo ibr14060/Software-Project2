@@ -66,13 +66,48 @@ export class IdentityService {
         });
 
         await transporter.sendMail({
-            from: 'your_email@gmail.com',
+            from: 'softwarepro753@gmail.com',
             to: email,
             subject: 'Verify Your Email Address',
             text: `Please click the following link to verify your email address: ${verificationLink}`,
             html: `<p>Please click the following link to verify your email address:</p><a href="${verificationLink}">${verificationLink}</a>`,
         });
     }
+    ////////////////////////////////////////
+    async sendResetPasswordEmail(email: string, newPassword: string): Promise<void> {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'softwarepro753@gmail.com',
+                pass: 'fbrd zjvp eekf nsfg',
+            },
+        });
+
+        await transporter.sendMail({
+            from: 'softwarepro753@gmail.com',
+            to: email,
+            subject: 'Password Reset',
+            text: `Your new password is ${newPassword}. Please change it after logging in.`,
+            html: `<p>Your new password is <strong>${newPassword}</strong>. Please change it after logging in.</p>`,
+        });
+    }
+
+    async resetPassword(email: string): Promise<void> {
+        console.log(email);
+        
+        // Generate a random password
+        const newPassword = Math.random().toString(36).slice(-8);
+
+        // Send the new password to the user's email
+        await this.sendResetPasswordEmail(email, newPassword);
+
+        // Update the user's password in the database
+        await this.identityModel.updateOne({ Email: email }, { password: newPassword });
+    }
+
+    ///////////////////////////////
     async register(CreateIdentityDto: CreateIdentityDto) {
         try {
             // Check if the username already exists in the database

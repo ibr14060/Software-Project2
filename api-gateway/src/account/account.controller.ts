@@ -26,9 +26,16 @@ export class AccountController implements OnModuleInit {
         return this.accountServices.login({body:req.body});
     }
 
+    @Post('forget-password') // /account/forget-password
+    async forgetpassword(@Request()req){
+        console.log(req.body); // Log the request body
+        return this.accountServices.forgetpassword({body:req.body});
+    }
+
     onModuleInit() {
         this.accountClient.subscribeToResponseOf('hellofromapi'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('register'); // subscribe to the event
+        this.accountClient.subscribeToResponseOf('forgetpassword'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('login'); // subscribe to the event
     }
 

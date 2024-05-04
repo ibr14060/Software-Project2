@@ -32,6 +32,22 @@ public hello(): Promise<any> {
     });
 }
 
+public forgetpassword(command: any): Promise<any> {
+    // Return a Promise resolving to the data received from the subscription
+    return new Promise((resolve, reject) => {
+        // Subscribe to the observable
+        this.accountClient.send('forgetpassword', command).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data); // Resolve the Promise with the received data
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
 // Adjust the return type to Promise<any>
 public register(command: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -62,7 +78,7 @@ public register(command: any): Promise<any> {
                 ]).then(([cartData, wishlistData, orderData]) => {
                     resolve({ userData: data, orderData, cartData, wishlistData });
                 }).catch((error) => {
-                    reject(error); // Reject if an error occurs during any step
+                    reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
                 });
             },
             error: (error) => {
