@@ -23,7 +23,56 @@ export class IdentityService {
     hello(message){
         return message;
     }
+    async sendEmail(email: string, subject: string, text: string, html: string) {
+        try {
+            // Create a transporter object using SMTP transport
+            let transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: 'softwarepro753@gmail.com',
+                    pass: 'fbrd zjvp eekf nsfg'
+                }
+            });
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+                from: 'softwarepro753@gmail.com',
+                to: email,
+                subject: subject,
+                text: text,
+                html: html
+            });
+    
+            console.log("Email sent:", info.response);
+            return info.response;
+        } catch (error) {
+            console.error("Error occurred while sending email:", error);
+            throw new HttpException('Failed to send email', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    async sendVerificationEmail(email: string, token: string): Promise<void> {
+        const verificationLink = `http://localhost:4000/verify-email?token=${token}`;
 
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'softwarepro753@gmail.com',
+                pass: 'fbrd zjvp eekf nsfg',
+            },
+        });
+
+        await transporter.sendMail({
+            from: 'your_email@gmail.com',
+            to: email,
+            subject: 'Verify Your Email Address',
+            text: `Please click the following link to verify your email address: ${verificationLink}`,
+            html: `<p>Please click the following link to verify your email address:</p><a href="${verificationLink}">${verificationLink}</a>`,
+        });
+    }
     async register(CreateIdentityDto: CreateIdentityDto) {
         try {
             // Check if the username already exists in the database
@@ -44,6 +93,14 @@ export class IdentityService {
                 username: saveResult.username,
                 email: saveResult.Email
             };
+            const email = saveResult.Email.toString();
+            const verificationToken = this.jwtService.sign({ email: saveResult.Email });
+
+            // Send verification email
+            await this.sendVerificationEmail(email, verificationToken);
+
+           // await this.sendEmail("seifibr753@gmail.com", 'Registration Confirmation', 'Welcome to our platform!', '<p>Thank you for registering with us!</p>');
+
             return payload;
         } catch (error) {
             // Handle any error that occurs during registration
@@ -108,7 +165,7 @@ export class IdentityService {
             };
         } else {
             // User validation failed, return null or handle the error accordingly
-            return null;
+            throw new HttpException('invalid information', HttpStatus.CONFLICT);
         }
     }
     
