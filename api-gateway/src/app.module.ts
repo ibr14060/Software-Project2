@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AccountModule } from './account/account.module';
 import { ProductModule } from './Products/Product.module';
+import {WishlistModule} from './Wishlist/Wishlist.module';
 import { CartModule } from './cart/Cart.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -62,13 +63,27 @@ import { OrderModule } from './order/Order.module';
             brokers:['localhost:9092']
           },
           consumer:{
-            groupId:'cart-consumer',
+            groupId:'order-consumer',
+          }
+        }
+      }
+      ,
+      {
+        name:'WISHLIST_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'wishlist-consumer',
           }
         }
       }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule ,OrderModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
