@@ -3,7 +3,10 @@ import { ClientKafka } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 @Injectable()
 export class CartService {
-    constructor(@Inject('CART_SERVICE') private readonly cartClient: ClientKafka) {}
+    constructor(@Inject('CART_SERVICE') private readonly cartClient: ClientKafka) {
+        this.cartClient.subscribeToResponseOf('createCart'); // Subscribe to the response topic
+
+    }
 
 // Adjust the return type to Promise<any>
 public hello(): Promise<any> {

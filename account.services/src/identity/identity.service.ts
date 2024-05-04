@@ -27,8 +27,9 @@ export class IdentityService {
         const createIdentity= new this.identityModel(CreateIdentityDto)
         let saveResult = await createIdentity.save();
         console.log(saveResult)
-       
-        return saveResult;
+       console.log(saveResult._id.toString())
+       const payload = { id: saveResult._id.toString(), First_Name: saveResult.First_Name, username: saveResult.username ,email:saveResult.Email };
+        return (payload);
     }
 
     async validateUser(loginDto:LoginDto){
