@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 @Injectable()
@@ -20,7 +20,7 @@ public hello(): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -38,7 +38,7 @@ public createWishlist(data: any): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -57,7 +57,7 @@ public getWishlist(id: string): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -76,7 +76,7 @@ public editWishlist(id: string, data: any): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -94,7 +94,7 @@ public deleteWishlist(id: string): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });

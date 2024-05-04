@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 @Injectable()
 export class CartService {
     constructor(@Inject('CART_SERVICE') private readonly cartClient: ClientKafka) {
@@ -20,7 +22,7 @@ public hello(): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -38,7 +40,7 @@ public createCart(data: any): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -57,7 +59,7 @@ public getCart(id: string): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -76,7 +78,7 @@ public editCart(id: string, data: any): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
@@ -94,7 +96,7 @@ public deleteCart(id: string): Promise<any> {
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(error);  
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
             }
         });
     });
