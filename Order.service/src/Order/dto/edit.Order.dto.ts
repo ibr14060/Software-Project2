@@ -13,4 +13,27 @@ export class EditOrderDto {
   @IsArray()
   @ValidateNested({ each: true })
   readonly products?: [string, number][];
+
+  @IsOptional()
+  @IsNumber()
+  readonly total?: number;
+
+  @IsOptional()
+  @IsString()
+  readonly status?: string;
+
+  @IsOptional()
+  @IsString()
+  readonly address?: string;
+
+  @IsOptional()
+  @IsString()
+  readonly phone?: string;
+
+  @IsOptional()
+  @IsString()
+  readonly email?: string;
+
+
 }
+
