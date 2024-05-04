@@ -6,6 +6,7 @@ import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { TokenDto } from './dto/token.dto';
 import * as nodemailer from 'nodemailer';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Transporter } from 'nodemailer';
 @Injectable()
 export class IdentityService {
@@ -23,14 +24,35 @@ export class IdentityService {
         return message;
     }
 
-    async register(CreateIdentityDto:CreateIdentityDto){
-        const createIdentity= new this.identityModel(CreateIdentityDto)
-        let saveResult = await createIdentity.save();
-        console.log(saveResult)
-       console.log(saveResult._id.toString())
-       const payload = { id: saveResult._id.toString(), First_Name: saveResult.First_Name, username: saveResult.username ,email:saveResult.Email };
-        return (payload);
+    async register(CreateIdentityDto: CreateIdentityDto) {
+        try {
+            // Check if the username already exists in the database
+            const existingUser = await this.identityModel.findOne({ username: CreateIdentityDto.username }).exec();
+            if (existingUser) {
+                // Username already exists, return an error message
+                throw new HttpException('Username already exists. Please choose another username.', HttpStatus.CONFLICT);
+            }
+        
+            // Username doesn't exist, proceed with registration
+            const createIdentity = new this.identityModel(CreateIdentityDto);
+            let saveResult = await createIdentity.save();
+            console.log(saveResult);
+            console.log(saveResult._id.toString());
+            const payload = {
+                id: saveResult._id.toString(),
+                First_Name: saveResult.First_Name,
+                username: saveResult.username,
+                email: saveResult.Email
+            };
+            return payload;
+        } catch (error) {
+            // Handle any error that occurs during registration
+            console.error("Error occurred during registration:", error);
+            return { error: 'An error occurred during registration.' };
+        }
     }
+    
+    
 
     async validateUser(loginDto:LoginDto){
         let loginResult =await this.identityModel.findOne({
