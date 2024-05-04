@@ -6,6 +6,7 @@ import { ProductModule } from './Products/Product.module';
 import { CartModule } from './cart/Cart.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
+import { OrderModule } from './order/Order.module';
 @Module({
   imports: [
     // connection el kafka
@@ -51,9 +52,23 @@ import { MongooseModule } from '@nestjs/mongoose';
           }
         }
       }
+      ,
+      {
+        name:'ORDER_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'cart-consumer',
+          }
+        }
+      }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
