@@ -37,17 +37,7 @@ export class ProfileController {
         return this.profileService.editprofile(command.id, command.body);
     }
 
-    @MessagePattern('deleteprofile')
-    async deleteprofile(userID: string) {
-        try {
-            console.log("Called with UserID:", userID);
-            const result = await this.profileService.updateprofile(userID, { ProductIDs: [] });
-            return result;
-        } catch (error) {
-            console.error("Error updating profile:", error);
-            return { statusCode: 500, message: "Error updating profile" };
-        }
-    }
+
     
 
     @UseGuards(JwtAuthGuard)

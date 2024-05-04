@@ -26,22 +26,12 @@ export class ProfileService {
         console.log(JSON.stringify(serializedProducts) + " from service s" );
         return JSON.stringify(serializedProducts);
     }
-    async updateprofile(userID: string, update: any): Promise<any> {
-        return this.profileModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
-    }
+
 
     async editprofile(profileId: string, EditProfileDto: EditProfileDto): Promise<Profile> {
         return await this.profileModel.findByIdAndUpdate(profileId, EditProfileDto, { new: true });
     }
 
-    async deleteprofile(userID: string): Promise<any> {
-        try {
-            const result = await this.profileModel.updateOne({ UserID: userID }, { ProductIDs: [] });
-            return result;
-        } catch (error) {
-            console.error("Error updating profile:", error);
-            throw error; // Rethrow the error to handle it in the caller
-        }
-    }
+
 
 }

@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { AccountModule } from './account/account.module';
 import { ProductModule } from './Products/Product.module';
 import {WishlistModule} from './Wishlist/Wishlist.module';
+import { ProfileModule } from './profile/Profile.module';
 import { CartModule } from './cart/Cart.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -81,9 +82,23 @@ import { OrderModule } from './order/Order.module';
           }
         }
       }
+      ,
+      {
+        name:'PROFILE_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'profile-consumer',
+          }
+        }
+      }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
