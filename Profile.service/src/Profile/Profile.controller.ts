@@ -21,11 +21,9 @@ export class ProfileController {
     }
 
     @MessagePattern('getprofileById')
-    async getprofile(userID:  mongoose.Schema.Types.ObjectId) {
+    async getprofile(token: string) {
         try {
-            console.log("Called with UserID:", userID);
-            console.log("Called with UserID:", userID);
-            const products = await this.profileService.getprofile(userID);
+             const products = await this.profileService.getprofile(token);
             return products;
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -36,7 +34,7 @@ export class ProfileController {
     @MessagePattern('editprofile')
     async editprofile(command) {
         console.log(command);
-        return this.profileService.editprofile(command.id, command.body);
+        return this.profileService.editprofile(command.token, command.body);
     }
 
 

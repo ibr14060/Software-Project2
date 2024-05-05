@@ -43,12 +43,12 @@ public createprofile(data: any): Promise<any> {
 }
 
 
-public getprofileById(id: mongoose.Schema.Types.ObjectId): Promise<any> {
+public getprofileById(token:string): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       console.log("id in getprofileById:", id)
+       console.log("id in token:", token)
     
-        this.profileClient.send('getprofileById',  id ).subscribe({
+        this.profileClient.send('getprofileById',  token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 
@@ -63,11 +63,11 @@ public getprofileById(id: mongoose.Schema.Types.ObjectId): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public editprofile(id: string, data: any): Promise<any> {
+public editprofile(token: string, data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.profileClient.send('editprofile', { id, body: data }).subscribe({
+        this.profileClient.send('editprofile', { token, body: data }).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   

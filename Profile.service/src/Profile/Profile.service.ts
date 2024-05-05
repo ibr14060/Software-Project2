@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { Profile } from './interfaces/Profile';
 import { CreateProfileDto } from './dto/create.Profile.dto';
@@ -14,13 +14,31 @@ export class ProfileService {
     hello(message){
         return message;
     }
+    private validateToken(token: string): void {
+        try {
+            this.jwtService.verify(token);
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
+
+    private validateTokenAndGetUserID(token: string): string {
+        try {
+            const decodedToken = this.jwtService.verify(token);
+            return decodedToken.id; // Assuming token contains user ID
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
     async createprofile(CreateProfileDto: CreateProfileDto): Promise<Profile> {
         const newProduct = new this.profileModel(CreateProfileDto);
         return await newProduct.save();
     }
 
-    async getprofile(userID:  mongoose.Schema.Types.ObjectId): Promise<string> {
-        console.log("Called with :", userID);
+    async getprofile(token:string): Promise<string> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        console.log("Called with :", token);
         const user = await this.profileModel.findById( userID ).exec(); 
         
         console.log(JSON.stringify(user) + " from service s" );
@@ -28,7 +46,9 @@ export class ProfileService {
     }
 
 
-    async editprofile(profileId: string, EditProfileDto: EditProfileDto): Promise<Profile> {
+    async editprofile(token: string, EditProfileDto: EditProfileDto): Promise<Profile> {
+        this.validateToken(token);
+        const profileId = this.validateTokenAndGetUserID(token);
         return await this.profileModel.findByIdAndUpdate(profileId, EditProfileDto, { new: true });
     }
 
