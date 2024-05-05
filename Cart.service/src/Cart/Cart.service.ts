@@ -36,12 +36,12 @@ export class CartService {
         return await newProduct.save();
     }
 
-    async getCart(userID: string ,token:string): Promise<string> {
+    async getCart(token:string): Promise<string> {
         console.log("from service t" + token);
         this.validateToken(token);
         const userIDFromToken = this.validateTokenAndGetUserID(token);
         console.log("Called with UserIDhhghgh:", userIDFromToken);
-        const products = await this.cartModel.find({ UserID: userID }).exec(); // Filter cart items based on UserID
+        const products = await this.cartModel.find({ UserID: userIDFromToken }).exec(); // Filter cart items based on UserID
         // Serialize each product to JSON format for logging
         const serializedProducts = products.map(product => product.toJSON());
         console.log(JSON.stringify(serializedProducts) + " from service s" );

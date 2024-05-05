@@ -23,10 +23,10 @@ export class CartController {
     async getCart(data: string) {
         try {
             console.log("Received Data:", data);
-            const [id, token] = data.split(','); // Assuming the data is in the format "id,token"
-            console.log("UserID:", id);
-            console.log("Token:", token);
-            const products = await this.cartService.getCart(id, token);
+           // const [id, token] = data.split(','); // Assuming the data is in the format "id,token"
+           // console.log("UserID:", id);
+            console.log("Token:", data);
+            const products = await this.cartService.getCart(data);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);

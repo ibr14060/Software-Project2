@@ -22,11 +22,11 @@ export class CartController implements OnModuleInit {
         return this.cartService.createCart(req.body);
     }
 
-    @Get('getCart/:id') 
-    async getCart(@Param('id') id: string,  @Headers('authorization') token: string) {
+    @Get('getCart') 
+    async getCart( @Headers('authorization') token: string) {
         console.log("from controller t" + token)
-        console.log(id); // Access the 'id' directly from the route parameters
-        return this.cartService.getCart(id, token);
+       // console.log(id); // Access the 'id' directly from the route parameters
+        return this.cartService.getCart( token);
     }
     
 
