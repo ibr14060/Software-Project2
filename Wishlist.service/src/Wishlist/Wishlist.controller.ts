@@ -20,10 +20,10 @@ export class WishlistController {
     }
 
     @MessagePattern('getWishlist')
-    async getWishlist(userID: string) {
+    async getWishlist(token: string) {
         try {
-            console.log("Called with UserID:", userID);
-            const products = await this.wishlistService.getWishlist(userID);
+            console.log("Called with token:", token);
+            const products = await this.wishlistService.getWishlist(token);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -33,15 +33,15 @@ export class WishlistController {
     
     @MessagePattern('editWishlist')
     async editWishlist(command) {
-        console.log(command);
-        return this.wishlistService.editWishlist(command.id, command.body);
+        console.log(command.token);
+        return this.wishlistService.editWishlist(command.token, command.body);
     }
 
     @MessagePattern('deleteWishlist')
-    async deleteWishlist(userID: string) {
+    async deleteWishlist(token: string) {
         try {
-            console.log("Called with UserID:", userID);
-            const result = await this.wishlistService.updateWishlist(userID, { ProductIDs: [] });
+            console.log("Called with token:", token);
+            const result = await this.wishlistService.updateWishlist(token, { ProductIDs: [] });
             return result;
         } catch (error) {
             console.error("Error updating Wishlist:", error);

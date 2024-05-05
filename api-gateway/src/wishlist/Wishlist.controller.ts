@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Inject, OnModuleInit, Post, Param, Delete } from '@nestjs/common';
+import { Controller, Request, Get, Inject, OnModuleInit,Headers, Post, Param, Delete } from '@nestjs/common';
 import { WishlistService } from './Wishlistservice';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -21,23 +21,23 @@ export class WishlistController implements OnModuleInit {
         return this.wishlistService.createWishlist(req.body);
     }
 
-    @Get('getWishlist/:id') 
-    async getWishlist(@Param('id') id: string) {
-        console.log(id); // Access the 'id' directly from the route parameters
-        return this.wishlistService.getWishlist(id);
+    @Get('getWishlist') 
+    async getWishlist(@Headers('authorization') token: string) {
+       // console.log(id); // Access the 'id' directly from the route parameters
+        return this.wishlistService.getWishlist(token);
     }
 
-    @Post('editWishlist/:id') 
-    async editWishlist(@Param('id') id: string, @Request() req) {
+    @Post('editWishlist') 
+    async editWishlist(@Headers('authorization') token: string, @Request() req) {
         console.log(req.body);
-        return this.wishlistService.editWishlist(id, req.body); // Pass 'id' as a parameter
+        return this.wishlistService.editWishlist(token, req.body); // Pass 'id' as a parameter
     }
     
     // For deleteProduct endpoint
-    @Delete('deleteWishlist/:id') // Define the route parameter ':id'
-    async deleteWishlist(@Param('id') id: string, @Request() req) {
+    @Delete('deleteWishlist') // Define the route parameter ':id'
+    async deleteWishlist(@Headers('authorization') token: string, @Request() req) {
         console.log(req.body);
-        return this.wishlistService.deleteWishlist(id); // Pass 'id' as a parameter
+        return this.wishlistService.deleteWishlist(token); // Pass 'id' as a parameter
     }
 
     onModuleInit() {

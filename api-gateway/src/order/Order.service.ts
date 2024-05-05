@@ -46,11 +46,11 @@ public createOrder(data: any): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public getOrder(id: string): Promise<any> {
+public getOrder(token:string): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       
-        this.orderClient.send('getOrder', id ).subscribe({
+      // const data = `${id},${token}`
+        this.orderClient.send('getOrder', token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 
@@ -65,11 +65,11 @@ public getOrder(id: string): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public editOrder(id: string, data: any): Promise<any> {
+public editOrder(token:string, data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
-           
-        this.orderClient.send('editOrder', { id, body: data }).subscribe({
+          // const command = `${id},${token}`
+        this.orderClient.send('editOrder', { token, body: data }).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
@@ -83,11 +83,11 @@ public editOrder(id: string, data: any): Promise<any> {
 }
 
 // Adjust the return type to Promise<any>
-public deleteOrder(id: string): Promise<any> {
+public deleteOrder(token:string): Promise<any> {
        
     return new Promise((resolve, reject) => {
-           
-        this.orderClient.send('deleteOrder', id ).subscribe({
+          // const data = `${id},${token}`
+        this.orderClient.send('deleteOrder', token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   

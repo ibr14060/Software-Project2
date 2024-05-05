@@ -20,10 +20,12 @@ export class OrderController {
     }
 
     @MessagePattern('getOrder')
-    async getOrder(userID: string) {
+    async getOrder(command: string) {
+
         try {
-            console.log("Called with UserID:", userID);
-            const products = await this.orderService.getOrder(userID);
+           // const [userID, token] = command.split(','); // Assuming the data is in the format "id,token"
+           // console.log("Called with UserID:", userID);
+            const products = await this.orderService.getOrder(command);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -34,14 +36,14 @@ export class OrderController {
     @MessagePattern('editOrder')
     async editOrder(command) {
         console.log(command);
-        return this.orderService.editOrder(command.id, command.body);
+        return this.orderService.editOrder(command.token, command.body);
     }
 
     @MessagePattern('deleteOrder')
-    async deleteOrder(userID: string) {
+    async deleteOrder(token: string) {
         try {
-            console.log("Called with UserID:", userID);
-            const result = await this.orderService.updateOrder(userID, { ProductIDs: [] });
+           // console.log("Called with UserID:", userID);
+            const result = await this.orderService.updateOrder(token, { ProductIDs: [] });
             return result;
         } catch (error) {
             console.error("Error updating Order:", error);

@@ -46,11 +46,11 @@ public createWishlist(data: any): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public getWishlist(id: string): Promise<any> {
+public getWishlist(token: string): Promise<any> {
    
     return new Promise((resolve, reject) => {
        
-        this.WishlistClient.send('getWishlist', id ).subscribe({
+        this.WishlistClient.send('getWishlist', token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 
@@ -65,11 +65,11 @@ public getWishlist(id: string): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public editWishlist(id: string, data: any): Promise<any> {
+public editWishlist(token: string, data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.WishlistClient.send('editWishlist', { id, body: data }).subscribe({
+        this.WishlistClient.send('editWishlist', { token, body: data }).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
@@ -83,11 +83,11 @@ public editWishlist(id: string, data: any): Promise<any> {
 }
 
 // Adjust the return type to Promise<any>
-public deleteWishlist(id: string): Promise<any> {
+public deleteWishlist(token: string): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.WishlistClient.send('deleteWishlist', id ).subscribe({
+        this.WishlistClient.send('deleteWishlist', token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
