@@ -86,11 +86,11 @@ public editCart(token: string, data: any): Promise<any> {
 }
 
 // Adjust the return type to Promise<any>
-public deleteCart(id: string): Promise<any> {
+public deleteCart(token: string): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.cartClient.send('deleteCart', id ).subscribe({
+        this.cartClient.send('deleteCart', token ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   

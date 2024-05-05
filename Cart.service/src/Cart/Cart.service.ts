@@ -47,7 +47,9 @@ export class CartService {
         console.log(JSON.stringify(serializedProducts) + " from service s" );
         return JSON.stringify(serializedProducts);
     }
-    async updateCart(userID: string, update: any): Promise<any> {
+    async updateCart(token: string, update: any): Promise<any> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
         return this.cartModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
     }
 

@@ -23,8 +23,6 @@ export class CartController {
     async getCart(data: string) {
         try {
             console.log("Received Data:", data);
-           // const [id, token] = data.split(','); // Assuming the data is in the format "id,token"
-           // console.log("UserID:", id);
             console.log("Token:", data);
             const products = await this.cartService.getCart(data);
             return products;
@@ -45,10 +43,10 @@ export class CartController {
     }
 
     @MessagePattern('deleteCart')
-    async deleteCart(userID: string) {
+    async deleteCart(token: string) {
         try {
-            console.log("Called with UserID:", userID);
-            const result = await this.cartService.updateCart(userID, { ProductIDs: [] });
+            console.log("Called with token:", token);
+            const result = await this.cartService.updateCart(token, { ProductIDs: [] });
             return result;
         } catch (error) {
             console.error("Error updating cart:", error);
