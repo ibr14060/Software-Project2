@@ -30,10 +30,10 @@ export class CartController implements OnModuleInit {
     }
     
 
-    @Post('editCart/:id') 
-    async editCart(@Param('id') id: string, @Request() req) {
+    @Post('editCart') 
+    async editCart(@Headers('authorization') token: string, @Request() req) {
         console.log(req.body);
-        return this.cartService.editCart(id, req.body); // Pass 'id' as a parameter
+        return this.cartService.editCart(token, req.body); // Pass 'id' as a parameter
     }
     
     // For deleteProduct endpoint

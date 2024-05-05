@@ -51,7 +51,10 @@ export class CartService {
         return this.cartModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
     }
 
-    async editCart(userID: mongoose.Schema.Types.ObjectId , EditCartDto: EditCartDto): Promise<Cart> {
+    async editCart(token: string, EditCartDto: EditCartDto): Promise<Cart> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        console.log("Called with UserID:", userID);
         return await this.cartModel.findOneAndUpdate({ UserID: userID }, EditCartDto, { new: true });
     }
 
