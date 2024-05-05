@@ -2,6 +2,7 @@ import { Controller, UseGuards } from '@nestjs/common';
 import { ProfileService } from './Profile.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { JwtAuthGuard } from './strategies/jwt-auth.guard';
+import mongoose from 'mongoose';
 
 @Controller('profile')
 export class ProfileController {
@@ -19,14 +20,15 @@ export class ProfileController {
         return this.profileService.createprofile(command);
     }
 
-    @MessagePattern('getprofile')
-    async getprofile(userID: string) {
+    @MessagePattern('getprofileById')
+    async getprofile(userID:  mongoose.Schema.Types.ObjectId) {
         try {
+            console.log("Called with UserID:", userID);
             console.log("Called with UserID:", userID);
             const products = await this.profileService.getprofile(userID);
             return products;
         } catch (error) {
-            console.error("Error fetching products:", error);
+            console.error("Error fetching users:", error);
             return { statusCode: 500, message: "Error fetching products" };
         }
     }

@@ -1,6 +1,7 @@
 import { Controller, Request, Get, Inject, OnModuleInit, Post, Param, Delete } from '@nestjs/common';
 import { ProfileService } from './Profile.service';
 import { ClientKafka } from '@nestjs/microservices';
+import mongoose from 'mongoose';
 
 @Controller('profile')
 export class ProfileController implements OnModuleInit {
@@ -24,7 +25,7 @@ export class ProfileController implements OnModuleInit {
 
 
     @Get('getprofiles/:id') 
-    async getprofileById(@Param('id') id: string) {
+    async getprofileById(@Param('id') id: mongoose.Schema.Types.ObjectId) {
         console.log(id); // Access the 'id' directly from the route parameters
         return this.profileService.getprofileById(id);
     }

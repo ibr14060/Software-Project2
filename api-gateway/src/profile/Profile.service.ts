@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import mongoose from 'mongoose';
 import { Observable } from 'rxjs';
 @Injectable()
 export class ProfileService {
@@ -42,11 +43,12 @@ public createprofile(data: any): Promise<any> {
 }
 
 
-public getprofileById(id: string): Promise<any> {
+public getprofileById(id: mongoose.Schema.Types.ObjectId): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       
-        this.profileClient.send('getprofileById', { id }).subscribe({
+       console.log("id in getprofileById:", id)
+    
+        this.profileClient.send('getprofileById',  id ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 

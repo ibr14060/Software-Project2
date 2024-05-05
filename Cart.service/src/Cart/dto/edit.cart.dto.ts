@@ -2,11 +2,9 @@ import { IsString, IsOptional, IsNumber, IsArray, ValidateNested } from 'class-v
 import mongoose from 'mongoose';
 
 export class EditCartDto {
-  @IsString()
-  readonly id: string;
+
 
   @IsOptional()
-  @IsString()
   readonly UserID?: mongoose.Schema.Types.ObjectId;
 
   @IsOptional()

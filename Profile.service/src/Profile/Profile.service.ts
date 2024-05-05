@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Profile } from './interfaces/Profile';
 import { CreateProfileDto } from './dto/create.Profile.dto';
 import { EditProfileDto } from './dto/edit.Profile.dto';
@@ -19,12 +19,12 @@ export class ProfileService {
         return await newProduct.save();
     }
 
-    async getprofile(userID: string): Promise<string> {
-        const products = await this.profileModel.find({ UserID: userID }).exec(); // Filter profile items based on UserID
-        // Serialize each product to JSON format for logging
-        const serializedProducts = products.map(product => product.toJSON());
-        console.log(JSON.stringify(serializedProducts) + " from service s" );
-        return JSON.stringify(serializedProducts);
+    async getprofile(userID:  mongoose.Schema.Types.ObjectId): Promise<string> {
+        console.log("Called with :", userID);
+        const user = await this.profileModel.findById( userID ).exec(); 
+        
+        console.log(JSON.stringify(user) + " from service s" );
+        return JSON.stringify(user);
     }
 
 

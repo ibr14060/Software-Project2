@@ -2,8 +2,6 @@ import { IsString, IsOptional, IsNumber, IsArray, ValidateNested } from 'class-v
 import mongoose from 'mongoose';
 
 export class EditProfileDto {
-  @IsString()
-  readonly id: string;
 
   @IsString()
   readonly username: string;

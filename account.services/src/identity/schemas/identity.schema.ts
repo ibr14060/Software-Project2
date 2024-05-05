@@ -8,7 +8,7 @@ export const Identityschema = new mongoose.Schema({
   First_Name: String,
   Last_Name: String,
   Email: String,
-  Phone_Number: String,
+  Phone_Number: Number,
   Company: String,
   Address: String,
 });

@@ -97,15 +97,22 @@ export class IdentityService {
     async resetPassword(email: string): Promise<void> {
         console.log(email);
         
+        // Check if the user exists in the database
+        const user = await this.identityModel.findOne({ Email: email });
+        if (!user) {
+            throw new Error("User not found");
+        }
+    
         // Generate a random password
         const newPassword = Math.random().toString(36).slice(-8);
-
+    
         // Send the new password to the user's email
         await this.sendResetPasswordEmail(email, newPassword);
-
+    
         // Update the user's password in the database
         await this.identityModel.updateOne({ Email: email }, { password: newPassword });
     }
+    
 
     ///////////////////////////////
     async register(CreateIdentityDto: CreateIdentityDto) {

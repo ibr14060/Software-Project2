@@ -31,7 +31,9 @@ export class OrderService {
     }
 
     async editOrder(OrderId: string, EditOrderDto: EditOrderDto): Promise<Order> {
-        return await this.orderModel.findByIdAndUpdate(OrderId, EditOrderDto, { new: true });
+      
+        return await this.orderModel.findOneAndUpdate({ UserID: OrderId }, EditOrderDto, { new: true });
+
     }
 
     async deleteOrder(userID: string): Promise<any> {

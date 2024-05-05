@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Cart } from './interfaces/Cart';
 import { CreateCartDto } from './dto/create.Cart.dto';
 import { EditCartDto } from './dto/edit.cart.dto';
@@ -30,8 +30,8 @@ export class CartService {
         return this.cartModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
     }
 
-    async editCart(CartId: string, EditCartDto: EditCartDto): Promise<Cart> {
-        return await this.cartModel.findByIdAndUpdate(CartId, EditCartDto, { new: true });
+    async editCart(userID: mongoose.Schema.Types.ObjectId , EditCartDto: EditCartDto): Promise<Cart> {
+        return await this.cartModel.findOneAndUpdate({ UserID: userID }, EditCartDto, { new: true });
     }
 
     async deleteCart(userID: string): Promise<any> {

@@ -31,7 +31,9 @@ export class wishlistService {
     }
 
     async editWishlist(WishlistId: string, EditWishlistDto: EditWishlistDto): Promise<Wishlist> {
-        return await this.wishlistModel.findByIdAndUpdate(WishlistId, EditWishlistDto, { new: true });
+        
+        return await this.wishlistModel.findOneAndUpdate({ UserID: WishlistId }, EditWishlistDto, { new: true });
+
     }
 
     async deleteWishlist(userID: string): Promise<any> {
