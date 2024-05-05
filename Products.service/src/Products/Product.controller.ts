@@ -20,10 +20,10 @@ export class ProductController {
     }
 
     @MessagePattern('getProducts')
-    async getProducts() {
+    async getProducts(token :string) {
         try {
-            console.log("called");
-            const products = await this.productService.getProducts();
+            console.log("called with token " + token);
+            const products = await this.productService.getProducts(token);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -34,20 +34,28 @@ export class ProductController {
 
     @MessagePattern('getProductById')
     async getProductById(command) {
-        console.log(command);
-        return this.productService.getProductById(command.id);
+        const [id, token] = command.split(','); // Assuming the data is in the format "id,token"
+        console.log("UserID:", id);
+        console.log("Token:", token);
+        return this.productService.getProductById(id , token);
     }
 
     @MessagePattern('editProduct')
     async editProduct(command) {
+        const [id, token] = command.datad.split(','); // Assuming the data is in the format "id,token"
+        console.log("UserID:", id);
+        console.log("Token:", token);
         console.log(command);
-        return this.productService.editProduct(command.id, command.body);
+        return this.productService.editProduct(id, token , command.body);
     }
 
     @MessagePattern('deleteProduct')
     async deleteProduct(command) {
+        const [id, token] = command.split(','); // Assuming the data is in the format "id,token"
+        console.log("UserID:", id);
+        console.log("Token:", token);
         console.log(command);
-        return this.productService.deleteProduct(command.id);
+        return this.productService.deleteProduct(id , token);
     }
 
     @UseGuards(JwtAuthGuard)

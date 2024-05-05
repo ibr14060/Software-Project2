@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Inject, OnModuleInit, Post, Param, Delete } from '@nestjs/common';
+import { Controller, Request, Get, Inject, OnModuleInit, Post,Headers, Param, Delete } from '@nestjs/common';
 import { ProductService } from './Product.service';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -22,28 +22,29 @@ export class ProductController implements OnModuleInit {
     }
 
     @Get('getProducts')
-    async getProducts() {
-        console.log(this.productService.getProducts() +"from api gateway m");
-        return this.productService.getProducts();
+    async getProducts(@Headers('authorization') token: string) {
+        console.log(this.productService.getProducts(token) +"from api gateway m");
+        return this.productService.getProducts(token);
     }
 
-    @Get('getProducts/:id') 
-    async getProductById(@Param('id') id: string) {
-        console.log(id); // Access the 'id' directly from the route parameters
-        return this.productService.getProductById(id);
+    @Get('getProduct/:id') 
+    async getProductById(@Param('id') id: string ,@Headers('authorization') token: string) {
+        console.log(id); 
+        console.log(token);
+        return this.productService.getProductById(id ,token);
     }
 
     @Post('editProduct/:id') 
-    async editProduct(@Param('id') id: string, @Request() req) {
+    async editProduct( @Param('id') id: string,@Headers('authorization') token: string , @Request() req) {
         console.log(req.body);
-        return this.productService.editProduct(id, req.body); // Pass 'id' as a parameter
+        return this.productService.editProduct(id ,token, req.body); // Pass 'id' as a parameter
     }
     
     // For deleteProduct endpoint
     @Delete('deleteProduct/:id') // Define the route parameter ':id'
-    async deleteProduct(@Param('id') id: string, @Request() req) {
+    async deleteProduct (@Param('id') id: string, @Headers('authorization') token: string  , @Request() req) {
         console.log(req.body);
-        return this.productService.deleteProduct(id); // Pass 'id' as a parameter
+        return this.productService.deleteProduct(id ,token); // Pass 'id' as a parameter
     }
 
     onModuleInit() {

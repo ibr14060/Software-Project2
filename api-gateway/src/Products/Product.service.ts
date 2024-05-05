@@ -45,11 +45,11 @@ public createProduct(data: any): Promise<any> {
     
 
     // Adjust the return type to Promise<any>
-    public getProducts(): Promise<any> {
+    public getProducts(token : string): Promise<any> {
            
         return new Promise((resolve, reject) => {
                
-            this.productsClient.send('getProducts', '').subscribe({
+            this.productsClient.send('getProducts', token).subscribe({
                 next: (data) => {
                     console.log("Data received:", data);
                     resolve(data);   
@@ -64,11 +64,11 @@ public createProduct(data: any): Promise<any> {
     
 
 // Adjust the return type to Promise<any>
-public getProductById(id: string): Promise<any> {
+public getProductById(id: string ,token :string): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       
-        this.productsClient.send('getProductById', { id }).subscribe({
+       const data = `${id},${token}`;
+        this.productsClient.send('getProductById', data).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 
@@ -83,11 +83,11 @@ public getProductById(id: string): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public editProduct(id: string, data: any): Promise<any> {
+public editProduct(id: string, token:string , data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
-           
-        this.productsClient.send('editProduct', { id, body: data }).subscribe({
+           const datad = `${id},${token}`;
+        this.productsClient.send('editProduct', { datad, body: data }).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
@@ -101,11 +101,11 @@ public editProduct(id: string, data: any): Promise<any> {
 }
 
 // Adjust the return type to Promise<any>
-public deleteProduct(id: string): Promise<any> {
+public deleteProduct(id: string ,token :string): Promise<any> {
        
     return new Promise((resolve, reject) => {
-           
-        this.productsClient.send('deleteProduct', { id }).subscribe({
+           const data = `${id},${token}`;
+        this.productsClient.send('deleteProduct', data).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
