@@ -1,6 +1,7 @@
-import { Controller, Request, Get, Inject, OnModuleInit, Post, Param, Delete } from '@nestjs/common';
+import { Controller, Request, Get, Inject, OnModuleInit, Post,Headers, Param, Delete } from '@nestjs/common';
 import { CartService } from './Cart.service';
 import { ClientKafka } from '@nestjs/microservices';
+
 
 @Controller('cart')
 export class CartController implements OnModuleInit {
@@ -22,10 +23,12 @@ export class CartController implements OnModuleInit {
     }
 
     @Get('getCart/:id') 
-    async getCart(@Param('id') id: string) {
+    async getCart(@Param('id') id: string,  @Headers('authorization') token: string) {
+        console.log("from controller t" + token)
         console.log(id); // Access the 'id' directly from the route parameters
-        return this.cartService.getCart(id);
+        return this.cartService.getCart(id, token);
     }
+    
 
     @Post('editCart/:id') 
     async editCart(@Param('id') id: string, @Request() req) {

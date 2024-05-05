@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { Cart } from './interfaces/Cart';
 import { CreateCartDto } from './dto/create.Cart.dto';
@@ -14,12 +14,33 @@ export class CartService {
     hello(message){
         return message;
     }
+    
+    private validateToken(token: string): void {
+        try {
+            this.jwtService.verify(token);
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
+
+    private validateTokenAndGetUserID(token: string): string {
+        try {
+            const decodedToken = this.jwtService.verify(token);
+            return decodedToken.id; // Assuming token contains user ID
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
     async createCart(CreateCartDto: CreateCartDto): Promise<Cart> {
         const newProduct = new this.cartModel(CreateCartDto);
         return await newProduct.save();
     }
 
-    async getCart(userID: string): Promise<string> {
+    async getCart(userID: string ,token:string): Promise<string> {
+        console.log("from service t" + token);
+        this.validateToken(token);
+        const userIDFromToken = this.validateTokenAndGetUserID(token);
+        console.log("Called with UserIDhhghgh:", userIDFromToken);
         const products = await this.cartModel.find({ UserID: userID }).exec(); // Filter cart items based on UserID
         // Serialize each product to JSON format for logging
         const serializedProducts = products.map(product => product.toJSON());

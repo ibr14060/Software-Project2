@@ -48,11 +48,12 @@ public createCart(data: any): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public getCart(id: string): Promise<any> {
+public getCart(id: string ,token:string): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       
-        this.cartClient.send('getCart', id ).subscribe({
+        const data = `${id},${token}`; 
+       console.log("from service t" + token);
+        this.cartClient.send('getCart', data).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 

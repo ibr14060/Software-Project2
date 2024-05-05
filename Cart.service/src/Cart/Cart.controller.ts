@@ -20,16 +20,22 @@ export class CartController {
     }
 
     @MessagePattern('getCart')
-    async getCart(userID: string) {
+    async getCart(data: string) {
         try {
-            console.log("Called with UserID:", userID);
-            const products = await this.cartService.getCart(userID);
+            console.log("Received Data:", data);
+            const [id, token] = data.split(','); // Assuming the data is in the format "id,token"
+            console.log("UserID:", id);
+            console.log("Token:", token);
+            const products = await this.cartService.getCart(id, token);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);
             return { statusCode: 500, message: "Error fetching products" };
         }
     }
+    
+    
+    
     
     @MessagePattern('editCart')
     async editCart(command) {
