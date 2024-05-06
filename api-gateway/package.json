@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "nest start",
-    "start:frontend": "cd ../Frontend/frontend && npm start",
+    "start:frontend": "cd ../Frontend/frontend && npm run dev",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
