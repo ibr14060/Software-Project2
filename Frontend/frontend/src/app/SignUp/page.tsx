@@ -93,12 +93,16 @@ export default function SignUp() {
         </nav>
         <main className="signupcontainer">
             <p className="signuptitle">Create New Account</p>
-            <input className="Username" type="text" id="Username" name="Username" placeholder="User Name" required  onChange={(e) => setUsername(e.target.value)} />
-            <input className="email" type="email" id="email" name="email" placeholder="Email" required   onChange={(e) => setEmail(e.target.value)}  />
-            <input className="Password" type="password" id="Password" name="Password" placeholder="Password" required  onChange={(e) => setPassword(e.target.value)}  />
+            <div className="Name">
+
             <input className="FirstName" type="text" id="FirstName" name="FirstName" placeholder="First Name" required  onChange={(e) => setFirstName(e.target.value)} />
             <input className="LastName" type="text" id="LastName" name="LastName" placeholder="Last Name" required  onChange={(e) => setLastName(e.target.value)}/>
-            <input className="phone" type="text" id="phone" name="phone" placeholder="Phone" required onChange={(e) => setPhone(e.target.value)}/>
+          
+            </div>
+            <input className="Username" type="text" id="Username" name="Username" placeholder="UserName" required  onChange={(e) => setUsername(e.target.value)} />
+            <input className="email" type="email" id="email" name="email" placeholder="Email" required   onChange={(e) => setEmail(e.target.value)}  />
+            <input className="Password" type="password" id="Password" name="Password" placeholder="Password" required  onChange={(e) => setPassword(e.target.value)}  />
+             <input className="phone" type="text" id="phone" name="phone" placeholder="Phone" required onChange={(e) => setPhone(e.target.value)}/>
             <input className="address" type="text" id="address" name="address" placeholder="Address" required onChange={(e) => setAddress(e.target.value)} />
             <input className="Company" type="text" id="Company" name="Company" placeholder="Company" required onChange={(e) => setCompany(e.target.value)}/>
             <button className="signup" type="button" onClick={handleSignUp}>Signup</button>

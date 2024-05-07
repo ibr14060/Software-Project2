@@ -1,0 +1,29 @@
+.verify{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    flex-direction: column;
+}
+.b{
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    flex-direction: column;
+}
+.buttonsuccess{
+    background-color: #17c964;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    height: 5%;
+}
+.verify-email{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

@@ -21,14 +21,14 @@ export class IdentityController {
         console.log(command);
         console.log(command.body.Email);
         const email = command.body.Email;
-        const password = command.body.Password;
+        const password = command.body.password;
         const firstName = command.body.First_Name;
         const lastName = command.body.Last_Name;
         const phoneNumber = command.body.Phone_Number;
         const address = command.body.Address;
         const company = command.body.Company;
         const username = command.body.username;
-
+console.log(command.body.password)
         return this.identityService.register(email, password, firstName, lastName, phoneNumber, address, company, username);
     }
     @MessagePattern('confirmregister')

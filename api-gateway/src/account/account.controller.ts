@@ -42,6 +42,8 @@ export class AccountController implements OnModuleInit {
         this.accountClient.subscribeToResponseOf('register'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('forgetpassword'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('login'); // subscribe to the event
+        this.accountClient.subscribeToResponseOf('confirmregister'); // subscribe to the event
+
     }
 
 }
