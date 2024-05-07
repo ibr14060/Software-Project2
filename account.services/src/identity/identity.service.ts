@@ -52,8 +52,8 @@ export class IdentityService {
         }
     }
     
-    async sendVerificationEmail(email: string, token: string): Promise<void> {
-        const verificationLink = `http://localhost:4000/verify-email?token=${token}`;
+    async sendVerificationEmail(email : string, password : string, firstName : string, lastName : string, phoneNumber : string, address : string, company : string, username : string): Promise<void> {
+        const verificationLink = `http://localhost:3001/verify-email?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}&phoneNumber=${phoneNumber}&address=${address}&company=${company}&username=${username}`;
 
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -69,7 +69,7 @@ export class IdentityService {
             from: 'softwarepro753@gmail.com',
             to: email,
             subject: 'Verify Your Email Address',
-            text: `Please click the following link to verify your email address: ${verificationLink}`,
+            text: `Please click the following link to verify your email address: ${verificationLink} with this information ${email} ${password} ${firstName} ${lastName} ${phoneNumber} ${address} ${company} ${username}`,
             html: `<p>Please click the following link to verify your email address:</p><a href="${verificationLink}">${verificationLink}</a>`,
         });
     }
@@ -115,7 +115,37 @@ export class IdentityService {
     
 
     ///////////////////////////////
-    async register(CreateIdentityDto: CreateIdentityDto) {
+    async register(email : string, password : string, firstName : string, lastName : string, phoneNumber : string, address : string, company : string, username : string) {
+        try {
+            // Check if the username already exists in the database
+            const existingUser = await this.identityModel.findOne({ username: username }).exec();
+            if (existingUser) {
+                // Username already exists, return an error message
+                throw new HttpException('Username already exists. Please choose another username.', HttpStatus.CONFLICT);
+            }
+
+            await this.sendVerificationEmail(email, password , firstName, lastName, phoneNumber, address, company, username);
+            // Username doesn't exist, proceed with registration
+            const payload = {
+                First_Name: firstName,
+                username: username,
+                email: email,
+                password: password,
+                Last_Name: lastName,
+                Phone_Number: phoneNumber,
+                Address: address,
+                Company: company
+            };
+            return payload;
+        } catch (error) {
+            // Handle any error that occurs during registration
+            console.error("Error occurred during registration:", error);
+            return { error: 'An error occurred during registration.' };
+        }
+    }
+    
+    //////////////////////////////
+    async confirmregister(CreateIdentityDto: CreateIdentityDto) {
         try {
             // Check if the username already exists in the database
             const existingUser = await this.identityModel.findOne({ username: CreateIdentityDto.username }).exec();
@@ -135,14 +165,7 @@ export class IdentityService {
                 username: saveResult.username,
                 email: saveResult.Email
             };
-            const email = saveResult.Email.toString();
-            const verificationToken = this.jwtService.sign({ email: saveResult.Email });
-
-            // Send verification email
-            await this.sendVerificationEmail(email, verificationToken);
-
-           // await this.sendEmail("seifibr753@gmail.com", 'Registration Confirmation', 'Welcome to our platform!', '<p>Thank you for registering with us!</p>');
-
+           
             return payload;
         } catch (error) {
             // Handle any error that occurs during registration
@@ -150,8 +173,10 @@ export class IdentityService {
             return { error: 'An error occurred during registration.' };
         }
     }
-    
-    
+
+
+
+    //////////////////////////////
 
     async validateUser(loginDto:LoginDto){
         let loginResult =await this.identityModel.findOne({

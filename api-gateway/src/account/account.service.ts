@@ -48,29 +48,40 @@ public forgetpassword(command: any): Promise<any> {
         });
     });
 }
-// Adjust the return type to Promise<any>
+
 public register(command: any): Promise<any> {
+    // Return a Promise resolving to the data received from the subscription
     return new Promise((resolve, reject) => {
+        // Subscribe to the observable
         this.accountClient.send('register', command).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data); // Resolve the Promise with the received data
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+// Adjust the return type to Promise<any>
+public confirmregister(command: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.accountClient.send('confirmregister', command).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 const UserID = data.id; 
                 console.log("id received:", UserID);
-
-                // Check if the userData contains an error message
                 if (data.userData && data.userData.message) {
-                    reject(data.userData.message); // Reject the promise with the error message
-                    return; // Stop further execution
+                    reject(data.userData.message); 
+                    return; 
                 }
-
-                // Check if UserID exists
                 if (!UserID) {
-                    reject(new HttpException("User exists", HttpStatus.CONFLICT)); // Reject the promise with status code 409
+                    reject(new HttpException("User exists", HttpStatus.CONFLICT)); 
 
-                    return; // Stop further execution
+                    return;
                 }
-
-                // Proceed with creating cart, wishlist, and order
                 Promise.all([
                     this.cartService.createCart({ UserID, products: [] }),
                     this.wishlistService.createWishlist({ UserID, products: [] }),
@@ -78,12 +89,12 @@ public register(command: any): Promise<any> {
                 ]).then(([cartData, wishlistData, orderData]) => {
                     resolve({ userData: data, orderData, cartData, wishlistData });
                 }).catch((error) => {
-                    reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+                    reject(new HttpException(error, HttpStatus.CONFLICT)); 
                 });
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+                reject(new HttpException(error, HttpStatus.CONFLICT)); 
             }
         });
     });

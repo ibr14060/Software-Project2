@@ -19,7 +19,32 @@ export class IdentityController {
     @MessagePattern('register')
     async register(command){
         console.log(command);
-        return this.identityService.register(command.body);
+        console.log(command.body.Email);
+        const email = command.body.Email;
+        const password = command.body.Password;
+        const firstName = command.body.First_Name;
+        const lastName = command.body.Last_Name;
+        const phoneNumber = command.body.Phone_Number;
+        const address = command.body.Address;
+        const company = command.body.Company;
+        const username = command.body.username;
+
+        return this.identityService.register(email, password, firstName, lastName, phoneNumber, address, company, username);
+    }
+    @MessagePattern('confirmregister')
+    async confirmregister(command){
+        console.log(command);
+        console.log(command.body.Email);
+        const email = command.body.Email;
+        const password = command.body.Password;
+        const firstName = command.body.First_Name;
+        const lastName = command.body.Last_Name;
+        const phoneNumber = command.body.Phone_Number;
+        const address = command.body.Address;
+        const company = command.body.Company;
+        const username = command.body.username;
+
+        return this.identityService.confirmregister(command.body);
     }
 
     @MessagePattern('forgetpassword')
