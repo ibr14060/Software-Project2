@@ -107,6 +107,8 @@ const closeSucessPopup = () => {
         Success
      </Button> 
      </div> 
+     {showErrorPopup && <ErrorPopup onClose={closeErrorPopup} />}
+            {showSucessPopup && <SucessPopup onClose={closeSucessPopup} />}
     </div>
   );
 }

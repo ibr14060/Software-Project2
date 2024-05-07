@@ -51,9 +51,11 @@ export default function LoginPage() {
         // Login successful
         const data = await response.json();
         console.log(data);
-        const token = data.token;
+        const token = data.access_token;
         console.log(token);
         const encodedToken = encodeURIComponent(token);
+        console.log(encodedToken);
+        window.location.href = `/HomePage?token=${encodedToken}`;
       } else {
         // Login failed
         setShowErrorPopup(true);

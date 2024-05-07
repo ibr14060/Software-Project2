@@ -23,8 +23,7 @@ function SucessPopup({ onClose }: { onClose: () => void }) {
             <div className="popupsucess-inner">
                 <h2>Done</h2>
                 <FontAwesomeIcon icon={faCheckCircle} className="faCheckCircle-icon" />
-                <p>Sign up successfully </p>
-                <button className="close-btn" onClick={onClose}>Go to login</button>
+                <p>Sign up successfully please check your email to confirm registration </p>
             </div>
         </div>
     );

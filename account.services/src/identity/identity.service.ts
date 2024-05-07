@@ -94,7 +94,7 @@ export class IdentityService {
         });
     }
 
-    async resetPassword(email: string): Promise<void> {
+    async resetPassword(email: string) {
         console.log(email);
         
         // Check if the user exists in the database
@@ -111,6 +111,12 @@ export class IdentityService {
     
         // Update the user's password in the database
         await this.identityModel.updateOne({ Email: email }, { password: newPassword });
+        const message = 'Password reset successful. Please check your email for the new password.';
+        const payload = {
+           Email: email,
+           message : "Password reset successful. Please check your email for the new password."
+        };
+        return payload;
     }
     
 
