@@ -1,69 +1,141 @@
-/* LoginPage.css */
-.login-page{
-    height: 88vh;
+.logincontainer{
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-
-}
-.Register{
-    margin:auto;
-}
-a{
-    text-decoration: none;
-    color: #007bff;
-
-}
-.RegNFor{
-    display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    margin-top: 10%;
 }
-.login-container {
-    
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 20px;
-    background-color: #fff;
+.logintitle{
+    font-size: 150%;
+    font-weight: 500;
+}
+.email{
+    width: 25%;
+    padding-top: 0.7%;
+    margin-bottom: 12px;
+    padding-bottom: 0.7%;
+    color: black;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .input-container {
-    margin-bottom: 15px;
-  }
-  
-  .input-label {
-    font-weight: bold;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
+    border: 1px solid #ccc; 
+    
+}
+.signupa{
+    color: blue;
+}
+.Forgeta{
+    color: blue;
+}
+.loginPage{
+    height: 100vh;
+    background-color: white;
+}
+.email::placeholder,
+.password::placeholder {
+    color: black; /* Change the color to your desired value */
+}
+.forget{
+    font-size: 90%;
+}
+.login{
+    width: 13%;
     color: white;
+    background-color: black;
+    margin-top: 2.5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+
+    border-radius: 8px; 
+}
+.signupa{
+    padding-top: 1%;
+    font-size: 90%;
+}
+.passcon{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+   
+}
+.password{
+    width: 25%;
+    padding-top: 0.7%;
+    margin-bottom: 12px;
+    padding-bottom: 0.7%;
+    margin-left: 1.39%;
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+}
+.password-toggle {
+    
+  margin-bottom: 1%;
+
+    z-index: 2;
+    background: none;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
   }
-  
-  .submit-button:hover {
-    background-color: #0056b3;
+  .popuperror-inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10%;
+    border: 1px solid black;
+    padding: 2%;
+    width: 150%;
+    margin-left: -25%;
+}
+.popuperror-inner h2{
+    font-size: 150%;
+    font-weight: 500;
+    color: red;
+}
+.popuperror-inner button{
+    width: 23%;
+    background-color: black;
+    color: white;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-radius: 8px; 
+}
+.popuperror-inner button:hover{
+    background-color: white;
+    color: black;
+    
+}
+.faTriangleExclamation-icon{
+    color: red;
+    font-size: 300%;
+
+}
+  @media only screen and (max-width: 600px) {
+   .forget{
+    font-size: 100%;
+ 
+   } 
+   .logincontainer{
+    width: 100%;
+   }
+   .signupa{
+    padding-top: 1%;
+    font-size: 100%;
+}
+.password{
+    width: 25%;
+    padding-top: 0.7%;
+    margin-bottom: 12px;
+    padding-bottom: 0.7%;
+    margin-left: 6%;
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+}
+.email{
+    width: 105%;
+
   }
-  
+  .login{
+    width: 20%;
+  }
+}

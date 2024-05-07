@@ -1,16 +1,41 @@
 "use client"
 import { useState,useEffect } from "react"
 import { Input } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash ,faTriangleExclamation} from '@fortawesome/free-solid-svg-icons';
 import './globals.css'; 
-
+function ErrorPopup({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="popupmain">
+      <div className="popuperror-inner">
+        <h2>Error</h2>
+        <FontAwesomeIcon icon={faTriangleExclamation} className="faTriangleExclamation-icon" />
+        <p>Incorrect email or password </p>
+        <button className="close-btn" onClick={onClose}>close</button>
+      </div>
+    </div>
+  );
+}
 export default function LoginPage() {
   // State variables to store username and password
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const closeErrorPopup = () => {
+    setShowErrorPopup(false);
+};
+   
   // Function to handle login
   const handleLogin = async () => {
     try {
+      if (!username || !password) {
+        setShowErrorPopup(true);
+        return;
+      }
       console.log("username: ", username);
       // Send POST request to backend API with username and password
       const response = await fetch('http://localhost:4000/account/sign-in', {
@@ -26,8 +51,12 @@ export default function LoginPage() {
         // Login successful
         const data = await response.json();
         console.log(data);
+        const token = data.token;
+        console.log(token);
+        const encodedToken = encodeURIComponent(token);
       } else {
         // Login failed
+        setShowErrorPopup(true);
         console.error('Login failed');
       }
     } catch (error) {
@@ -36,42 +65,37 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-page">
-      <main className="login-container">
-        <h1 className="login-title">Login</h1>
-        <div className="input-container">
-          <label className="input-label" htmlFor="username">Username</label>
-          <Input
-            id="username"
-            isRequired
-            value={username}
-            onChange={(e) => setUsername(e.target.value)} // Update username state on change
-            placeholder='Username'
-            className="input-field"
-          />
-        </div>
-        <div className="input-container">
-          <label className="input-label" htmlFor="password">Password</label>
-          <Input
-            id="password"
-            isRequired
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)} // Update password state on change
-            placeholder='Enter your password'
-            className="input-field"
-          />
-        </div>
-        <button type="button" className="submit-button" onClick={handleLogin}>Login</button>
-      </main>
-      <div className='RegNFor'>
-        <div className='Forget'>
-          <a href="/forget-password">Forget Password?</a>
-        </div>
-        <div className='Register'>
-          <a href="/register">First Time ? ... Register</a>   
-        </div>
-      </div>
+    <div>
+    <div className= "loginPage">
+        <main className ="logincontainer">
+            <p className ="logintitle">
+                Login
+            </p>
+            <input className="email" type="email" id="email" name="email" placeholder="Email" onChange={(e) => setUsername(e.target.value)} >
+            </input>
+           <div className="passcon">
+            <input className= "password"type={passwordVisible ? 'text' : 'password'} id="Password" name="Password" placeholder="Password"  onChange={(e) => setPassword(e.target.value)}
+>
+            </input>
+            <button
+            className="password-toggle"
+            type="button"
+            onClick={togglePasswordVisibility}
+          >
+            <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+          </button>
+         </div>
+           
+            <button className = "login" onClick={handleLogin}>Login</button>
+            <a className ="signupa" href ="/SignUp" >NEW ? ...Create new account</a>
+            <a className ="Forgeta" href ="/ForgetPassword" >Forget Password</a>
+
+            {showErrorPopup && <ErrorPopup onClose={closeErrorPopup} />}
+        </main>
+        
+    </div>
+
+  
     </div>
   );
 }
