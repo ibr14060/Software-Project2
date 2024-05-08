@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
-
+import Navbar from "../NavBar/page";
 
 const getProducts = async (token: string ) => {
   try {
@@ -12,6 +12,7 @@ const getProducts = async (token: string ) => {
       headers: {
         'Authorization': `${token}`
       }
+    
     });
     if (res.status === 401) {
       console.log("Unauthorized");
@@ -72,6 +73,7 @@ const HomePage: React.FC = () => {
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
   const [wishlistData, setWishlistData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +92,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="homepage">
+      <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
     <div className="content">
       { (
         products.map((product: any) => (
@@ -102,7 +105,7 @@ const HomePage: React.FC = () => {
         ))
       )}
     </div>
-  </div>
+    </div>
 );
 };
 
