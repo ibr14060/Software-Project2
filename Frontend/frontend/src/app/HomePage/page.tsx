@@ -35,7 +35,24 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
 
   const handlecart = async () => {
     try {
-   
+      const response = await fetch('http://localhost:4000/cart/editCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({products:[`${product.id}`,1] }),
+      });
+
+      // Handle response
+      if (response.ok) {
+        // Login successful
+        const data = await response.json();
+        console.log(data);
+      } else {
+        // Login failed
+        console.error('adding failed');
+      }
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
@@ -86,7 +103,6 @@ const HomePage: React.FC = () => {
   }, [token]);
 
   
-
   console.log("token: ", token);
   console.log("products: ", products);
 
