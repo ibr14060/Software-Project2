@@ -35,13 +35,14 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
 
   const handlecart = async () => {
     try {
+      console.log("product id: ", product._id);
       const response = await fetch('http://localhost:4000/cart/editCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({products:[`${product.id}`,1] }),
+        body: JSON.stringify({products:[`${product._id}`,1] }),
       });
 
       // Handle response
