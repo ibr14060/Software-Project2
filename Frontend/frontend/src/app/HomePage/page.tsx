@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
 import Navbar from "../NavBar/page";
-
+import FooterComponent from "../Footer/page";
 const getProducts = async (token: string ) => {
   try {
     const res = await fetch('http://localhost:4000/products/getProducts', {
@@ -105,6 +105,8 @@ const HomePage: React.FC = () => {
         ))
       )}
     </div>
+    <FooterComponent /> 
+
     </div>
 );
 };
