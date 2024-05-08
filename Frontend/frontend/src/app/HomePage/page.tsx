@@ -1,47 +1,109 @@
 "use client";
-import React from "react";
-import {Button} from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import { Button } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
 import "./globals.css";
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
-type Repo = {
-  name: string
-  stargazers_count: number
-}
+import Link from 'next/link';
 
-export const getServerSideProps = (async () => {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
 
-  const res = await fetch('http://localhost:4000/products/getProducts', {
-    headers: {
-      'Authorization': `Bearer ${token}`
+const getProducts = async (token: string ) => {
+  try {
+    const res = await fetch('http://localhost:4000/products/getProducts', {
+      headers: {
+        'Authorization': `${token}`
+      }
+    });
+    if (res.status === 401) {
+      console.log("Unauthorized");
+      return [];
     }
-  });  const repo: Repo = await res.json()
-  // Pass data to the page via props
-  return { props: { repo } }
-}) satisfies GetServerSideProps<{ repo: Repo }>
-
-
-export default function HomePage({
-  repo,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
- 
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-console.log("token: ", token);
-
-
-return (
-  <div className='b'>
-   <div className="verify">
-
-   <p>Click the button below to verify your email</p>
-   <Button color="success" className="buttonsuccess" >
-      Success
-   </Button> 
-   </div> 
-    </div>
-);
+    if (!res.ok) {
+      console.log("An error occurred");
+      return [];
+    }
+    const data = await res.json();
+    console.log("Data: ", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
 }
+const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product: any, isInWishlist: boolean, token : string , toggleWishlist: () => void }) => {
+  
+
+  const handlecart = async () => {
+    try {
+   
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+  return (
+    <div className="product-card">
+      <div className="product-image-container">
+        <img className='product-image' src={product.ProductImage} alt={product.ProductName} />
+        <Link href={`/product/${product.id}/${token}`} className="view-product-button">
+          View Product
+        </Link>
+        <button
+          className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}
+          onClick={toggleWishlist}
+        >
+          {isInWishlist ? "★" : "☆"}
+        </button>
+      </div>
+      <div className="product-details">
+        <h2>{product.ProductName}</h2>
+        <p className="price">${product.ProductPrice}</p>{" "}
+        <div className="buttons-container">
+          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+const HomePage: React.FC = () => {
+  const [products, setProducts] = useState([]);
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const token = searchParams.get("token") ?? "";
+  const [wishlistData, setWishlistData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProducts(token);
+      setProducts(data);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [token]);
+
+  
+
+  console.log("token: ", token);
+  console.log("products: ", products);
+
+  return (
+    <div className="homepage">
+    <div className="content">
+      { (
+        products.map((product: any) => (
+          <ProductCard 
+            key={product.id}
+            product={product}
+            isInWishlist={false}
+            token={token} 
+            toggleWishlist={() => ""}          />
+        ))
+      )}
+    </div>
+  </div>
+);
+};
+
+export default HomePage;
