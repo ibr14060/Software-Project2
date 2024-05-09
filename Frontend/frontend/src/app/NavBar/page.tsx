@@ -54,7 +54,7 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             </li>
             <li>
               <Link
-                href={`/cart/${token}`}
+                href={`/Cart/${token}`}
               >
                 <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
               </Link>

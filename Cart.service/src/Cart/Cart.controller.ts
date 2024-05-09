@@ -39,7 +39,9 @@ export class CartController {
     async editCart(command) {
         console.log(command);
         console.log("token"+ command.token);
-        return this.cartService.editCart(command.token, command.body);
+        const quantity = command.body.products[1];
+        const id = command.body.products[0];
+        return this.cartService.editCart(command.token, id,quantity);
     }
 
     @MessagePattern('deleteCart')
