@@ -52,13 +52,29 @@ export class CartService {
         const userID = this.validateTokenAndGetUserID(token);
         return this.cartModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
     }
-
     async editCart(token: string, EditCartDto: EditCartDto): Promise<Cart> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
         console.log("Called with UserID:", userID);
-        return await this.cartModel.findOneAndUpdate({ UserID: userID }, EditCartDto, { new: true });
+        console.log("Called with UserID:", EditCartDto.products);
+        // Extract product ID and quantity from DTO
+        const productID = EditCartDto.products[0]; // Access the first element of the tuple
+        const quantity = EditCartDto.products[1]; // Access the second element of the tuple
+        
+        // Construct array in the required format
+        const newProductItem = [productID, quantity];
+    
+        // Find user's cart and update products array
+        return await this.cartModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
     }
+    
+    
+    
+    
 
     async deleteCart(userID: string): Promise<any> {
         try {

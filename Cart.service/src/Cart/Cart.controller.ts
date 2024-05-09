@@ -38,7 +38,7 @@ export class CartController {
     @MessagePattern('editCart')
     async editCart(command) {
         console.log(command);
-        console.log("token"+command.token);
+        console.log("token"+ command.token);
         return this.cartService.editCart(command.token, command.body);
     }
 

@@ -10,5 +10,5 @@ export class EditCartDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  readonly products?: [string, number][];
+  products: [string, number][];
 }

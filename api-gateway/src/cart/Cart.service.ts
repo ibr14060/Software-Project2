@@ -66,8 +66,6 @@ public getCart(token:string): Promise<any> {
     });
 }
 
-
-// Adjust the return type to Promise<any>
 public editCart(token: string, data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
@@ -85,7 +83,6 @@ public editCart(token: string, data: any): Promise<any> {
     });
 }
 
-// Adjust the return type to Promise<any>
 public deleteCart(token: string): Promise<any> {
        
     return new Promise((resolve, reject) => {
