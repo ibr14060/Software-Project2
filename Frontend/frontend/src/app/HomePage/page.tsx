@@ -6,30 +6,7 @@ import "./globals.css";
 import Link from 'next/link';
 import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
-const getProducts = async (token: string ) => {
-  try {
-    const res = await fetch('http://localhost:4000/products/getProducts', {
-      headers: {
-        'Authorization': `${token}`
-      }
-    
-    });
-    if (res.status === 401) {
-      console.log("Unauthorized");
-      return [];
-    }
-    if (!res.ok) {
-      console.log("An error occurred");
-      return [];
-    }
-    const data = await res.json();
-    console.log("Data: ", data);
-    return data;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-}
+
 const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product: any, isInWishlist: boolean, token : string , toggleWishlist: () => void }) => {
   
 
@@ -42,22 +19,24 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({products :[`${product._id}`,1 ]}),
+        body: JSON.stringify({ products: [`${product._id}`, 1] }), // Constructing the products array correctly
       });
-
+  
       // Handle response
-      if (response.ok) {
-        // Login successful
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+          window.location.href = '/Login';
+        }
+      } else {
         const data = await response.json();
         console.log(data);
-      } else {
-        // Login failed
-        console.error('adding failed');
       }
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
   };
+  
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -95,9 +74,29 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getProducts(token);
-      setProducts(data);
-      setLoading(false);
+      try {
+        const res = await fetch("http://localhost:4000/products/getProducts", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+        if (res.status === 401) {
+          console.log("Unauthorized");
+          window.location.href = "/Login";
+          return [];
+        }
+        if (!res.ok) {
+          console.log("An error occurred");
+          return [];
+        }
+        const data = await res.json();
+        console.log("Data: ", data);
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();

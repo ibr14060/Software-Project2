@@ -60,7 +60,8 @@ export class CartService {
         // Extract product ID and quantity from DTO
         const productID = EditCartDto.products[0]; // Access the first element of the tuple
         const quantity = EditCartDto.products[1]; // Access the second element of the tuple
-        
+        console.log("productID: ", productID);
+        console.log("quantity: ", quantity);
         // Construct array in the required format
         const newProductItem = [productID, quantity];
     
