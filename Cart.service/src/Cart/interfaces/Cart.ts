@@ -1,9 +1,6 @@
-
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export interface Cart extends Document {
-   
-   readonly UserID: String;
-   readonly products: [string, number][];
-
+  readonly UserID: mongoose.Types.ObjectId;
+  readonly products: Array<{ name: string; quantity: number }>;
 }

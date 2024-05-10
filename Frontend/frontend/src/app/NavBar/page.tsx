@@ -54,14 +54,14 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             </li>
             <li>
               <Link
-                href={`/Cart/${token}`}
+                href={`/Cart?token=${token}`}
               >
                 <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
               </Link>
             </li>
             <li>
               <Link
-                href={`/wishlist/${token}`}
+                href={`/wishlist?token=${token}`}
               >
                 <FontAwesomeIcon icon={faStar} className="wishlist-icon" />
               </Link>
@@ -91,13 +91,13 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         </Link>
 
         <Link
-          href={`/cart/${token}`}
+          href={`/cart?token=${token}`}
         >
           <FontAwesomeIcon icon={faCartShopping} className="cart-icon" />
         </Link>
 
         <Link
-          href={`/wishlist/${token}`}
+          href={`/wishlist?token=${token}`}
         >
           <FontAwesomeIcon icon={faStar} className="wishlist-icon" />
         </Link>

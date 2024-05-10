@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
 
+
 const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product: any, isInWishlist: boolean, token : string , toggleWishlist: () => void }) => {
   
 
@@ -19,7 +20,7 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({ products: [`${product._id}`, 1] }), // Constructing the products array correctly
+        body: JSON.stringify({ products: [`${product._id}`, 1] }), 
       });
   
       // Handle response

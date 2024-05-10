@@ -9,7 +9,7 @@ import FooterComponent from "../Footer/page";
 
 
 
-const Cartpage: React.FC = () => {
+const Cart: React.FC = () => {
     const [products, setProducts] = useState<{ id: number; quantity: number; }[]>([]);
     const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -147,4 +147,4 @@ const handleDelete = async (id: number) => {
   );
 }
 
-export default Cartpage;
+export default Cart;
