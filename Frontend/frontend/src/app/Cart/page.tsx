@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Cart: React.FC = () => {
   const [products, setProducts] = useState([]);
@@ -21,14 +23,17 @@ const Cart: React.FC = () => {
     try {
         console.log("called");
         console.log(id);
-        const response = await fetch(`http://localhost:4000/cart/deleteCart?id=${id}`, {
+        const response = await fetch(`http://localhost:4000/cart/deleteCart/${id}`, {
             method: 'DELETE',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `${token}`
             }
         });
+        console.log(response.status);
         if (response.status === 200) {
-            setProducts(products.filter((product: { id: string }) => product.id !== id));
+          setProducts(products.filter((product: { id: string }) => product.id !== id));
+          window.location.reload();
+
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -151,7 +156,7 @@ console.log("productinfos: ", productinfo);
                     <p>{product.quantity}</p>
                     <button className="btn-plus" onClick={() => updateQuantity(product._id, product.quantity + 1)}>+</button>
                   </div>
-                  <button className="del" onClick={() => handleDelete(product._id)}><i className="fa fa-trash"></i></button>
+                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
                 </td>
                 <td>
                   <p className="total">{product.ProductPrice * product.quantity} $</p>

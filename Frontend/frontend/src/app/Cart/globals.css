@@ -83,13 +83,13 @@ table {
     margin-left: 65%;
     align-items: center;
     display: flex;
-    
     margin-top: -8%;
+    z-index: 1;
   }
   .fa-trash{
-    background-color: #fff4e9;
+
     border: none;
-    
+  
   }
   .checkout{
     display :flex;

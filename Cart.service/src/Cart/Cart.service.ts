@@ -64,19 +64,36 @@ console.log(cart);
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
         
-        // Find the index of the item with the specified product ID in the products array
-        const cart = await this.cartModel.findOne({ UserID: userID }).exec(); // Declare the 'cart' variable
-        
-        const index = cart.products.findIndex((item: any) => item[0] === productId);
-        
-        // If the index is found, remove the item from the array
-        if (index !== -1) {
-            cart.products.splice(index, 1);
-        }
+        try {
+            // Find the cart document for the user
+            const cart = await this.cartModel.findOne({ UserID: userID }).exec();
     
-        // Update the cart document in the database
-        return this.cartModel.updateOne({ UserID: userID }, { $set: { products: cart.products } }).exec();
+            // Check if the cart exists
+            if (!cart) {
+                throw new Error('Cart not found');
+            }
+    console.log(cart.products + "cart.products")
+    console.log(cart.products[0] + "cart.products[0]")
+            // Find the index of the product with the specified id in the products array
+            const index = cart.products.findIndex((item: any) => item.id === productId);
+            console.log(index + "index  ")
+            // If the product is found, remove it from the products array
+            if (index !== -1) {
+                cart.products.splice(index, 1);
+            } else {
+                throw new Error('Product not found in cart');
+            }
+    console.log(cart.products + "cart.products")
+            // Update the cart document in the database with the modified products array
+            
+    
+            return { message: 'Product removed from cart successfully' };
+        } catch (error) {
+            console.error('Error updating cart:', error);
+            throw new Error('Error updating cart');
+        }
     }
+    
     
     async editCart(token: string, id: string, newQuantity: number): Promise<Cart> {
         this.validateToken(token);
