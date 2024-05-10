@@ -91,6 +91,11 @@ table {
     border: none;
   
   }
+  .total-price{
+    margin-left: 15%;
+    margin-top: 30%;
+    font-size: 120%;
+  }
   .checkout{
     display :flex;
     flex-direction: column;

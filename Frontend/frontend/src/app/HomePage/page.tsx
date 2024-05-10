@@ -37,7 +37,9 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
       console.error('Error adding product to cart:', error);
     }
   };
-  
+  const handleRent = async () => {
+    window.location.href = `/Rent?id=${product._id}&token=${token}`;
+  }
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -57,6 +59,7 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
         <p className="price">${product.ProductPrice}</p>{" "}
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="rent-button" onClick={handleRent}>Rent</button>
         </div>
       </div>
     </div>
