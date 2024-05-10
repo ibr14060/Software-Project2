@@ -56,43 +56,38 @@ console.log(cart);
         console.log(`_id: ${cart._id}`);
         console.log(`UserID: ${cart.UserID}`);
         console.log("Products:");
-
-
-
         return cart.toJSON();
     }
     
     
-    async updateCart(token: string, update: any): Promise<any> {
+    async updateCart(token: string, productId: string): Promise<any> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
-        return this.cartModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
-    }
-    async editCart(token: string, id: string, newQuantity: Number): Promise<Cart> {
-        this.validateToken(token);
-        const userID = this.validateTokenAndGetUserID(token);
-        console.log("Called with UserID:", id);
-        console.log("Called with UserID:", newQuantity);
-        // Extract product ID and quantity from DTO
-       // const productID = command.products[0]; // Access the first element of the tuple
-       // const quantity = command.products[1]; // Access the second element of the tuple
-        console.log("productID: ", id);
-        console.log("quantity: ", newQuantity);
-        // Construct array in the required format
-        const newProductItem = [id, newQuantity];
+        
+        // Find the index of the item with the specified product ID in the products array
+        const cart = await this.cartModel.findOne({ UserID: userID }).exec(); // Declare the 'cart' variable
+        
+        const index = cart.products.findIndex((item: any) => item[0] === productId);
+        
+        // If the index is found, remove the item from the array
+        if (index !== -1) {
+            cart.products.splice(index, 1);
+        }
     
-        // Find user's cart and update products array
+        // Update the cart document in the database
+        return this.cartModel.updateOne({ UserID: userID }, { $set: { products: cart.products } }).exec();
+    }
+    
+    async editCart(token: string, id: string, newQuantity: number): Promise<Cart> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, quantity: newQuantity }; // Construct as an object
         return await this.cartModel.findOneAndUpdate(
             { UserID: userID },
             { $push: { products: newProductItem } },
             { new: true, upsert: true }
         );
     }
-    
-    
-    
-    
-
     async deleteCart(userID: string): Promise<any> {
         try {
             const result = await this.cartModel.updateOne({ UserID: userID }, { ProductIDs: [] });

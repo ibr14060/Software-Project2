@@ -45,10 +45,10 @@ export class CartController {
     }
 
     @MessagePattern('deleteCart')
-    async deleteCart(token: string) {
+    async deleteCart(command) {
         try {
-            console.log("Called with token:", token);
-            const result = await this.cartService.updateCart(token, { ProductIDs: [] });
+            console.log("Called with token:", command.token);
+            const result = await this.cartService.updateCart(command.token, command.id);
             return result;
         } catch (error) {
             console.error("Error updating cart:", error);

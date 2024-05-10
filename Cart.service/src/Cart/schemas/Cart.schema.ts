@@ -4,7 +4,7 @@ export const CartSchema = new mongoose.Schema({
   UserID: mongoose.Schema.Types.ObjectId,
   products: [
     {
-      name: { type: String, required: true },
+      id: { type: String, required: true },
       quantity: { type: Number, required: true }
     }
   ]

@@ -37,10 +37,10 @@ export class CartController implements OnModuleInit {
     }
     
     // For deleteProduct endpoint
-    @Delete('deleteCart') // Define the route parameter ':id'
-    async deleteCart(@Headers('authorization') token: string, @Request() req) {
+    @Delete('deleteCart/:id') // Define the route parameter ':id'
+    async deleteCart(@Headers('authorization') token: string, @Request() req, @Param('id') id: string){
         console.log(req.body);
-        return this.cartService.deleteCart(token); // Pass 'id' as a parameter
+        return this.cartService.deleteCart(token ,id); // Pass 'id' as a parameter
     }
 
     onModuleInit() {

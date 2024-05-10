@@ -27,7 +27,7 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
       if (!response.ok) {
         console.error('Adding failed');
         if(response.status === 409) {
-          window.location.href = '/Login';
+        //  window.location.href = '/Login';
         }
       } else {
         const data = await response.json();
@@ -74,33 +74,33 @@ const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/products/getProducts", {
-          headers: {
-            Authorization: `${token}`,
-          },
-        });
+    fetch("http://localhost:4000/products/getProducts", {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+      .then((res) => {
         if (res.status === 401) {
           console.log("Unauthorized");
           window.location.href = "/Login";
           return [];
         }
-        if (!res.ok) {
-          console.log("An error occurred");
+        if(!res.ok) {
+          console.error("Error fetching data");
           return [];
         }
-        const data = await res.json();
-        console.log("Data: ", data);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
         setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
         setLoading(false);
-      }
-    };
-
-    fetchData();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setError(error);
+        setLoading(false);
+      });
   }, [token]);
 
   

@@ -16,7 +16,7 @@ const Cart: React.FC = () => {
   const [wishlistData, setWishlistData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     
     try {
         console.log("called");
@@ -28,7 +28,7 @@ const Cart: React.FC = () => {
             }
         });
         if (response.status === 200) {
-            setProducts(products.filter((product: { id: number }) => product.id !== id));
+            setProducts(products.filter((product: { id: string }) => product.id !== id));
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -36,13 +36,18 @@ const Cart: React.FC = () => {
     
   }
   const updateQuantity = (productId: string, newQuantity: number) => {
-    setProductData(productdata.map(product => {
-      if (product._id === productId) {
-        return { ...product, quantity: newQuantity };
-      }
-      return product;
-    }));
+    if (newQuantity === 0) {
+      handleDelete(productId);
+    } else {
+      setProductData(productdata.map(product => {
+        if (product._id === productId) {
+          return { ...product, quantity: newQuantity };
+        }
+        return product;
+      }));
+    }
   };
+  
 
   const calculateTotalPrice = () => {
     return productdata.reduce((total, product) => total + (product.ProductPrice * product.quantity), 0);
@@ -68,12 +73,15 @@ const Cart: React.FC = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("Data: ", data);
-        setProducts(data.products);
-  
-        // Fetch info for each product
-        const productInfoRequests = data.products.map((product: any) =>
-          fetch(`http://localhost:4000/products/getProduct/${product[0]}`, {
+        
+        const { products } = data;
+        setProducts(products); // Update the products state with the products array
+        
+        console.log("Products: ", products)
+       
+        
+        const productInfoRequests = products.map((product: any) =>
+          fetch(`http://localhost:4000/products/getProduct/${product.id}`, {
             headers: {
               Authorization: `${token}`,
             },
@@ -89,7 +97,7 @@ const Cart: React.FC = () => {
             // Combine product info and product data
             const combinedData = productInfoData.map((info, index) => ({
               ...info,
-              quantity: parseInt(data.products[index][1]), // Convert string to number
+              quantity: parseInt(products[index].quantity), // Convert string to number
             }));
             setProductData(combinedData);
           })

@@ -83,11 +83,11 @@ public editCart(token: string, data: any): Promise<any> {
     });
 }
 
-public deleteCart(token: string): Promise<any> {
+public deleteCart(token: string , id : string): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.cartClient.send('deleteCart', token ).subscribe({
+        this.cartClient.send('deleteCart', {token , id}).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   
