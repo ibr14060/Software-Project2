@@ -59,7 +59,7 @@ console.log(cart);
 
 
 
-        return cart;
+        return cart.toJSON();
     }
     
     

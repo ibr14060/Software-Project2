@@ -47,7 +47,7 @@ export class ProductService {
         console.log("ss");
         console.log(token);
         this.validateToken(token);
-        return await this.productModel.findById(productId).exec();
+        return (await this.productModel.findById(productId).exec()).toJSON();
     }
     async editProduct(productId: string, token : string , EditProductDto: EditProductDto): Promise<Product> {
         console.log(token);
