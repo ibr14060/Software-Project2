@@ -42,7 +42,7 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
     <div className="product-card">
       <div className="product-image-container">
         <img className='product-image' src={product.ProductImage} alt={product.ProductName} />
-        <Link href={`/product/${product.id}/${token}`} className="view-product-button">
+        <Link href={`/Product?id=${product._id}&token=${token}`} className="view-product-button">
           View Product
         </Link>
         <button
@@ -93,7 +93,9 @@ const HomePage: React.FC = () => {
       })
       .then((data) => {
         console.log(data);
+
         setProducts(data);
+
         setLoading(false);
       })
       .catch((error) => {
