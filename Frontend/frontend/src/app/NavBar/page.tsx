@@ -19,6 +19,7 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      /*
       try {
         const response = await fetch('https://backendtoyshub-dev.onrender.com/guest/category');
         if (!response.ok) {
@@ -29,6 +30,7 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
+      */
     };
     fetchCategories();
   }, []);
@@ -47,7 +49,8 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           <ul className="dropdown-menuu">
             <li>
               <Link
-                href ={isLoggedIn ? "/profile" : "/login"}
+               // href ={isLoggedIn ? "/profile" : "/login"}
+               href={`/Profile?token=${token}`}
               >
                 <FontAwesomeIcon icon={faUser} className="profile-icon" />
               </Link>
@@ -85,7 +88,8 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         </div>
       
         <Link
-          href={isLoggedIn ? "/profile" : "/login"}
+         // href={isLoggedIn ? "/profile" : "/login"}
+         href={`/Profile?token=${token}`}
         >
           <FontAwesomeIcon icon={faUser} className="profile-icon" />
         </Link>
