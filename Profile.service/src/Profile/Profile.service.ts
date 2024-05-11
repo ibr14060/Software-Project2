@@ -49,7 +49,7 @@ export class ProfileService {
     async editprofile(token: string, EditProfileDto: EditProfileDto): Promise<Profile> {
         this.validateToken(token);
         const profileId = this.validateTokenAndGetUserID(token);
-        return await this.profileModel.findByIdAndUpdate(profileId, EditProfileDto, { new: true });
+        return (await this.profileModel.findByIdAndUpdate(profileId, EditProfileDto, { new: true })).toJSON();
     }
 
 

@@ -8,7 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 const Profile: React.FC = () => {
   const [Profile, setProfile] = useState(null);
-
+const [username, setUsername] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [firstname, setFirstname] = useState("");
+const [lastname, setLastname] = useState("");
+const [address, setAddress] = useState("");
+const [phoneNumber,setphoneNumber] = useState("");
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(null);
@@ -49,6 +55,36 @@ const Profile: React.FC = () => {
   
   
 console.log("nn",Profile)
+const handleEdit = async (field: string, newValue: string) => {
+    try {
+      const requestBody = { [field]: newValue }; // Dynamically create the request body object
+      const response = await fetch("http://localhost:4000/profile/editprofile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify(requestBody), // Stringify the request body
+      });
+
+      // Handle response
+      if (!response.ok) {
+        console.error("Editing failed");
+        if (response.status === 409) {
+          //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+        
+          window.location.reload();
+        
+      }
+    } catch (error) {
+      console.error("Error editing profile :", error);
+    }
+  };
+
 
 
 return (
@@ -71,11 +107,12 @@ return (
                                     <strong>Email: </strong> {(Profile as any).Email}
                                 </td>
                                 <td>
-                                    <input className="email" type="email" id="email" name="email" placeholder="Email">
+                                    <input className="email" type="email" id="email" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}>
                                     </input>
                                 </td>
                                 <td>
-                                    <button className="edit-button" onClick={() => { window.location.href = `/EditProfile?token=${token}`; } }><FontAwesomeIcon icon={faEdit} />
+                                    <button className="edit-button" onClick={() => handleEdit("Email", email)}><FontAwesomeIcon icon={faEdit} />
+
                                     </button>
                                 </td>
 
@@ -87,11 +124,11 @@ return (
                                         <strong>FirstName: </strong> {(Profile as any).First_Name} 
                                     </td>
                                     <td>
-                                        <input className="email" type="email" id="email" name="email" placeholder="FirstName">
+                                        <input className="email" type="email" id="email" name="email" placeholder="FirstName" onChange={(e) => setFirstname(e.target.value)}>
                                         </input>
                                     </td>
                                     <td>
-                                        <button className="edit-button" onClick={() => { window.location.href = `/EditProfile?token=${token}`; } }><FontAwesomeIcon icon={faEdit} />
+                                        <button className="edit-button" onClick={() => handleEdit("First_Name", firstname)}><FontAwesomeIcon icon={faEdit} />
                                         </button>
                                     </td>
                                 </tr>
@@ -102,11 +139,11 @@ return (
                                         <strong>LastName: </strong> {(Profile as any).Last_Name}
                                     </td>
                                     <td>
-                                        <input className="email" type="email" id="email" name="email" placeholder="LastName">
+                                        <input className="email" type="email" id="email" name="email" placeholder="LastName" onChange={(e) => setLastname(e.target.value)}>
                                         </input>
                                     </td>
                                     <td>
-                                        <button className="edit-button" onClick={() => { window.location.href = `/EditProfile?token=${token}`; } }><FontAwesomeIcon icon={faEdit} />
+                                        <button className="edit-button" onClick={() => handleEdit("Last_Name", lastname)}><FontAwesomeIcon icon={faEdit} />
                                         </button>
                                     </td>
                                 </tr>
@@ -117,11 +154,11 @@ return (
                                         <strong>Password: </strong> {(Profile as any).password}
                                     </td>
                                     <td>
-                                        <input className="email" type="email" id="email" name="email" placeholder="Password">
+                                        <input className="email" type="email" id="email" name="email" placeholder="Password" onChange={(e) => setPassword(e.target.value)}>
                                         </input>
                                     </td>
                                     <td>
-                                        <button className="edit-button" onClick={() => { window.location.href = `/EditProfile?token=${token}`; } }><FontAwesomeIcon icon={faEdit} />
+                                        <button className="edit-button" onClick={() => handleEdit("password", password)}><FontAwesomeIcon icon={faEdit} />
                                         </button>
                                     </td>
                                 </tr>
@@ -137,6 +174,19 @@ return (
                                     </td>
                                     <td>
                                         <button className="edit-button" onClick={() => { window.location.href = `/EditProfile?token=${token}`; } }><FontAwesomeIcon icon={faEdit} />
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr className="items">
+                                    <td>
+                                        <strong>PhoneNumber: </strong> {(Profile as any).Phone_Number}
+                                    </td>
+                                    <td>
+                                        <input className="email" type="email" id="email" name="email" placeholder="PhoneNumber" onChange={(e) => setphoneNumber(e.target.value)}>
+                                        </input>
+                                    </td>
+                                    <td>
+                                        <button className="edit-button" onClick={() => handleEdit("Phone_Number", phoneNumber)}><FontAwesomeIcon icon={faEdit} />
                                         </button>
                                     </td>
                                 </tr>
