@@ -76,9 +76,7 @@ return (
               <div>
                 <strong>Address:</strong> {(Profile as any).Address}
               </div>
-              <div>
-                <strong>Password:</strong> {(Profile as any).password}
-              </div>
+              
               <div>
                 <strong>Phone Number:</strong> {(Profile as any).Phone_Number}
                 </div>
