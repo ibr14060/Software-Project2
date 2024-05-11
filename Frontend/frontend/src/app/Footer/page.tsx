@@ -40,28 +40,26 @@ export default function Footer() {
             <MDBCol className='col'>
               <h6>
                 <MDBIcon icon="gem" className="me-3" />
-                Toys Hub
+                
               </h6>
-              <p>
-              Where Happiness Awaits Yours and Theirs!
-              </p>
+
             </MDBCol>
 
             <MDBCol className='col'>
               <h6 >Products</h6>
               <p>
               <Link href={`/category/3c019b6f-8787-46d2-b445-dcead15dd315/${token}`}>
-          KeyChain
+          category1
         </Link>
               </p>
               <p>
               <Link href={`/category/3dcd7c7e-415a-4f30-8dbb-985d0dc923c4/${token}`}>
-          Slippers
+          category2
         </Link>
               </p>
               <p>
               <Link href={`/category/83d5155b-d2b3-4b36-829e-b2042476f76d/${token}`}>
-          Stickers
+          category3
         </Link>
               </p>
 
@@ -69,11 +67,7 @@ export default function Footer() {
 
             <MDBCol className='col'>
               <h6 >Useful links</h6>
-              <p>
-              <a href='/#about-us-section' className='text-reset'>
-                  About us
-                </a>
-                </p>
+
 
               <p>
                 <a href='#!' className='text-reset'>
@@ -92,12 +86,12 @@ export default function Footer() {
               <p>
                 <FaHome/>
                 <span> </span>
-                New York, NY 10012, US
+                cairo,egypt
               </p>
               <p>
                 <FaEnvelope/>
                 <span> </span>
-                info@example.com
+                softwarepro753@gmail.com
               </p>
               <p>
               <FaPhone/>
@@ -117,7 +111,7 @@ export default function Footer() {
       <div className='p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
         © 2024 Copyright : <span> </span> <span> </span>
         <a className='text-reset fw-bold' href='https://github.com/BugDiggerz'>
-          BugDiggerz
+          
         </a>
       </div>
     </MDBFooter>
