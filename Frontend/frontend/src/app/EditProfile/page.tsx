@@ -11,6 +11,7 @@ const Profile: React.FC = () => {
 const [username, setUsername] = useState("");
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
+const [Oldpassword, setOldPassword] = useState("");
 const [firstname, setFirstname] = useState("");
 const [lastname, setLastname] = useState("");
 const [address, setAddress] = useState("");
@@ -76,14 +77,65 @@ const handleEdit = async (field: string, newValue: string) => {
       } else {
         const data = await response.json();
         console.log(data);
-        
+        alert("done editing the password");
           window.location.reload();
         
       }
     } catch (error) {
       console.error("Error editing profile :", error);
+      alert("Error editing profile :");
+
     }
   };
+  const handleEditpassword = async (field: string, newValue: string) => {
+    try {
+      // Fetch current profile data
+      const profileResponse = await fetch("http://localhost:4000/profile/getprofile", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      const profileData = await profileResponse.json();
+
+      // Check if the old password matches the current password
+      if (profileData.password === Oldpassword) {
+        // Old password matches, proceed with updating the password
+        const requestBody = { [field]: newValue }; // Dynamically create the request body object
+        const response = await fetch("http://localhost:4000/profile/editprofile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify(requestBody), // Stringify the request body
+        });
+
+        // Handle response
+        if (!response.ok) {
+          console.error("Editing failed");
+          if (response.status === 409) {
+            //  window.location.href = '/Login';
+          }
+        } else {
+          const data = await response.json();
+          console.log(data);
+          alert("done editing the password");
+
+          window.location.reload();
+
+        }
+      } else {
+        // Old password does not match
+        console.error("Old password is incorrect");
+        alert("Old password is incorrect. Please enter the correct old password.");
+
+        // Handle the case where the old password entered by the user does not match the current password
+      }
+    } catch (error) {
+      console.error("Error editing profile:", error);
+    }
+};
+
 
 
 
@@ -151,14 +203,20 @@ return (
 
                                 <tr className="items">
                                     <td>
-                                        <strong>Password: </strong> {(Profile as any).password}
+                                        <strong>Password: </strong> ********
                                     </td>
                                     <td>
+                                      <div className="password-cchange">
                                         <input className="email" type="email" id="email" name="email" placeholder="Password" onChange={(e) => setPassword(e.target.value)}>
+                                       
                                         </input>
+                                        <input className="email" type="email" id="email" name="email" placeholder="Old Password" onChange={(e) => setOldPassword(e.target.value)}>
+                                       
+                                       </input>
+                                       </div>
                                     </td>
                                     <td>
-                                        <button className="edit-button" onClick={() => handleEdit("password", password)}><FontAwesomeIcon icon={faEdit} />
+                                        <button className="edit-button" onClick={() => handleEditpassword("password", password)}><FontAwesomeIcon icon={faEdit} />
                                         </button>
                                     </td>
                                 </tr>

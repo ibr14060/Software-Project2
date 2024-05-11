@@ -26,7 +26,16 @@ table {
     flex: 1;
     width: 33.33%; /* Set a fixed width for each th, making them take equal space */
   }
+.password-cchange{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 48%;
+  
+  gap: 10px; /* Adjust the gap size as needed */
 
+
+}
 td{
     padding: 30px;
 }
