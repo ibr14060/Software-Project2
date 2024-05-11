@@ -223,8 +223,6 @@ console.log("productinfos: ", productinfo);
         <div className="total-price">
           <p>Total: {calculateTotalPrice()} $</p>
         </div>
-          <button className="checkoutbtn" type="button">Checkout</button>
-
         </div>
       </main>
     )}
