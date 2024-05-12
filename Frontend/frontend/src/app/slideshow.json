@@ -1,0 +1,24 @@
+
+[
+    {
+       "id": 1,
+       "Image":"https://assets.website-files.com/614d175db24864c3fcc12901/61ba617f95cda8233ed29b22_Stickers.png",
+       "category":"Stickers",
+       "catid":"83d5155b-d2b3-4b36-829e-b2042476f76d"
+   
+    } ,
+    {
+       "id": 2,
+       "Image":"https://m.media-amazon.com/images/I/618qTeiOh9L.jpg",
+         "category":"KeyChains",
+         "catid":"3c019b6f-8787-46d2-b445-dcead15dd315"
+    } ,
+    
+    {
+       "id": 3,
+       "Image":"https://img.freepik.com/free-vector/different-slippers-kids-adults-illustrations-set_74855-16860.jpg?w=1800&t=st=1711735491~exp=1711736091~hmac=e41bedf9e3d426dd173e1200bf63958e6fff3e67027db3d42c7a6eb05332a45b",
+         "category":"Slippers",
+         "catid":"f3d7c7e-415a-4f30-8dbb-985d0dc923c4"
+    } 
+   
+   ]
