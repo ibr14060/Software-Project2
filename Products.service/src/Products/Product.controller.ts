@@ -29,6 +29,28 @@ export class ProductController {
             return { statusCode: 500, message: "Error fetching products" };
         }
     }
+    @MessagePattern('getGuestCategoryProducts')
+    async getGuestCategoryProducts(categoryName : string) {
+        try {
+            const products = await this.productService.getGuestCategoryProducts(categoryName);
+            return products;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            return { statusCode: 500, message: "Error fetching products" };
+        }
+    }
+    @MessagePattern('getCategoryProducts')
+    async getCategoryProducts(command:any) {
+        try {
+            const [categoryName, token] = command.split(','); // Assuming the data is in the format "categoryName,token"
+            console.log("called with token " + token);
+            const products = await this.productService.getCategoryProducts(token,categoryName);
+            return products;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            return { statusCode: 500, message: "Error fetching products" };
+        }
+    }
     
 
     @MessagePattern('getGuestProductById')

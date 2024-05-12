@@ -82,12 +82,12 @@ return (
                 <strong>Phone Number:</strong> {(Profile as any).Phone_Number}
                 </div>
                 <div className="past-orders">
-                  <button onClick={() => {window.location.href = `/PastOrders?token=${token}`}}><strong>Past Orders </strong> <FontAwesomeIcon icon={faShop} />
+                  <button className="past-orders" onClick={() => {window.location.href = `/PastOrders?token=${token}`}}><strong>Past Orders </strong> <FontAwesomeIcon icon={faShop} />
 
                   </button>
                 </div>
                 <div className="past-orders">
-                  <button onClick={() => {window.location.href = `/Address?token=${token}`}}><strong>Address  </strong> <FontAwesomeIcon icon={faHome} />
+                  <button className="past-orders" onClick={() => {window.location.href = `/Address?token=${token}`}}><strong>Address  </strong> <FontAwesomeIcon icon={faHome} />
 
                   </button>
                 </div>

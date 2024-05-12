@@ -40,7 +40,22 @@ export class ProductService {
         const serializedProducts = products.map(product => product.toJSON());
         console.log(JSON.stringify(serializedProducts) + " from service s" );
         return JSON.stringify(serializedProducts);
+    
     }
+    async getGuestCategoryProducts(categoryName : string): Promise<string> {
+        const products = await this.productModel.find({ProductCategory : categoryName}).exec();
+        const serializedProducts = products.map(product => product.toJSON());
+        console.log(JSON.stringify(serializedProducts) + " from service s" );
+        return JSON.stringify(serializedProducts);
+    }
+    async getCategoryProducts(token :string,categoryName:string): Promise<string> {
+        this.validateToken(token);
+        const products = await this.productModel.find({ProductCategory : categoryName}).exec();
+        const serializedProducts = products.map(product => product.toJSON());
+        console.log(JSON.stringify(serializedProducts) + " from service s" );
+        return JSON.stringify(serializedProducts);
+    }
+    
     async getGuestProductById(productId: string ): Promise<Product> {
         console.log(productId);
         console.log("ss");

@@ -113,6 +113,14 @@ table {
     margin-bottom: 5%;
     width: 20%;
   }
+  .edit-button{
+    background-color: #fff4e9;
+    border: none;
+  }
+  .past-orders{
+    background-color: #fff4e9;
+    border: none;
+  }
   .checkoutbtn{
     width: 50%;
     color: white;

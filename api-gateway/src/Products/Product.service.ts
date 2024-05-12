@@ -57,6 +57,39 @@ public getGuestProducts(): Promise<any> {
         });
     });
 }
+public getGuestCategoryProducts(ProductCategory:string): Promise<any> {
+           
+    return new Promise((resolve, reject) => {
+           
+        this.productsClient.send('getGuestCategoryProducts',ProductCategory).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+public getCategoryProducts(token:string,ProductCategory:string): Promise<any> {
+           
+    return new Promise((resolve, reject) => {
+           const command = `${ProductCategory},${token}`;
+        this.productsClient.send('getCategoryProducts',command).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+
 public getGuestProductById(id: string ): Promise<any> {
    
     return new Promise((resolve, reject) => {

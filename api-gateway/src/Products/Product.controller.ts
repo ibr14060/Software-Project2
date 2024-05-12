@@ -38,12 +38,23 @@ export class ProductController implements OnModuleInit {
        // console.log(this.productService.getProducts(token) +"from api gateway m");
         return this.productService.getGuestProducts();
     }
+    @Get('getGuestCategoryProducts/:id')
+    async getGuestCategoryProducts(@Param('id') id: string) {
+       // console.log(this.productService.getProducts(token) +"from api gateway m");
+        return this.productService.getGuestCategoryProducts(id);
+    }
+    @Get('getCategoryProducts/:id')
+    async getCategoryProducts(@Headers('authorization') token: string,@Param('id') id: string) {
+       // console.log(this.productService.getProducts(token) +"from api gateway m");
+        return this.productService.getCategoryProducts(token,id);
+    }
 
     @Get('getGuestProduct/:id') 
     async getGuestProductById(@Param('id') id: string) {
         console.log(id); 
         return this.productService.getGuestProductById(id );
     }
+
 
     @Post('editProduct/:id') 
     async editProduct( @Param('id') id: string,@Headers('authorization') token: string , @Request() req) {
@@ -58,6 +69,7 @@ export class ProductController implements OnModuleInit {
         return this.productService.deleteProduct(id ,token); // Pass 'id' as a parameter
     }
 
+
     onModuleInit() {
         this.productsClient.subscribeToResponseOf('hellofromapi');
         this.productsClient.subscribeToResponseOf('createProduct');
@@ -67,5 +79,7 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('deleteProduct');
         this.productsClient.subscribeToResponseOf('getGuestProduct');
         this.productsClient.subscribeToResponseOf('getGuestProducts');
+        this.productsClient.subscribeToResponseOf('getGuestCategoryProducts');
+        this.productsClient.subscribeToResponseOf('getCategoryProducts');
     }
 }

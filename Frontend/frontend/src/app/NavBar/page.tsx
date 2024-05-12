@@ -83,7 +83,7 @@ const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, se
                         <ul className="dropdown-menu">
                             {categories.map((category: any) => (
                                 <li key={category.id}>
-                                    <Link href={`/Category/${category.name}`}>
+                                    <Link href={`/CategoryPage?categoryname=${category.name}&token=${token}`}>
                                         {category.name}
                                     </Link>
                                 </li>

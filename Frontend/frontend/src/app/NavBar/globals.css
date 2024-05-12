@@ -1,10 +1,26 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #991e66;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color:#991e66;
+  position: relative; /* Add position relative */
+  z-index: 1; /* Ensure navbar stays above other content */
+}
+
+/* Rest of your CSS styles remain unchanged */
+
+.dropdown-menu {
+  position: absolute; /* Change position to absolute */
+  top: calc(60% + 1px); /* Position the dropdown below the navbar */
+
+  background-color: #991e66; /* Darker color */
+  list-style: none;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 2; /* Ensure the dropdown appears above other elements */
+}
+
   
   .logo {
     width: 300px;
@@ -28,17 +44,7 @@
     margin-bottom: -20px;
   }
   
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #991e66;
-    list-style: none;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-  }
+
   
   .dropdown-menu li a {
     color: #fff;
@@ -106,19 +112,7 @@
       margin-left: auto;
     
     }
-    .dropdown-menuu {
-      position: fixed; /* Change position to fixed */
-      top: 5%; /* Adjust top position as needed to align with the bottom of the navbar */
-      left: auto;
-      width: auto;
-      background-color: #991e66;
-      list-style: none;
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-  
-    }
-   
+ 
     .formobile:hover .dropdown-menu {
       display: block;
     }
