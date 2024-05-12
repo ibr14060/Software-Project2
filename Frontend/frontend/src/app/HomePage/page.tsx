@@ -37,6 +37,32 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
       console.error('Error adding product to cart:', error);
     }
   };
+  const handlewishlist = async () => {
+    try {
+      console.log("product id: ", product._id);
+      const response = await fetch('http://localhost:4000/Wishlist/editWishlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({ products: [`${product._id}`] }), 
+      });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
   }
@@ -74,9 +100,36 @@ const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
-  const [wishlistData, setWishlistData] = useState([]);
+  const [wishlistData, setWishlistData] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  useEffect(() => {
+    fetch("http://localhost:4000/Wishlist/getWishlist", {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          console.log("Unauthorized");
+          window.location.href = "/Login";
+          return [];
+        }
+        if (!res.ok) {
+          console.log("An error occurred");
+          return [];
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setWishlistData(data.products); // Set the wishlist data
+      })
+      .catch((error) => {
+        console.error("Error fetching wishlist data:", error);
+      });
+  }, [token]);
 
+console.log("wishlistData: ", wishlistData);
   useEffect(() => {
     fetch("http://localhost:4000/products/getProducts", {
       headers: {
@@ -114,7 +167,52 @@ const HomePage: React.FC = () => {
 );
   console.log("token: ", token);
   console.log("products: ", products);
-
+  const toggleWishlist = async (productId: string) => {
+    try {
+      console.log("productId: ", productId);
+      const isInWishlist = wishlistData.some((item: any) => item.id === productId);
+      console.log("isInWishlist: ", isInWishlist);
+      if (isInWishlist) {
+        // Remove the product from the wishlist
+        try {
+          const response = await fetch(`http://localhost:4000/Wishlist/deleteWishlist/${productId}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `${token}`
+            }
+          });
+          if (response.status === 200) {
+            // Update the wishlistData state to remove the productId
+            setWishlistData(wishlistData.filter(id => id !== productId));
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error('Error removing product from wishlist:', error);
+        }
+      } else {
+        // Add the product to the wishlist
+        try {
+          const response = await fetch('http://localhost:4000/Wishlist/editWishlist', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${token}`
+            },
+            body: JSON.stringify({ products: [`${productId}`] }), 
+          });
+          if (response.ok) {
+            // Update the wishlistData state to add the productId
+            setWishlistData([...wishlistData, productId]);
+          }
+        } catch (error) {
+          console.error('Error adding product to wishlist:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error);
+    }
+  };
+  
   return (
     <div className="homepage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -124,9 +222,9 @@ const HomePage: React.FC = () => {
           <ProductCard 
             key={product.id}
             product={product}
-            isInWishlist={false}
+            isInWishlist={wishlistData.some((item: any) => item.id === product._id)} // Check if product is in wishlist
             token={token} 
-            toggleWishlist={() => ""}          />
+            toggleWishlist={() => toggleWishlist(product._id)}       />
         ))
       )}
     </div>

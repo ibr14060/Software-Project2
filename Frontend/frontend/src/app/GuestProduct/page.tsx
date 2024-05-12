@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 
 import React, { useState, useEffect } from 'react';
 import "./globals.css";
-import Navbar from "../NavBar/page";
+import Navbar from "../GuestNavBar/page";
 import FooterComponent from '../Footer/page';
 const ProductPage = () => {
  
