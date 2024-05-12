@@ -54,7 +54,7 @@ const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, se
             </li>
             <li>
               <Link
-                href={`/wishlist?token=${token}`}
+                href={`/Wishlist?token=${token}`}
               >
                 <FontAwesomeIcon icon={faStar} className="wishlist-icon" />
               </Link>
@@ -105,7 +105,7 @@ const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, se
         </Link>
 
         <Link
-          href={`/wishlist?token=${token}`}
+          href={`/Wishlist?token=${token}`}
         >
           <FontAwesomeIcon icon={faStar} className="wishlist-icon" />
         </Link>
