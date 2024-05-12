@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react';
 import "./globals.css";
 import Navbar from "../NavBar/page";
 import FooterComponent from '../Footer/page';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShare, faUser } from "@fortawesome/free-solid-svg-icons";
 const ProductPage = () => {
  
   const [product, setProduct] = useState<any[]>([]);
@@ -36,42 +38,12 @@ const ProductPage = () => {
         console.error('Error fetching product data:', error);
       }
     };
-const fetchcategoryData = async () => {
-    /*
-      try {
-        const response = await fetch(`https://backendtoyshub-dev.onrender.com/api/category`,{
-          headers: {
-            Authorization: `Bearer ${token}` 
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch category data');
-        }
-        const categoryData = await response.json();
-        setcategory(categoryData.data);
-        console.log(categoryData);
-      } catch (error) {
-        console.error('Error fetching category data:', error);
-      }
-    */
-};
 
     fetchData();
-    fetchcategoryData();
+
   }, [id,token]);
-  /*
-  useEffect(() => {
-    if (category && product) {
-      const matchedCategory = category.find(cat => cat.id === product.belongstocat);
-      if (matchedCategory) {
-        setCategoryName(matchedCategory.name);
-      }
-    }
-  }, [category, product]);
-  */
-  const NavigateToCart = () => {
-    window.location.href = "/cart";
-  };
+
+
   const handlecart = async () => {
     try {
       console.log("product id: ", id);
@@ -98,14 +70,30 @@ const fetchcategoryData = async () => {
       console.error('Error adding product to cart:', error);
     }
   };
-
+  const handleCopyUrl = () => {
+    const url = window.location.href;
+    const newUrl = url.replace(/&token=.*$/, '').replace('Product', 'GuestProduct');
+    navigator.clipboard.writeText(newUrl)
+      .then(() => {
+        alert("URL copied to clipboard!");
+      })
+      .catch((error) => {
+        console.error('Error copying URL to clipboard:', error);
+      });
+  };
+  
   return (
     <div className="ProductPage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
       <div className="ProductBoody">
         {product ? (
             <div className="productboddy">
+              <div className="ProductHeader">
+                
                 <h1 className="ProductTitle">{(product as any).ProductName}</h1>
+                <button className="copybut" onClick={handleCopyUrl}><FontAwesomeIcon icon={faShare} className="profile-icon" />
+</button>
+</div>
                 <div className="ProductContainer">
                     <img alt={(product as any).ProductName} src={(product as any).ProductImage} className="ProductImage"/>
                     <div className="ProductInfo">

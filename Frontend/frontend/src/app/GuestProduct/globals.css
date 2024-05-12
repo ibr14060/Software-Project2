@@ -61,3 +61,22 @@
   .ProductCategory{
     white-space: nowrap;
   }
+  .ProductHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+    gap: 20px;
+  }
+  .copybut{
+    background-color:#991e66;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    transition: box-shadow 0.3s ease;
+    margin-top: 15%;
+
+  }
