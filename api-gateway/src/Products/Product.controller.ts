@@ -33,6 +33,17 @@ export class ProductController implements OnModuleInit {
         console.log(token);
         return this.productService.getProductById(id ,token);
     }
+    @Get('getGuestProducts')
+    async getGuestProducts() {
+       // console.log(this.productService.getProducts(token) +"from api gateway m");
+        return this.productService.getGuestProducts();
+    }
+
+    @Get('getGuestProduct/:id') 
+    async getGuestProductById(@Param('id') id: string) {
+        console.log(id); 
+        return this.productService.getGuestProductById(id );
+    }
 
     @Post('editProduct/:id') 
     async editProduct( @Param('id') id: string,@Headers('authorization') token: string , @Request() req) {
@@ -54,5 +65,7 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('getProductById');
         this.productsClient.subscribeToResponseOf('editProduct');
         this.productsClient.subscribeToResponseOf('deleteProduct');
+        this.productsClient.subscribeToResponseOf('getGuestProduct');
+        this.productsClient.subscribeToResponseOf('getGuestProducts');
     }
 }

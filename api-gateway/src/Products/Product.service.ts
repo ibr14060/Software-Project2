@@ -41,8 +41,38 @@ public createProduct(data: any): Promise<any> {
     });
 }
 
+public getGuestProducts(): Promise<any> {
+           
+    return new Promise((resolve, reject) => {
+           
+        this.productsClient.send('getGuestProducts','').subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+public getGuestProductById(id: string ): Promise<any> {
+   
+    return new Promise((resolve, reject) => {
 
-    
+        this.productsClient.send('getGuestProductById', id).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data); 
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
 
     // Adjust the return type to Promise<any>
     public getProducts(token : string): Promise<any> {

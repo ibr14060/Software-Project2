@@ -18,6 +18,24 @@ export class ProductController {
         console.log(command +"from product controller");
         return this.productService.createProduct(command);
     }
+    
+    @MessagePattern('getGuestProducts')
+    async getGuestProducts() {
+        try {
+            const products = await this.productService.getGuestProducts();
+            return products;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            return { statusCode: 500, message: "Error fetching products" };
+        }
+    }
+    
+
+    @MessagePattern('getGuestProductById')
+    async getGuestProductById(command) {
+
+        return this.productService.getGuestProductById(command);
+    }
 
     @MessagePattern('getProducts')
     async getProducts(token :string) {

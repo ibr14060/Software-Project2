@@ -54,6 +54,14 @@ console.log(command.body.password)
         return this.identityService.resetPassword(command.body.email);
     }
     
+    @MessagePattern('changepassword')
+    async changepassword(command){
+        console.log("called");
+        console.log(command.body);
+        console.log('command user: ', command.body.email);
+        return this.identityService.changepassword(command.body.email, command.body.password);
+    }
+    
     @MessagePattern('login')
     async login(command){
         console.log('command user: ', command.body);

@@ -74,7 +74,7 @@ export class IdentityService {
         });
     }
     ////////////////////////////////////////
-    async sendResetPasswordEmail(email: string, newPassword: string): Promise<void> {
+    async sendResetPasswordEmail(email: string, link: string): Promise<void> {
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
@@ -89,32 +89,40 @@ export class IdentityService {
             from: 'softwarepro753@gmail.com',
             to: email,
             subject: 'Password Reset',
-            text: `Your new password is ${newPassword}. Please change it after logging in.`,
-            html: `<p>Your new password is <strong>${newPassword}</strong>. Please change it after logging in.</p>`,
+            text: `Your can set new password by navigating to this ${link}.`,
+            html: `<p>Your can set new password by navigating to this <strong>${link}</strong>.</p>`,
         });
     }
-
-    async resetPassword(email: string) {
+    ////////////////////////////////////////
+    async changepassword (email: string, password: string) {
         console.log(email);
-        
-        // Check if the user exists in the database
         const user = await this.identityModel.findOne({ Email: email });
         if (!user) {
             throw new Error("User not found");
         }
-    
-        // Generate a random password
-        const newPassword = Math.random().toString(36).slice(-8);
-    
-        // Send the new password to the user's email
-        await this.sendResetPasswordEmail(email, newPassword);
-    
-        // Update the user's password in the database
-        await this.identityModel.updateOne({ Email: email }, { password: newPassword });
-        const message = 'Password reset successful. Please check your email for the new password.';
+        await this.identityModel.updateOne({ Email: email }, { password: password });
         const payload = {
            Email: email,
            message : "Password reset successful. Please check your email for the new password."
+        };
+        return payload;
+    }
+        
+
+    async resetPassword(email: string) {
+        console.log(email);
+        
+        const user = await this.identityModel.findOne({ Email: email });
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const newPassword = Math.random().toString(36).slice(-8);
+        const verificationLink = `http://localhost:3001/reset-email-password?email=${email}`;
+
+        await this.sendResetPasswordEmail(email, verificationLink);
+        const payload = {
+           Email: email,
+           message : "Password reset link sent successful. Please check your email ."
         };
         return payload;
     }

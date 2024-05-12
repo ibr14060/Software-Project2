@@ -34,6 +34,19 @@ export class ProductService {
         const newProduct = new this.productModel(createProductDto);
         return await newProduct.save();
     }
+    async getGuestProducts( ): Promise<string> {
+
+        const products = await this.productModel.find().exec();
+        const serializedProducts = products.map(product => product.toJSON());
+        console.log(JSON.stringify(serializedProducts) + " from service s" );
+        return JSON.stringify(serializedProducts);
+    }
+    async getGuestProductById(productId: string ): Promise<Product> {
+        console.log(productId);
+        console.log("ss");
+
+        return (await this.productModel.findById(productId).exec()).toJSON();
+    }
 
     async getProducts( token : string): Promise<string> {
         this.validateToken(token);

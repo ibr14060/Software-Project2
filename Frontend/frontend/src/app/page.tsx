@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import "./globals.css";
 import { useSearchParams } from "next/navigation";
-import "./globals.css";
 import Link from 'next/link';
-import Navbar from './NavBar/page';
+import Navbar from './GuestNavBar/page';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 import slideImages from './slideshow.json';
@@ -29,7 +28,6 @@ const ProductCard = ({ product }: { product: any }) => {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = searchParams.get("token") ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MzZjYzE5OTIwMWZkOTU5YmI5NjdlNyIsIkZpcnN0X05hbWUiOiJzZWlmIiwidXNlcm5hbWUiOiJzZWlmIiwiaWF0IjoxNzE1NDc1MDgwLCJleHAiOjE3MTU0ODUwODB9.oJWaNj3qV4V-0SDaLT6NlMze9MeSL8RWgtNpeK4BV1g"; 
    const [showLoginPopup, setshowLoginPopup] = useState(false);
   const toggleWishlist = () => {
     setWishlistSelected(!isWishlistSelected);
@@ -45,8 +43,8 @@ const ProductCard = ({ product }: { product: any }) => {
   return (
     <div className="mostsellingproduct-card">
       <div className="product-image-container">
-        <img className='product-image' src={product.image} alt={product.name} />
-        <Link href={`/guestproduct/${product.id}`} className="view-product-button">
+        <img className='product-image' src={product.ProductImage} alt={product.ProductName} />
+        <Link href={`/guestproduct/${product._id}`} className="view-product-button">
   View Product
 </Link>
         <button
@@ -57,9 +55,9 @@ const ProductCard = ({ product }: { product: any }) => {
         </button>
       </div>
       <div className="product-details">
-        <h2>{product.name}</h2>
+        <h2>{product.ProductName}</h2>
         <p>{product.category}</p>
-        <p className="price">${product.price}</p>{" "}
+        <p className="price">${product.ProductPrice}</p>{" "}
         <div className="buttons-container">
         <button className="add-to-cart-button" onClick={NavigateTologin}>Add to Cart</button>
         
@@ -81,10 +79,8 @@ const FirstPage = () => {
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";   
     useEffect(() => {
-      fetch("http://localhost:4000/products/getProducts", {
-        headers: {
-          Authorization: `${token}`,
-        },
+      fetch("http://localhost:4000/products/getGuestProducts", {
+       
       })
         .then((res) => {
           if (res.status === 401) {
@@ -110,7 +106,7 @@ const FirstPage = () => {
           setError(error);
           setLoading(false);
         });
-    }, [token]); // Add token to dependency array to re-fetch data when token changes
+    },[] ); // Add token to dependency array to re-fetch data when token changes
 
 
   return (

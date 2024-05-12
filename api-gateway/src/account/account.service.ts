@@ -101,6 +101,20 @@ public confirmregister(command: any): Promise<any> {
 }
 
 
+public changepassword(command :any): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.accountClient.send('changepassword', command).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data); 
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); 
+            }
+        });
+    });
+}
 
 // Adjust the return type to Promise<any>
 public login(command: any): Promise<any> {

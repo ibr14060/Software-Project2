@@ -26,7 +26,7 @@ function SucessPopup({ onClose }: { onClose: () => void }) {
             <div className="popupsucess-inner">
                 <h2>Done</h2>
                 <FontAwesomeIcon icon={faCheckCircle} className="faCheckCircle-icon" />
-                <p>Sign up successfully </p>
+                <p>Password changed successfully </p>
                 <button className="close-btn" onClick={onClose}>Go to login</button>
             </div>
         </div>
@@ -37,36 +37,26 @@ export default function VerifyEmail() {
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [showSucessPopup, setShowSucessPopup] = useState(false);
     const email = searchParams.get("email");
-    const First_Name = searchParams.get("firstName");
-    const Last_Name = searchParams.get("lastName");
-    const Phone_Number = searchParams.get("phoneNumber");
-    const Address = searchParams.get("address");
-    const Company = searchParams.get("company");
-    const username = searchParams.get("username");
-    const password = searchParams.get("password");
+    const [password , setPassword] = useState('');
+
 
 console.log("email: ", email);
-console.log("First_Name: ", First_Name);
-console.log("Last_Name: ", Last_Name);
-console.log("Phone_Number: ", Phone_Number);
-console.log("Address: ", Address);
-console.log("Company: ", Company);
-console.log("username: ", username);
+
+
  
 const handleSignUp = async () => {
     try {
-        if (!username || !password || !email || !First_Name || !Last_Name || !Phone_Number || !Address || !Company) {
+        if (!email ) {
             setShowErrorPopup(true);
             return;
         }
-      console.log("username: ", username);
-      // Send POST request to backend API with username and password
-      const response = await fetch('http://localhost:4000/account/confirmsign-up', {
+    
+      const response = await fetch('http://localhost:4000/account/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password ,email, First_Name,Last_Name, Phone_Number, Address, Company}),
+        body: JSON.stringify({ email,password}),
       });
 
       // Handle response
@@ -102,13 +92,15 @@ const closeSucessPopup = () => {
     <div className='b'>
      <div className="verify">
 
-     <p>Click the button below to verify your email</p>
+     <p>Enter your new password</p>
+        <input type="password" placeholder="Enter your new password" onChange={(e) => setPassword(e.target.value)} />
      <Button color="success" className="buttonsuccess" onClick={handleSignUp}>
-        Success
+        Submit
      </Button> 
-     </div> 
      {showErrorPopup && <ErrorPopup onClose={closeErrorPopup} />}
             {showSucessPopup && <SucessPopup onClose={closeSucessPopup} />}
+     </div> 
+
     </div>
   );
 }
