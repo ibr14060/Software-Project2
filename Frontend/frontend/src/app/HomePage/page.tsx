@@ -109,7 +109,9 @@ const HomePage: React.FC = () => {
       });
   }, [token]);
 
-  
+  const filteredProducts = products.filter((toy: any) =>
+    toy.ProductName.toLowerCase().includes(searchQuery.toLowerCase())
+);
   console.log("token: ", token);
   console.log("products: ", products);
 
@@ -118,7 +120,7 @@ const HomePage: React.FC = () => {
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
     <div className="content">
       { (
-        products.map((product: any) => (
+        filteredProducts.map((product: any) => (
           <ProductCard 
             key={product.id}
             product={product}

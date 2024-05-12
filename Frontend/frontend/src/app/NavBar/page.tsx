@@ -10,30 +10,20 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, setSearchQuery: Function ,token :string}) => {
     const searchParams = useSearchParams();
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [categories, setCategories] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event:any) => {
     setSearchTerm(event.target.value);
     setSearchQuery(event.target.value);
-};
+  };
+  const categories = [
+    { id: 1, name: "Plastic Pallets" },
+    { id: 2, name: "Wood Pallets" },
+    { id: 3, name: "Stainless steel Pallets" },
+   
+    // Add more categories as needed
+];
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      /*
-      try {
-        const response = await fetch('https://backendtoyshub-dev.onrender.com/guest/category');
-        if (!response.ok) {
-          throw new Error('Failed to fetch categories');
-        }
-        const categoryData = await response.json();
-        setCategories(categoryData.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-      */
-    };
-    fetchCategories();
-  }, []);
+  
 
   return (
     <nav className="navbar">
@@ -86,7 +76,21 @@ const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             onChange={handleSearchChange}
           />
         </div>
-      
+      {/* Category Dropdown */}
+  <div className="category-dropdown">
+                    <button className="dropdown-toggle" onClick={() => setDropdownVisible(!dropdownVisible)}>Categories <FontAwesomeIcon icon={faBars} /></button>
+                    {dropdownVisible && (
+                        <ul className="dropdown-menu">
+                            {categories.map((category: any) => (
+                                <li key={category.id}>
+                                    <Link href={`/Category/${category.name}`}>
+                                        {category.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
         <Link
          // href={isLoggedIn ? "/profile" : "/login"}
          href={`/Profile?token=${token}`}
