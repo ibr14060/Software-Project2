@@ -40,6 +40,8 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
   }
+  const stars =["★★★★★","★★★★","★★★","★★★★★","★★★","★★","★","★★★★★","★★★★"]
+ const numreview =[12,98,34,33,56,75,43,26,78,66,54,78,67,254,109]
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -57,10 +59,16 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
       <div className="product-details">
         <h2>{product.ProductName}</h2>
         <p className="price">${product.ProductPrice}</p>{" "}
+        <p className="category">{product.ProductCategory}</p>{""}
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
         </div>
+        <div className="rating">
+            <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
+            <span className="num-reviews">({numreview[Math.floor(Math.random() * numreview.length)]})</span>
+        </div>
+
       </div>
     </div>
   );
@@ -105,9 +113,11 @@ const HomePage: React.FC = () => {
         setLoading(false);
       });
   }, []);
+const filteredProducts = products.filter((toy: any) =>
+    toy.ProductName.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
-  
-  console.log("token: ", token);
+console.log("token: ", token);
   console.log("products: ", products);
 
   return (
@@ -115,7 +125,7 @@ const HomePage: React.FC = () => {
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
     <div className="content">
       { (
-        products.map((product: any) => (
+        filteredProducts.map((product: any) => (
           <ProductCard 
             key={product.id}
             product={product}

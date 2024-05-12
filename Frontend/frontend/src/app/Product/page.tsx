@@ -113,7 +113,9 @@ const fetchcategoryData = async () => {
                         <p className="ProductDescribtion"><span><b>Description : </b></span> {(product as any).ProductDescription}</p>
                         <p className="ProductPrice"> <span><b>Price : </b></span> {(product as any).ProductPrice}<span>$ </span></p>
                         <p className="ProductSpecifications"> <span><b>Specifications : </b></span> {(product as any).ProductSpecifications}</p>
+                        <p className="ProductRating"> <span><b>Rating : </b></span> {(product as any).ProductCategory}</p>
                         <p className="ProductAvailability"> <span><b>Stock : </b></span> {(product as any).ProductAvailability}</p>
+                
                         <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
                     </div>
                 </div>

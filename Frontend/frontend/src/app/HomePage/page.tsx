@@ -57,6 +57,7 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
       <div className="product-details">
         <h2>{product.ProductName}</h2>
         <p className="price">${product.ProductPrice}</p>{" "}
+        <p className="category">{product.ProductCategory}</p>{""}
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>

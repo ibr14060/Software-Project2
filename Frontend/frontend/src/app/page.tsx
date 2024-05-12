@@ -58,6 +58,7 @@ const ProductCard = ({ product }: { product: any }) => {
         <h2>{product.ProductName}</h2>
         <p>{product.category}</p>
         <p className="price">${product.ProductPrice}</p>{" "}
+        <p className="category">{product.ProductCategory}</p>{""}
         <div className="buttons-container">
         <button className="add-to-cart-button" onClick={NavigateTologin}>Add to Cart</button>
         

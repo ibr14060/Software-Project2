@@ -12,58 +12,20 @@ import { faRegistered } from "@fortawesome/free-solid-svg-icons/faRegistered";
 
 const GuestNavBar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, setSearchQuery: Function ,token :string}) => {
     const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [categories, setCategories] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
- 
-
-useEffect(() => {
-  const fetchCategories = async () => {
-    /*
-    try {
-      const response = await fetch('https://backendtoyshub-dev.onrender.com/guest/category');
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories');
-      }
-      const categoryData = await response.json();
-      setCategories(categoryData.data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-    */
+    const [searchTerm, setSearchTerm] = useState('');
+  const handleSearchChange = (event:any) => {
+    setSearchTerm(event.target.value);
+    setSearchQuery(event.target.value);
   };
-  fetchCategories();
-}, []);
-
-
+  const categories = [
+    { id: 1, name: "Plastic Pallets" },
+    { id: 2, name: "Wood Pallets" },
+    { id: 3, name: "Stainless steel Pallets" },
+   
+    // Add more categories as needed
+];
   return (
     <nav className="navbar">
- 
-    <div
-        className="formobile"
-        onMouseEnter={() => setDropdownVisible(true)}
-        onMouseLeave={() => setDropdownVisible(false)}
-      >
-        <FontAwesomeIcon icon={faBars} className="mobileinnav" />
-        Menu
-        {dropdownVisible && categories && (
-          <ul className="dropdown-menuu">
-            <li>
-              <Link
-                href={"/Login"}
-              
-              >
-                <FontAwesomeIcon icon={faUser} className="profile-icon" />
-              </Link>
-            </li>
-            
-            
-
-          </ul>
-        )}
-      </div>
-
-
-      
 
       <div className="nav-items">
       <div className="search-bar">
@@ -71,14 +33,25 @@ useEffect(() => {
           type="text"
           placeholder="Search..."
           value={searchTerm}
+          onChange={handleSearchChange}
         />
   </div>
-
-   
-
-
-
-  <Link
+  {/* Category Dropdown */}
+  <div className="category-dropdown">
+                    <button className="dropdown-toggle" onClick={() => setDropdownVisible(!dropdownVisible)}>Categories <FontAwesomeIcon icon={faBars} /></button>
+                    {dropdownVisible && (
+                        <ul className="dropdown-menu">
+                            {categories.map((category: any) => (
+                                <li key={category.id}>
+                                    <Link href={`/Category/${category.name}`}>
+                                        {category.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+   <Link
     href={"/Login"}
   >
     <FontAwesomeIcon icon={faUser} className="profile-icon" />
@@ -93,7 +66,7 @@ useEffect(() => {
   >
     Continue as guest
   </Link>
-        
+ 
 
 </div>
 

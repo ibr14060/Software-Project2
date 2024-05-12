@@ -4,7 +4,23 @@
     align-items: center;
     padding: 1rem;
     background-color:#991e66;
-  }
+    position: relative; /* Add position relative */
+    z-index: 1; /* Ensure navbar stays above other content */
+}
+
+/* Rest of your CSS styles remain unchanged */
+
+.dropdown-menu {
+    position: absolute; /* Change position to absolute */
+    top: calc(60% + 1px); /* Position the dropdown below the navbar */
+
+    background-color: #991e66; /* Darker color */
+    list-style: none;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Ensure the dropdown appears above other elements */
+}
+
   .logo {
     width: 300px;
     height: 60px;
@@ -18,7 +34,8 @@
   .nav-items {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 20px;
+    flex-direction: row;
   }
   
   .nav-link {
@@ -27,17 +44,8 @@
     margin-bottom: -20px; 
   }
   
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #991e66; /* Darker color */
-    list-style: none;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1; /* Ensure the dropdown appears above other elements */
-  }
+ 
+
   .dropdown-menu li a {
     color: #fff; /* Make the text color white */
     text-decoration: none; /* Remove underline */
@@ -64,6 +72,11 @@
     outline: none;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+  .profile-links{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
   .profile-icon {
     font-size: 1.5rem; /* Adjust this value as needed */
     color: #fff;
@@ -81,6 +94,9 @@
   }
   .categories-icon {
     margin-right: 0.5rem; /* Add some space between the icon and the text */
+  }
+  .category-dropdown{
+
   }
   .checkoutbtn{
 
