@@ -203,6 +203,7 @@ console.log("wishlistData: ", wishlistData);
           if (response.ok) {
             // Update the wishlistData state to add the productId
             setWishlistData([...wishlistData, productId]);
+            window.location.reload();
           }
         } catch (error) {
           console.error('Error adding product to wishlist:', error);

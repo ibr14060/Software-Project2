@@ -34,14 +34,15 @@ export class WishlistController {
     @MessagePattern('editWishlist')
     async editWishlist(command) {
         console.log(command.token);
-        return this.wishlistService.editWishlist(command.token, command.body);
+        console.log(command.body.products[0],"asasa")
+        return this.wishlistService.editWishlist(command.token, command.body.products[0]);
     }
 
     @MessagePattern('deleteWishlist')
     async deleteCart(command) {
         try {
             console.log("Called with tokaaen:", command.token);
-            console.log("Called with idsdsd:", command.id);
+            console.log("Called with idsdsd:", command.token);
             const result = await this.wishlistService.updateWishlist(command.token, command.id);
             return result;
         } catch (error) {

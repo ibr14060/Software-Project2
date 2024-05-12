@@ -97,15 +97,17 @@ console.log(wishlistModel);
         }
     }
     
-    
-
-    async editWishlist(token: string, EditWishlistDto: EditWishlistDto): Promise<Wishlist> {
-
+    async editWishlist(token: string, id: string): Promise<Wishlist> {
         this.validateToken(token);
-        const WishlistId = this.validateTokenAndGetUserID(token);
-        return await this.wishlistModel.findOneAndUpdate({ UserID: WishlistId }, EditWishlistDto, { new: true });
-
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id }; // Construct as an object
+        return await this.wishlistModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
     }
+
 
     async deleteWishlist(token: string): Promise<any> {
         try {
