@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
-import Navbar from "../GuestNavBar/page";
+import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
 
 
@@ -40,8 +40,6 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
   }
-  const stars =["★★★★★","★★★★","★★★","★★★★★","★★★","★★","★","★★★★★","★★★★"]
- const numreview =[12,98,34,33,56,75,43,26,78,66,54,78,67,254,109]
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -64,11 +62,6 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
         </div>
-        <div className="rating">
-            <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
-            <span className="num-reviews">({numreview[Math.floor(Math.random() * numreview.length)]})</span>
-        </div>
-
       </div>
     </div>
   );
@@ -81,11 +74,12 @@ const HomePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
+  const categoryname = searchParams.get("categoryname") ?? "";
   const [wishlistData, setWishlistData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:4000/products/getGuestProducts", {
+    fetch(`http://localhost:4000/products/getGuestCategoryProducts/${categoryname}`, {
 
     })
       .then((res) => {
@@ -112,12 +106,12 @@ const HomePage: React.FC = () => {
         setError(error);
         setLoading(false);
       });
-  }, []);
-const filteredProducts = products.filter((toy: any) =>
+  }, [token]);
+
+  const filteredProducts = products.filter((toy: any) =>
     toy.ProductName.toLowerCase().includes(searchQuery.toLowerCase())
 );
-
-console.log("token: ", token);
+  console.log("token: ", token);
   console.log("products: ", products);
 
   return (

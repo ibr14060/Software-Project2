@@ -32,6 +32,7 @@ export class ProductController {
     @MessagePattern('getGuestCategoryProducts')
     async getGuestCategoryProducts(categoryName : string) {
         try {
+            console.log("called with categoryName " + categoryName);
             const products = await this.productService.getGuestCategoryProducts(categoryName);
             return products;
         } catch (error) {
