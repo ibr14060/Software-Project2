@@ -38,14 +38,15 @@ export class WishlistController {
     }
 
     @MessagePattern('deleteWishlist')
-    async deleteWishlist(token: string) {
+    async deleteCart(command) {
         try {
-            console.log("Called with token:", token);
-            const result = await this.wishlistService.updateWishlist(token, { ProductIDs: [] });
+            console.log("Called with tokaaen:", command.token);
+            console.log("Called with idsdsd:", command.id);
+            const result = await this.wishlistService.updateWishlist(command.token, command.id);
             return result;
         } catch (error) {
-            console.error("Error updating Wishlist:", error);
-            return { statusCode: 500, message: "Error updating Wishlist" };
+            console.error("Error updating cart:", error);
+            return { statusCode: 500, message: "Error updating cart" };
         }
     }
     

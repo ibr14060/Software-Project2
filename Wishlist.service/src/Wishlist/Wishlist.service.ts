@@ -35,20 +35,69 @@ export class wishlistService {
         return await newProduct.save();
     }
 
-    async getWishlist(token: string): Promise<string> {
+    async getWishlist(token: string): Promise<Wishlist> {
+        console.log("from service t" + token);
+        this.validateToken(token);
+        const userIDFromToken = this.validateTokenAndGetUserID(token);
+        console.log("Called with UserID:", userIDFromToken);
+
+        // Find the cart document based on the user ID
+        const wishlistModel = await this.wishlistModel.findOne({ UserID: userIDFromToken }).exec();
+console.log(wishlistModel);
+        if (!wishlistModel) {
+            // Handle case where no cart is found for the user
+            console.log("No cart found for the user");
+            return null;
+        }
+
+        // Log details of the cart
+        console.log("wishlistModel details:");
+        console.log(`_id: ${wishlistModel._id}`);
+        console.log(`UserID: ${wishlistModel.UserID}`);
+        console.log(`Products:${wishlistModel.products}`);
+        return wishlistModel.toJSON();
+    }
+    async updateWishlist(token: string, productId: string): Promise<any> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
-        const products = await this.wishlistModel.find({ UserID: userID }).exec(); // Filter Wishlist items based on UserID
-        // Serialize each product to JSON format for logging
-        const serializedProducts = products.map(product => product.toJSON());
-        console.log(JSON.stringify(serializedProducts) + " from service s" );
-        return JSON.stringify(serializedProducts);
+        
+        try {
+            // Find the cart document for the user
+            const wishlist = await this.wishlistModel.findOne({ UserID: userID }).exec();
+    
+            // Check if the cart exists
+            if (!wishlist) {
+                throw new Error('Cart not found');
+            }
+    
+            console.log(wishlist.products + " wishlist.products");
+
+            // Find the index of the product with the specified id in the products array
+            const index = wishlist.products.findIndex((product: { id: string }) => product.id === productId);
+
+            console.log(index + " index");
+
+            // If the product is found, remove it from the products array
+            if (index !== -1) {
+                wishlist.products.splice(index, 1);
+            } else {
+                throw new Error('Product not found in wishlist');
+            }
+    
+            console.log(wishlist.products + " wishlist.products");
+            await wishlist.save();
+
+    
+            // Update the cart document in the database with the modified products array
+    
+            return { message: 'Product removed from cart successfully' };
+        } catch (error) {
+            console.error('Error updating cart:', error);
+            throw new Error('Error updating cart');
+        }
     }
-    async updateWishlist(token: string, update: any): Promise<any> {
-        this.validateToken(token);
-        const userID = this.validateTokenAndGetUserID(token);
-        return this.wishlistModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
-    }
+    
+    
 
     async editWishlist(token: string, EditWishlistDto: EditWishlistDto): Promise<Wishlist> {
 

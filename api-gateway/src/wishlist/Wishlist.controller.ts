@@ -34,10 +34,10 @@ export class WishlistController implements OnModuleInit {
     }
     
     // For deleteProduct endpoint
-    @Delete('deleteWishlist') // Define the route parameter ':id'
-    async deleteWishlist(@Headers('authorization') token: string, @Request() req) {
+    @Delete('deleteWishlist/:id') // Define the route parameter ':id'
+    async deleteWishlist(@Headers('authorization') token: string, @Request() req,@Param('id') id: string) {
         console.log(req.body);
-        return this.wishlistService.deleteWishlist(token); // Pass 'id' as a parameter
+        return this.wishlistService.deleteWishlist(token ,id); // Pass 'id' as a parameter
     }
 
     onModuleInit() {

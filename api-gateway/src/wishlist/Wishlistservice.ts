@@ -83,11 +83,11 @@ public editWishlist(token: string, data: any): Promise<any> {
 }
 
 // Adjust the return type to Promise<any>
-public deleteWishlist(token: string): Promise<any> {
+public deleteWishlist(token: string , id:string): Promise<any> {
        
     return new Promise((resolve, reject) => {
            
-        this.WishlistClient.send('deleteWishlist', token ).subscribe({
+        this.WishlistClient.send('deleteWishlist', {token,id} ).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   

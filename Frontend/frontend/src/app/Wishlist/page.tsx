@@ -23,7 +23,7 @@ const Cart: React.FC = () => {
     try {
         console.log("called");
         console.log(id);
-        const response = await fetch(`http://localhost:4000/cart/deleteCart/${id}`, {
+        const response = await fetch(`http://localhost:4000/Wishlist/deleteWishlist/${id}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `${token}`
@@ -31,7 +31,7 @@ const Cart: React.FC = () => {
         });
         console.log(response.status);
         if (response.status === 200) {
-          setProducts(products.filter((product: { id: string }) => product.id !== id));
+          setProducts(prevProducts => prevProducts.filter((product: { id: string }) => product.id !== id));
           window.location.reload();
 
         }
@@ -60,17 +60,17 @@ const Cart: React.FC = () => {
         return res.json();
       })
       .then((data) => {
-        const { products } = data[0]; // Access the products array correctly
+        const { products } = data; // Access the products array correctly
         setProducts(data); // Update the products state with the products array
-                 
-        const productInfoRequests = products.map((productId: string) => // Map directly over products array
-          fetch(`http://localhost:4000/products/getProduct/${productId}`, {
+                 console.log("efdsfsdf" ,data.products)
+        const productInfoRequests = products.map((product: any) => // Map directly over products array
+          fetch(`http://localhost:4000/products/getProduct/${product.id}`, {
             headers: {
               Authorization: `${token}`,
             },
           })
         );
-    
+  
         Promise.all(productInfoRequests)
           .then((responses) => Promise.all(responses.map((res) => res.json())))
           .then((productInfoData) => {
