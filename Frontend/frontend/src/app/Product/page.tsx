@@ -109,7 +109,7 @@ const fetchcategoryData = async () => {
                 <div className="ProductContainer">
                     <img alt={(product as any).ProductName} src={(product as any).ProductImage} className="ProductImage"/>
                     <div className="ProductInfo">
-                        <p className="ProductCategory"> <span><b>Category : </b></span>{CategoryName}</p>
+                        <p className="ProductCategory"> <span><b>Category : </b></span>{(product as any).ProductCategory}</p>
                         <p className="ProductDescribtion"><span><b>Description : </b></span> {(product as any).ProductDescription}</p>
                         <p className="ProductPrice"> <span><b>Price : </b></span> {(product as any).ProductPrice}<span>$ </span></p>
                         <p className="ProductSpecifications"> <span><b>Specifications : </b></span> {(product as any).ProductSpecifications}</p>

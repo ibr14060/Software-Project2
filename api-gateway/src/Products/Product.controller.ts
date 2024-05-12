@@ -77,7 +77,7 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('getProductById');
         this.productsClient.subscribeToResponseOf('editProduct');
         this.productsClient.subscribeToResponseOf('deleteProduct');
-        this.productsClient.subscribeToResponseOf('getGuestProduct');
+        this.productsClient.subscribeToResponseOf('getGuestProductById');
         this.productsClient.subscribeToResponseOf('getGuestProducts');
         this.productsClient.subscribeToResponseOf('getGuestCategoryProducts');
         this.productsClient.subscribeToResponseOf('getCategoryProducts');
