@@ -33,7 +33,7 @@ export const Profileschema = new mongoose.Schema({
         required: true,
     },
     Address: {
-        type: String,
+        type: Array,
         required: true,
     }
 

@@ -10,6 +10,6 @@ export interface Profile extends Document {
    readonly Email: String;
    readonly Phone_Number: String;
    readonly Company: String;
-   readonly Address: String;
+   readonly Address: Array<String>;
 
 }
