@@ -9,6 +9,7 @@ import { CartModule } from './cart/Cart.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './order/Order.module';
+import { FavItemsModule } from './FavItems/FavItems.module';
 @Module({
   imports: [
     // connection el kafka
@@ -95,10 +96,23 @@ import { OrderModule } from './order/Order.module';
             groupId:'profile-consumer',
           }
         }
+      },
+      {
+        name:'FAVITEMS_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'favItems-consumer',
+          }
+        }
       }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule ,FavItemsModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
