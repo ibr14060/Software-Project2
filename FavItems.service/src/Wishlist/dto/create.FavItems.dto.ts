@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export class CreateWishlistDto{
+export class CreateFavItemsDto{
 
     readonly products: [string, number][];
     readonly UserID: {

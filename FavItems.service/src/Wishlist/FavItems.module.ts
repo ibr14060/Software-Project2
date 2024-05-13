@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { WishlistController } from './Wishlist.controller';
-import { wishlistService } from './Wishlist.service';
+import { FavItemsController } from './FavItems.controller';
+import { FavItemsService } from './FavItems.service';
 import { databaseProviders } from './database/database.providers';
-import { ProductProviders } from './database/Wishlist.providers';
+import { ProductProviders } from './database/FavItems.providers';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -15,8 +15,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       signOptions:{expiresIn:'10000s'},
     })
   ],
-  controllers: [WishlistController],
-  providers: [wishlistService, ...ProductProviders, ...databaseProviders, JwtStrategy],
+  controllers: [FavItemsController],
+  providers: [FavItemsService, ...ProductProviders, ...databaseProviders, JwtStrategy],
   exports: [...databaseProviders],
 })
-export class WishlistModule {}
+export class FavItemsModule {}

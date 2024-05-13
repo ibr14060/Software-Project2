@@ -1,29 +1,29 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { wishlistService } from './Wishlist.service';
+import { FavItemsService } from './FavItems.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { JwtAuthGuard } from './strategies/jwt-auth.guard';
 
-@Controller('wishlist')
-export class WishlistController {
-    constructor(private wishlistService: wishlistService) {}
+@Controller('FavItems')
+export class FavItemsController {
+    constructor(private FavItemsService: FavItemsService) {}
 
     @MessagePattern('hellofromapi')
     hello(req) {
         console.log(req);
-        return this.wishlistService.hello(req.data);
+        return this.FavItemsService.hello(req.data);
     }
 
-    @MessagePattern('createWishlist')
-    async createWishlist(command) {
+    @MessagePattern('createFavItems')
+    async createFavItems(command) {
         console.log(command +"from product controller");
-        return this.wishlistService.createWishlist(command);
+        return this.FavItemsService.createfavItems(command);
     }
 
-    @MessagePattern('getWishlist')
-    async getWishlist(token: string) {
+    @MessagePattern('getFavItems')
+    async getFavItems(token: string) {
         try {
             console.log("Called with token:", token);
-            const products = await this.wishlistService.getWishlist(token);
+            const products = await this.FavItemsService.getfavItems(token);
             return products;
         } catch (error) {
             console.error("Error fetching products:", error);
@@ -31,19 +31,19 @@ export class WishlistController {
         }
     }
     
-    @MessagePattern('editWishlist')
-    async editWishlist(command) {
+    @MessagePattern('editFavItems')
+    async editFavItems(command) {
         console.log(command.token);
         console.log(command.body.products[0],"asasa")
-        return this.wishlistService.editWishlist(command.token, command.body.products[0]);
+        return this.FavItemsService.editfavItems(command.token, command.body.products[0]);
     }
 
-    @MessagePattern('deleteWishlist')
-    async deleteCart(command) {
+    @MessagePattern('deleteFavItems')
+    async deleteFavItems(command) {
         try {
             console.log("Called with tokaaen:", command.token);
             console.log("Called with idsdsd:", command.token);
-            const result = await this.wishlistService.updateWishlist(command.token, command.id);
+            const result = await this.FavItemsService.updatefavItems(command.token, command.id);
             return result;
         } catch (error) {
             console.error("Error updating cart:", error);

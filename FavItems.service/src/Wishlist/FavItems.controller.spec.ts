@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WishlistController } from './Wishlist.controller';
+import { FavItemsController } from './FavItems.controller';
 
-describe('WishlistController', () => {
-  let controller: WishlistController;
+describe('FavItemsController', () => {
+  let controller: FavItemsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [WishlistController],
+      controllers: [FavItemsController],
     }).compile();
 
-    controller = module.get<WishlistController>(WishlistController);
+    controller = module.get<FavItemsController>(FavItemsController);
   });
 
   it('should be defined', () => {
