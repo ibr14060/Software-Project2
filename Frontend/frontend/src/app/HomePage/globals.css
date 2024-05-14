@@ -81,7 +81,21 @@
     font-size: 24px;
     cursor: pointer;
   }
-  
+  .add-to-favitems-button{
+    position: absolute;
+    top: 15px;
+    right: 35px;
+
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .Actionns{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+  }
   .add-to-wishlist-button.selected {
     color: #e74c3c;
   }

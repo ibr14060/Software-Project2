@@ -85,6 +85,10 @@
     font-size: 1.5rem;
     color: #ffd000;
   }
+  .heart-icon{
+    font-size: 1.5rem;
+    color: red;
+  }
   
   .categories-icon {
     margin-right: 0.5rem;
