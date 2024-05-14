@@ -59,7 +59,11 @@ const ProductCard = ({ product }: { product: any }) => {
         <p>{product.category}</p>
         <p className="price">${product.TopOffersPrice}</p>{" "}
         <p className="category">{product.TopOffersCategory}</p>{""}
+        <div className="offerval">
         <p className="category">{product.TopOffersDiscount}</p>{""}
+        <p className="category">{product.TopOffersPeriod}</p>{""}
+        </div>
+
         <div className="buttons-container">
         <button className="add-to-cart-button" onClick={NavigateTologin}>Add to Cart</button>
         
