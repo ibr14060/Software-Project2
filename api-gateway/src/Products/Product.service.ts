@@ -125,7 +125,22 @@ public getGuestProductById(id: string ): Promise<any> {
         });
     }
     
-
+public AddReview(id: string , review: string ,token :string): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           const data = `${id},${review},${token}`;
+        this.productsClient.send('addReview', data).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
 // Adjust the return type to Promise<any>
 public getProductById(id: string ,token :string): Promise<any> {
    

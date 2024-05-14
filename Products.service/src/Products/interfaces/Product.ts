@@ -9,5 +9,7 @@ export interface Product extends Document {
    readonly ProductPrice: String;
    readonly ProductSpecifications: String;
    readonly ProductAvailability: String;
+   readonly ProductsReview: Array<{ id: string; review: string }>;
+
 
 }

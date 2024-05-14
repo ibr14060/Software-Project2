@@ -69,6 +69,12 @@ export class ProductController implements OnModuleInit {
         return this.productService.deleteProduct(id ,token); // Pass 'id' as a parameter
     }
 
+    @Post('addReview/:id')
+    async AddReview(@Param('id') id: string, @Headers('authorization') token: string , @Request() req) {
+        console.log(req.body);
+        return this.productService.AddReview(id , req.body.review , token); // Pass 'id' as a parameter
+    }
+
 
     onModuleInit() {
         this.productsClient.subscribeToResponseOf('hellofromapi');
@@ -81,5 +87,6 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('getGuestProducts');
         this.productsClient.subscribeToResponseOf('getGuestCategoryProducts');
         this.productsClient.subscribeToResponseOf('getCategoryProducts');
+        this.productsClient.subscribeToResponseOf('addReview');
     }
 }

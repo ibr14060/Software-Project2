@@ -70,6 +70,19 @@ export class ProductService {
         console.log(JSON.stringify(serializedProducts) + " from service s" );
         return JSON.stringify(serializedProducts);
     }
+    async AddReview(productid:string,review: string,token : string ): Promise<Product> {
+        this.validateToken(token);
+        const userId = this.validateTokenAndGetUserID(token);
+        const product = await this.productModel.findById(productid).exec();
+        const newReviewItem = { id: userId, review: review }; // Construct as an object
+
+        return await this.productModel.findOneAndUpdate(
+            { _id: productid },
+            { $push: { ProductsReview: newReviewItem } },
+            { new: true, upsert: true }
+        );
+
+    }
     async getProductById(productId: string ,token : string): Promise<Product> {
         console.log(productId);
         console.log("ss");

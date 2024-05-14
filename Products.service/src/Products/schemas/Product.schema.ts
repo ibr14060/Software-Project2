@@ -9,5 +9,11 @@ export const Productschema = new mongoose.Schema({
   ProductSpecifications: String,
   ProductAvailability: String,
   ProductDescription: String,
+  ProductsReview: [
+    {
+      id: { type: String, required: true },
+      review: { type: String, required: true }
+    }
+  ]
 
 });
