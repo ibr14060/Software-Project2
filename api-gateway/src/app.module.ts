@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './order/Order.module';
 import { FavItemsModule } from './FavItems/FavItems.module';
+import { TopOffersModule } from './TopOffers/TopOffers.module';
 @Module({
   imports: [
     // connection el kafka
@@ -109,10 +110,23 @@ import { FavItemsModule } from './FavItems/FavItems.module';
             groupId:'favItems-consumer',
           }
         }
+      },
+      {
+        name:'TOPOFFERS_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'topOffers-consumer',
+          }
+        }
       }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule ,FavItemsModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule ,FavItemsModule ,TopOffersModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })

@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: any }) => {
   return (
     <div className="mostsellingproduct-card">
       <div className="product-image-container">
-        <img className='product-image' src={product.ProductImage} alt={product.ProductName} />
+        <img className='product-image' src={product.TopOffersImage} alt={product.TopOffersName} />
         <Link href={`/guestproduct/${product._id}`} className="view-product-button">
   View Product
 </Link>
@@ -55,10 +55,11 @@ const ProductCard = ({ product }: { product: any }) => {
         </button>
       </div>
       <div className="product-details">
-        <h2>{product.ProductName}</h2>
+        <h2>{product.TopOffersName}</h2>
         <p>{product.category}</p>
-        <p className="price">${product.ProductPrice}</p>{" "}
-        <p className="category">{product.ProductCategory}</p>{""}
+        <p className="price">${product.TopOffersPrice}</p>{" "}
+        <p className="category">{product.TopOffersCategory}</p>{""}
+        <p className="category">{product.TopOffersDiscount}</p>{""}
         <div className="buttons-container">
         <button className="add-to-cart-button" onClick={NavigateTologin}>Add to Cart</button>
         
@@ -80,7 +81,7 @@ const FirstPage = () => {
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";   
     useEffect(() => {
-      fetch("http://localhost:4000/products/getGuestProducts", {
+      fetch("http://localhost:4000/topOffers/getGuestTopOffers", {
        
       })
         .then((res) => {
