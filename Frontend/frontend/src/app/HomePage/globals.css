@@ -7,6 +7,13 @@
     justify-content: space-around;
     padding: 20px;
     height: 100%;
+  }
+  .mostselling{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    height: 100%;
     flex-direction: column;
   }
   .h2{

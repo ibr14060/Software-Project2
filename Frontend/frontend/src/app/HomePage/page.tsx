@@ -429,7 +429,7 @@ console.log("favitems: ", FavItemsData);
   return (
     <div className="homepage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
-    <div className="content">
+      <div className="mostselling">
     <h2> Extra Sale</h2>
  <div className="mostselling-container-wrapper">
  <div className="mostselling-container">
@@ -463,7 +463,10 @@ console.log("favitems: ", FavItemsData);
       </ul>
     </div>
       </div>
+      </div>
  </div>
+    <div className="content">
+
       { (
         filteredProducts.map((product: any) => (
           <ProductCard 
