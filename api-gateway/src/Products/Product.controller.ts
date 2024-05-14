@@ -80,6 +80,18 @@ export class ProductController implements OnModuleInit {
         console.log(this.productService.getUserReviews(token) +"from api gateway m");
         return this.productService.getUserReviews(token);
     }
+    @Post('editReview') 
+    async editReview(@Headers('authorization') token: string, @Request() req) {
+        console.log(req.body);
+        return this.productService.editReview(token, req.body); // Pass 'id' as a parameter
+    }
+    
+    // For deleteProduct endpoint
+    @Delete('deleteReview/:id') // Define the route parameter ':id'
+    async deleteReview(@Headers('authorization') token: string, @Request() req, @Param('id') id: string){
+        console.log(req.body);
+        return this.productService.deleteReview(token ,id); // Pass 'id' as a parameter
+    }
 
 
     onModuleInit() {
@@ -95,5 +107,7 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('getCategoryProducts');
         this.productsClient.subscribeToResponseOf('addReview');
         this.productsClient.subscribeToResponseOf('getUserReviews');
+        this.productsClient.subscribeToResponseOf('editReview');
+        this.productsClient.subscribeToResponseOf('deleteReview');
     }
 }

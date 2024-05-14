@@ -5,12 +5,13 @@ import "./globals.css";
 import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Cart: React.FC = () => {
   const [products, setProducts] = useState([]);
   const [productinfo, setProductInfo] = useState<any[]>([]);
   const [productdata, setProductData] = useState<any[]>([]);
+  const [newReview, setNewReview] = useState(''); // Add this line
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(null);
@@ -23,7 +24,7 @@ const Cart: React.FC = () => {
     try {
         console.log("called");
         console.log(id);
-        const response = await fetch(`http://localhost:4000/Wishlist/deleteWishlist/${id}`, {
+        const response = await fetch(`http://localhost:4000/products/deleteReview/${id}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `${token}`
@@ -42,7 +43,7 @@ const Cart: React.FC = () => {
   }
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:4000/Wishlist/getWishlist", {
+    fetch("http://localhost:4000/products/getUserReviews", {
       headers: {
         Authorization: `${token}`,
       },
@@ -63,31 +64,36 @@ const Cart: React.FC = () => {
         const { products } = data; // Access the products array correctly
         setProducts(data); // Update the products state with the products array
                  console.log("efdsfsdf" ,data.products)
-        const productInfoRequests = products.map((product: any) => // Map directly over products array
-          fetch(`http://localhost:4000/products/getProduct/${product.id}`, {
-            headers: {
-              Authorization: `${token}`,
-            },
-          })
-        );
-  
-        Promise.all(productInfoRequests)
-          .then((responses) => Promise.all(responses.map((res) => res.json())))
-          .then((productInfoData) => {
-            console.log("Product Info Data: ", productInfoData);
-            setProductData(productInfoData);
-          })
-          .catch((error) => {
-            console.error("Error fetching product info:", error);
-          })
-          .finally(() => setLoading(false));
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
   }, [token]);
   
-  
+  const handleEdit = async (productId: string,  newReview: string) => {
+    try {
+        const response = await fetch(`http://localhost:4000/products/editReview/${productId}}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${token}`
+            },
+            body: JSON.stringify({ review: newReview })
+        });
+        if (response.status === 200) {
+            // Handle success
+            console.log("Review edited successfully");
+            // You may want to update the state or display a message to indicate success
+        } else {
+            // Handle other status codes
+            console.error("Failed to edit review:", response.statusText);
+        }
+    } catch (error) {
+        console.error('Error editing review:', error);
+    }
+};
+
   
  console.log("productdata: ", productdata); 
 console.log("productinfos: ", productinfo);
@@ -102,7 +108,7 @@ console.log("productinfos: ", productinfo);
     <nav></nav>
     {!isLoading && (
       <main className='cartmain'>
-        <h1 className="title">Your Wishlist</h1>
+        <h1 className="title">Your Reviews</h1>
         <table>
           <thead className="table-header">
             <tr>
@@ -114,7 +120,7 @@ console.log("productinfos: ", productinfo);
             </tr>
           </thead>
           <tbody>
-            {productdata.map((product: any) => (
+            {products.map((product: any) => (
               <tr key={product._id} className="items">
                 <td>
                   <div className="product">
@@ -127,15 +133,21 @@ console.log("productinfos: ", productinfo);
                   </div>
                 </td>
                 <td>
-                <p className="product-name">{product.ProductReview}</p>
-                </td>
+                {product.ProductsReview.map((review: any, index: number) => (
+          <p key={index} className="product-review">{review.review}</p>
+        ))}                </td>
                 <td>
                   <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
 
                 </td>
                 <td>
-                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
-
+                    <div className="editrev">
+                        <input type="text" 
+                        placeholder="Edit Review" 
+                        onChange={(e) => setNewReview(e.target.value)}
+                        />
+                        <button className="del" onClick={() => handleEdit(product._id, newReview)}><FontAwesomeIcon icon={faEdit} /></button>
+                    </div>
                 </td>
                
               </tr>

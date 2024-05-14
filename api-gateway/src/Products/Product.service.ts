@@ -210,5 +210,38 @@ public deleteProduct(id: string ,token :string): Promise<any> {
         });
     });
 }
+public editReview(token: string, data: any): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.productsClient.send('editReview', { token, body: data }).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+
+public deleteReview(token: string , id : string): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.productsClient.send('deleteReview', {token , id}).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
 
 }

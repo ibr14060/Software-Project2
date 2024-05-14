@@ -120,4 +120,48 @@ export class ProductService {
         this.validateToken(token);
         return await this.productModel.findByIdAndDelete(productId);
     }
+    async updateReview(token: string, productId: string): Promise<any> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        
+        try {
+            // Find the cart document for the user
+            const products = await this.productModel.findOne({ 'ProductsReview.id': userID }).exec();
+    
+            // Check if the cart exists
+            if (!products) {
+                throw new Error('Cart not found');
+            }
+  
+            // Find the index of the product with the specified id in the products array
+            const index = products.ProductsReview.findIndex((item: any) => item.id === productId);
+            console.log(index + "index  ")
+            // If the product is found, remove it from the products array
+            if (index !== -1) {
+                products.ProductsReview.splice(index, 1);
+            } else {
+                throw new Error('Product not found in cart');
+            }
+    console.log(products.ProductsReview + "cart.products")
+            // Update the cart document in the database with the modified products array
+            
+    
+            return { message: 'review removed from cart successfully' };
+        } catch (error) {
+            console.error('Error updating cart:', error);
+            throw new Error('Error updating cart');
+        }
+    }
+    
+    
+    async editReview(token: string, id: string, review: number): Promise<Product> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, review: review }; // Construct as an object
+        return await this.productModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { ProductsReview: newProductItem } },
+            { new: true, upsert: true }
+        );
+    }
 }

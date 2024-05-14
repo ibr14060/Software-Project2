@@ -23,7 +23,7 @@ table {
   .table-header th {
     flex: 1;
     
-    width: 33.33%; /* Set a fixed width for each th, making them take equal space */
+    width: 25%; /* Set a fixed width for each th, making them take equal space */
   }
   
   .CartPage{
@@ -36,6 +36,12 @@ table {
     justify-content: flex-start;
     margin-left: 13%;
     padding: 3%;
+  }
+  .editrev{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
   }
   .product-info{
   font-size: 90%;

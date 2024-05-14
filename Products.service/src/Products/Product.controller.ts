@@ -113,6 +113,26 @@ export class ProductController {
         console.log(command);
         return this.productService.getUserReviews( token);
     }
+    @MessagePattern('editReview')
+    async editReview(command) {
+        console.log(command);
+        console.log("token"+ command.token);
+        const review = command.body.ProuctsReview[1];
+        const id = command.body.ProuctsReview[0];
+        return this.productService.editReview(command.token, id,review);
+    }
+
+    @MessagePattern('deleteReview')
+    async deleteReview(command) {
+        try {
+            console.log("Called with token:", command.token);
+            const result = await this.productService.updateReview(command.token, command.id);
+            return result;
+        } catch (error) {
+            console.error("Error updating cart:", error);
+            return { statusCode: 500, message: "Error updating cart" };
+        }
+    }
 
     @UseGuards(JwtAuthGuard)
     @MessagePattern('me')
