@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CartService } from 'src/cart/Cart.service';
 import { OrderService } from 'src/order/Order.service';
 import { WishlistService } from 'src/Wishlist/Wishlistservice';
+import { FavItemsService } from 'src/FavItems/FavItemsservice';
 
 @Module({
   imports: [
@@ -62,10 +63,23 @@ import { WishlistService } from 'src/Wishlist/Wishlistservice';
             groupId:'wishlist-consumer',
           }
         }
+      },
+      {
+        name:'FAVITEMS_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'favItems-consumer',
+          }
+        }
       }
     ])
   ],
   controllers: [AccountController],
-  providers: [AccountService , CartService , OrderService , WishlistService]
+  providers: [AccountService , CartService , OrderService , WishlistService , FavItemsService]
 })
 export class AccountModule {}

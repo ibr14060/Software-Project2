@@ -4,13 +4,15 @@ import { WishlistService } from 'src/Wishlist/Wishlistservice';
 import { CartService } from 'src/cart/Cart.service';
 import { OrderService } from 'src/order/Order.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { FavItemsService } from 'src/FavItems/FavItemsservice';
 
 @Injectable()
 export class AccountService {
     constructor(@Inject('ACC_SERVICE') private readonly accountClient:ClientKafka,
     private readonly cartService:CartService,
     private readonly wishlistService:WishlistService,
-    private readonly orderService:OrderService
+    private readonly orderService:OrderService,
+    private readonly favItemsService:FavItemsService
 ){}
 // b5aly el methods deh tb3t 7agat using kafka ll acc microservice 
 
@@ -85,9 +87,11 @@ public confirmregister(command: any): Promise<any> {
                 Promise.all([
                     this.cartService.createCart({ UserID, products: [] }),
                     this.wishlistService.createWishlist({ UserID, products: [] }),
-                    this.orderService.createOrder({ UserID, products: [] })
-                ]).then(([cartData, wishlistData, orderData]) => {
-                    resolve({ userData: data, orderData, cartData, wishlistData });
+                    this.orderService.createOrder({ UserID, products: [] }),
+                    this.favItemsService.createFavItems({ UserID, products: [] })
+
+                ]).then(([cartData, wishlistData, orderData ,favItemsData]) => {
+                    resolve({ userData: data, orderData, cartData, wishlistData ,favItemsData});
                 }).catch((error) => {
                     reject(new HttpException(error, HttpStatus.CONFLICT)); 
                 });
