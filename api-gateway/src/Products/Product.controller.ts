@@ -54,6 +54,7 @@ export class ProductController implements OnModuleInit {
         console.log(id); 
         return this.productService.getGuestProductById(id );
     }
+  
 
 
     @Post('editProduct/:id') 
@@ -74,6 +75,11 @@ export class ProductController implements OnModuleInit {
         console.log(req.body);
         return this.productService.AddReview(id , req.body.review , token); // Pass 'id' as a parameter
     }
+    @Get('getUserReviews')
+    async getUserReviews(@Headers('authorization') token: string) {
+        console.log(this.productService.getUserReviews(token) +"from api gateway m");
+        return this.productService.getUserReviews(token);
+    }
 
 
     onModuleInit() {
@@ -88,5 +94,6 @@ export class ProductController implements OnModuleInit {
         this.productsClient.subscribeToResponseOf('getGuestCategoryProducts');
         this.productsClient.subscribeToResponseOf('getCategoryProducts');
         this.productsClient.subscribeToResponseOf('addReview');
+        this.productsClient.subscribeToResponseOf('getUserReviews');
     }
 }

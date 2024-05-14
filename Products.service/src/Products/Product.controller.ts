@@ -106,6 +106,13 @@ export class ProductController {
         console.log(command);
         return this.productService.AddReview( productid,review, token);
     }
+    @MessagePattern('getUserReviews')
+    async getUserReviews(command) {
+        const [token] = command.split(','); // Assuming the data is in the format "id,token"
+        console.log("Token:", token);
+        console.log(command);
+        return this.productService.getUserReviews( token);
+    }
 
     @UseGuards(JwtAuthGuard)
     @MessagePattern('me')

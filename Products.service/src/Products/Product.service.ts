@@ -70,6 +70,26 @@ export class ProductService {
         console.log(JSON.stringify(serializedProducts) + " from service s" );
         return JSON.stringify(serializedProducts);
     }
+    async getUserReviews(token: string): Promise<string> {
+        try {
+            this.validateToken(token);
+            const userId = this.validateTokenAndGetUserID(token);
+    console.log(userId + " from service userreviews");
+            // Find products that have a review with the user's ID
+            const products = await this.productModel.find({ 'ProductsReview.id': userId }).exec();
+    console.log(products + " from service userreviews");
+            // Serialize products to JSON
+            const serializedProducts = products.map(product => product.toJSON());
+    
+            console.log(JSON.stringify(serializedProducts) + " from service s");
+            return JSON.stringify(serializedProducts);
+        } catch (error) {
+            console.error("Error:", error);
+            // Handle errors here
+            throw new Error("Failed to fetch user reviews");
+        }
+    }
+    
     async AddReview(productid:string,review: string,token : string ): Promise<Product> {
         this.validateToken(token);
         const userId = this.validateTokenAndGetUserID(token);

@@ -12,18 +12,8 @@ table {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
   
   }
-  .past-orders{
-    font-size: 100%;
-  }
-.edit{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
   .table-header {
     color: #888282;
     padding-left: 10px;
@@ -35,11 +25,9 @@ table {
     
     width: 33.33%; /* Set a fixed width for each th, making them take equal space */
   }
-
   
   .CartPage{
     background-color: #fff4e9;
-    
   }
   .product {
     display: flex;
@@ -89,7 +77,7 @@ table {
   
   .items {
     border-bottom: 1px solid #CBCBCB; 
-    
+    width: 80%;
   }
   .del{
     margin-left: 65%;
@@ -97,6 +85,8 @@ table {
     display: flex;
     margin-top: -8%;
     z-index: 1;
+    background-color: #fff4e9;
+    border: none;
   }
   .fa-trash{
 
@@ -115,14 +105,6 @@ table {
     margin-top: 5%;
     margin-bottom: 5%;
     width: 20%;
-  }
-  .edit-button{
-    background-color: #fff4e9;
-    border: none;
-  }
-  .past-orders{
-    background-color: #fff4e9;
-    border: none;
   }
   .checkoutbtn{
     width: 50%;

@@ -434,7 +434,7 @@ console.log("favitems: ", FavItemsData);
     <div className="homepage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
       <div className="mostselling">
-    <h2> Extra Sale</h2>
+    <h2> Top Offers</h2>
  <div className="mostselling-container-wrapper">
  <div className="mostselling-container">
 

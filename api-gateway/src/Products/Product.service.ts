@@ -73,6 +73,21 @@ public getGuestCategoryProducts(ProductCategory:string): Promise<any> {
         });
     });
 }
+public getUserReviews(token:string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.productsClient.send('getUserReviews',token).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    }
+    );
+}
 public getCategoryProducts(token:string,ProductCategory:string): Promise<any> {
            
     return new Promise((resolve, reject) => {
