@@ -103,6 +103,7 @@ export class ProductController {
         const [productid,review,rating, token] = command.split(','); // Assuming the data is in the format "id,token"
         console.log("Token:", token);
         console.log("Review:", review)
+        console.log("rating", rating)
         console.log(command);
         return this.productService.AddReview( productid,review,rating, token);
     }

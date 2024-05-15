@@ -88,7 +88,6 @@
     flex-direction: column;
     margin-top: 2%;
     margin-left: 2%;
-    border-bottom: 1px solid #777777;
 
     padding: 10px;
 
@@ -108,7 +107,7 @@
     flex-direction: row;
     justify-content: space-between;
   }
-  .ProductReviews{
+  .ProductReviews {
     display: flex;
     flex-direction: column;
     margin-top: 2%;
@@ -116,8 +115,14 @@
     border: 1px solid #991e66;
     border-radius: 8px;
     padding: 10px;
-
+    max-height: 500px; /* Adjust the max-height as needed */
+    overflow: auto; /* Add scrollbars when content overflows */
+    width: 400px;
   }
+  .Review{
+    border-bottom: 1px solid #777777;
+  }
+  
   .AddReviewForm{
     display: flex;
     flex-direction: column;

@@ -73,7 +73,7 @@ export class ProductController implements OnModuleInit {
     @Post('addReview/:id')
     async AddReview(@Param('id') id: string, @Headers('authorization') token: string , @Request() req) {
         console.log(req.body);
-        return this.productService.AddReview(id , req.body.review , token); // Pass 'id' as a parameter
+        return this.productService.AddReview(id , req.body.review ,req.body.rating, token); // Pass 'id' as a parameter
     }
     @Get('getUserReviews')
     async getUserReviews(@Headers('authorization') token: string) {

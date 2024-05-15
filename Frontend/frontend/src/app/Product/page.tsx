@@ -67,7 +67,12 @@ const ProductPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddingReview, setIsAddingReview] = useState(false);
   const [reviewText, setReviewText] = useState(""); // New state for review text input
+  const [rating, setRating] = useState(0); // Move rating state here
 
+  // Function to handle rating change
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating);
+  };
   // Function to handle input change for review text
   const handleReviewTextChange = (event :any) => {
     setReviewText(event.target.value);
@@ -80,7 +85,31 @@ const ProductPage = () => {
     setIsAddingReview(false);
   };
 
-  const handleSaveReview = () => {
+  const  handleSaveReview = async (productID :string) => {
+    try {
+    
+      const response = await fetch(`http://localhost:4000/products/addReview/${productID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({ review: reviewText, rating: rating}), 
+      });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
     // Logic to save the review
     setIsAddingReview(false);
   };
@@ -224,10 +253,10 @@ const ProductPage = () => {
               />
                   <div className="RatingStarsContainer">
                     <p>Rate this product:</p>
-                    <RatingStars totalStars={5} onRatingChange={(rating: number) => {}} />
+                    <RatingStars totalStars={5} onRatingChange={handleRatingChange} />
                   </div>
               <div className="revbutts">
-              <button className="SaveReviewButton" onClick={handleSaveReview}>Save Review</button>
+              <button className="SaveReviewButton" onClick={() => handleSaveReview((product as any)._id)}>Save Review</button>
               <button className="CancelReviewButton" onClick={handleCancelAddReview}>Cancel</button>
             </div>
             </div>
@@ -242,8 +271,7 @@ const ProductPage = () => {
       <div className="ReviewContainer">
         {(product as any).ProductsReview.map((review: { id: string, review: string , rating : number }, index: number) => (
           <div key={index} className="Review">
-            <FontAwesomeIcon icon={faUser} className="profile-icon" />
-            <p className="ReviewAuthor"> <strong> Author:</strong> {(review.id)}</p>
+            <p className="ReviewAuthor"> <strong> User:</strong> {(review.id)}</p>
             <p className="ReviewText"> <strong> Review:</strong> {review.review}</p>
             <p className="ProductRating">
   <span><b>Rating : </b></span> 

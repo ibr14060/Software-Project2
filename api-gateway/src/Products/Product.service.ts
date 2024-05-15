@@ -140,10 +140,10 @@ public getGuestProductById(id: string ): Promise<any> {
         });
     }
     
-public AddReview(id: string , review: string ,token :string): Promise<any> {
+public AddReview(id: string , review: string ,rating:Number,token :string): Promise<any> {
        
     return new Promise((resolve, reject) => {
-           const data = `${id},${review},${token}`;
+           const data = `${id},${review},${rating},${token}`;
         this.productsClient.send('addReview', data).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
