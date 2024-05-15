@@ -7,8 +7,50 @@ import Navbar from "../GuestNavBar/page";
 import FooterComponent from '../Footer/page';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+const RatingStars = ({ totalStars, onRatingChange }: { totalStars: number, onRatingChange: (rating: number) => void }) => {
+  const [rating, setRating] = useState(0);
+
+  const handleStarClick = (starIndex: number) => {
+    setRating(starIndex + 1);
+    onRatingChange(starIndex + 1);
+  };
+
+  return (
+    <div>
+      {[...Array(totalStars)].map((_, index) => (
+        <span key={index} onClick={() => handleStarClick(index)}>
+          {index < rating ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={regularStar} />}
+        </span>
+      ))}
+    </div>
+  );
+};
+
+const CardRatingStars = ({ rating, totalStars }: { rating: number, totalStars: number }) => {
+  const filledStars = Math.floor(rating);
+  const emptyStars = totalStars - filledStars;
+  
+  const stars = [];
+  for (let i = 0; i < filledStars; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={solidStar} />);
+  }
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<FontAwesomeIcon key={filledStars + i} icon={regularStar} />);
+  }
+  
+  return (
+    <div>
+      {stars.map((star, index) => (
+        <span key={index}>{star}</span>
+      ))}
+    </div>
+  );
+};
+
 const ProductPage = () => {
- 
+  const [ProductsReview, setProductsReview] = useState<any[]>([]);
   const [product, setProduct] = useState<any[]>([]);
   const [productinfo, setProductInfo] = useState<any[]>([]);
   const [category, setcategory] = useState(null);
@@ -19,6 +61,24 @@ const ProductPage = () => {
   const token = searchParams.get("token") ?? "";
   const  id  = searchParams.get("id") ?? ""; 
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAddingReview, setIsAddingReview] = useState(false);
+  const [reviewText, setReviewText] = useState(""); // New state for review text input
+  const [rating, setRating] = useState(0); // Move rating state here
+    // Function to handle rating change
+    const handleRatingChange = (newRating: number) => {
+      setRating(newRating);
+    };
+    // Function to handle input change for review text
+    const handleReviewTextChange = (event :any) => {
+      setReviewText(event.target.value);
+    };
+    const handleAddReviewClick = () => {
+      setIsAddingReview(true);
+    };
+  
+    const handleCancelAddReview = () => {
+      setIsAddingReview(false);
+    };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -113,7 +173,37 @@ const fetchcategoryData = async () => {
         ) : (
           <p>No product found</p>
         )}
+        <div className="ProductReviews">
+  {product && (product as any).ProductsReview && (product as any).ProductsReview.length > 0 ? ( 
+    <>
+
+        
+    <div className="ProductReviewHeader">
+      <h2>Reviews</h2>
+     
+</div>
+      <div className="ReviewContainer">
+        {(product as any).ProductsReview.map((review: { id: string, review: string , rating : number }, index: number) => (
+          <div key={index} className="Review">
+            <p className="ReviewAuthor"> <strong> User:</strong> {(review.id)}</p>
+            <p className="ReviewText"> <strong> Review:</strong> {review.review}</p>
+            <p className="ProductRating">
+  <span><b>Rating : </b></span> 
+  <CardRatingStars rating={review.rating} totalStars={5} />
+  <span>({review.rating})</span>
+</p>
+
+          </div>
+        ))}
       </div>
+    </>
+  ):(
+    <p>No product found</p>
+
+  )}
+</div>
+      </div>
+      
       <FooterComponent /> 
     </div>
   );
