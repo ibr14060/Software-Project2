@@ -90,11 +90,11 @@ export class ProductService {
         }
     }
     
-    async AddReview(productid:string,review: string,token : string ): Promise<Product> {
+    async AddReview(productid:string,review: string, rating:Number,token : string ): Promise<Product> {
         this.validateToken(token);
         const userId = this.validateTokenAndGetUserID(token);
         const product = await this.productModel.findById(productid).exec();
-        const newReviewItem = { id: userId, review: review }; // Construct as an object
+        const newReviewItem = { id: userId, review: review , rating:rating}; // Construct as an object
 
         return await this.productModel.findOneAndUpdate(
             { _id: productid },

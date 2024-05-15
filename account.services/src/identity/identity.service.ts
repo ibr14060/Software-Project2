@@ -108,7 +108,16 @@ export class IdentityService {
         return payload;
     }
         
-
+async getuserbyid(id:string){
+    console.log(id)
+    const user=await this.identityModel.findById(id);
+    if(!user){
+        throw new Error("User not found");
+    }
+    else {
+        return user.toJSON()
+    }
+}
     async resetPassword(email: string) {
         console.log(email);
         

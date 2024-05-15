@@ -67,6 +67,11 @@ console.log(command.body.password)
         console.log('command user: ', command.body);
         return this.identityService.login(command.body);
     }
+    @MessagePattern('getuserbyid')
+    async getuserbyid(command){
+        console.log(command);
+        return this.identityService.getuserbyid(command);
+    }
     @UseGuards(JwtAuthGuard)
     @MessagePattern('me')
     async me(command){

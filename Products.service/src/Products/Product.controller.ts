@@ -100,11 +100,11 @@ export class ProductController {
     }
     @MessagePattern('addReview')
     async AddReview(command) {
-        const [productid,review, token] = command.split(','); // Assuming the data is in the format "id,token"
+        const [productid,review,rating, token] = command.split(','); // Assuming the data is in the format "id,token"
         console.log("Token:", token);
         console.log("Review:", review)
         console.log(command);
-        return this.productService.AddReview( productid,review, token);
+        return this.productService.AddReview( productid,review,rating, token);
     }
     @MessagePattern('getUserReviews')
     async getUserReviews(command) {

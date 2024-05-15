@@ -80,3 +80,80 @@
     margin-top: 15%;
 
   }
+  .profile-icon{
+    color: black;
+  }
+  .ReviewContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 2%;
+    border-bottom: 1px solid #777777;
+
+    padding: 10px;
+
+  }
+  .add-review-button{
+    background-color: #991e66;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    transition: box-shadow 0.3s ease;
+  }
+  .ProductReviewHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .ProductReviews{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 2%;
+    border: 1px solid #991e66;
+    border-radius: 8px;
+    padding: 10px;
+
+  }
+  .AddReviewForm{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 2%;
+    border: 1px solid #991e66;
+    box-shadow: #777777;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 3;
+  }
+  .revbutts{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2%;
+    gap: 10px;
+  }
+  .SaveReviewButton{
+    background-color: green;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    transition: box-shadow 0.3s ease;
+  }
+ 
+  .CancelReviewButton{
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    transition: box-shadow 0.3s ease;
+  }

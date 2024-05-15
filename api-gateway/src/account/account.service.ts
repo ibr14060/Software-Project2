@@ -137,5 +137,18 @@ public login(command: any): Promise<any> {
         });
     });
 }
-
+public getuserbyid(command:string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        this.accountClient.send('getuserbyid', command).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data); 
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); 
+            }
+        });
+    });
+}
 }

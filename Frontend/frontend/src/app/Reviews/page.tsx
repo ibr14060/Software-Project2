@@ -137,7 +137,10 @@ console.log("productinfos: ", productinfo);
                 <td>
                   <div className="reviewsw"> 
                 {product.ProductsReview.map((review: any, index: number) => (
+                  <div>
           <p key={index} className="product-review">{review.review}</p>
+          <p key={index} className="product-review"><strong>Rating :</strong>{review.rating}</p>
+</div>
 
         ))}         
         </div>

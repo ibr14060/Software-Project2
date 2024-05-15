@@ -41,6 +41,12 @@ export class AccountController implements OnModuleInit {
         console.log(req.body); // Log the request body
         return this.accountServices.changepassword({body:req.body});
     }
+    @Get('getuserbyid/:id')
+    async getuserbyid(@Request()req){
+        console.log(req.params.id); // Log the request body
+        return this.accountServices.getuserbyid(req.params.id);
+    }
+
 
     onModuleInit() {
         this.accountClient.subscribeToResponseOf('hellofromapi'); // subscribe to the event
@@ -49,6 +55,8 @@ export class AccountController implements OnModuleInit {
         this.accountClient.subscribeToResponseOf('changepassword'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('login'); // subscribe to the event
         this.accountClient.subscribeToResponseOf('confirmregister'); // subscribe to the event
+        this.accountClient.subscribeToResponseOf('getuserbyid'); // subscribe to the event
+
     }
 
 }

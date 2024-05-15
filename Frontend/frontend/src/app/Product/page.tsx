@@ -6,10 +6,56 @@ import "./globals.css";
 import Navbar from "../NavBar/page";
 import FooterComponent from '../Footer/page';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShare, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faShare, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+const RatingStars = ({ totalStars, onRatingChange }: { totalStars: number, onRatingChange: (rating: number) => void }) => {
+  const [rating, setRating] = useState(0);
+
+  const handleStarClick = (starIndex: number) => {
+    setRating(starIndex + 1);
+    onRatingChange(starIndex + 1);
+  };
+
+  return (
+    <div>
+      {[...Array(totalStars)].map((_, index) => (
+        <span key={index} onClick={() => handleStarClick(index)}>
+          {index < rating ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={regularStar} />}
+        </span>
+      ))}
+    </div>
+  );
+};
+
+const CardRatingStars = ({ rating, totalStars }: { rating: number, totalStars: number }) => {
+  const filledStars = Math.floor(rating);
+  const emptyStars = totalStars - filledStars;
+  
+  const stars = [];
+  for (let i = 0; i < filledStars; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={solidStar} />);
+  }
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<FontAwesomeIcon key={filledStars + i} icon={regularStar} />);
+  }
+  
+  return (
+    <div>
+      {stars.map((star, index) => (
+        <span key={index}>{star}</span>
+      ))}
+    </div>
+  );
+};
+
 const ProductPage = () => {
  
   const [product, setProduct] = useState<any[]>([]);
+  const [ProductsReview, setProductsReview] = useState<any[]>([]);
+
+  const [profile, setprofile] = useState<any[]>([]);
+
   const [productinfo, setProductInfo] = useState<any[]>([]);
   const [category, setcategory] = useState(null);
   const [CategoryName, setCategoryName] = useState(null);
@@ -19,13 +65,32 @@ const ProductPage = () => {
   const token = searchParams.get("token") ?? "";
   const  id  = searchParams.get("id") ?? ""; 
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAddingReview, setIsAddingReview] = useState(false);
+  const [reviewText, setReviewText] = useState(""); // New state for review text input
+
+  // Function to handle input change for review text
+  const handleReviewTextChange = (event :any) => {
+    setReviewText(event.target.value);
+  };
+  const handleAddReviewClick = () => {
+    setIsAddingReview(true);
+  };
+
+  const handleCancelAddReview = () => {
+    setIsAddingReview(false);
+  };
+
+  const handleSaveReview = () => {
+    // Logic to save the review
+    setIsAddingReview(false);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         console.log(id);
-        const response = await fetch(`http://localhost:4000/products/getProduct/${id}`,{
+        const response = await fetch(`http://localhost:4000/products/getProduct/${id}`, {
           headers: {
-            Authorization: `${token}` 
+            Authorization: `${token}`
           }
         });
         if (!response.ok) {
@@ -33,17 +98,47 @@ const ProductPage = () => {
         }
         const productData = await response.json();
         setProduct(productData);
-        console.log("asas" ,productData);
+        console.log("Product data:", productData);
+  
+        // Fetch user data for each review author
+        const reviews = productData.ProductsReview;
+        const updatedReviews = await Promise.all(reviews.map(async (review:any) => {
+          try {
+            const userData = await fetchProfileData(review.id);
+            return { ...review, username: userData };
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            return { ...review, username: null }; // Handle error case
+          }
+        }));
+        
+        // Update state with reviews including username
+        setProductsReview(updatedReviews);
       } catch (error) {
         console.error('Error fetching product data:', error);
       }
     };
-
+  
     fetchData();
+  }, [id, token]);
+  
+  const fetchProfileData = async (userId: string) => {
+    try {
+      const response = await fetch(`http://localhost:4000/account/getuserbyid/${userId}`, {
 
-  }, [id,token]);
-
-
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+      const userData = await response.json();
+      console.log("User datsa:", userData);
+      return userData.username;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  };
+  console.log("ProductsReview data:", ProductsReview);
   const handlecart = async () => {
     try {
       console.log("product id: ", id);
@@ -81,7 +176,8 @@ const ProductPage = () => {
         console.error('Error copying URL to clipboard:', error);
       });
   };
-  
+
+
   return (
     <div className="ProductPage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -107,11 +203,65 @@ const ProductPage = () => {
                         <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
                     </div>
                 </div>
+
+
             </div>
         ) : (
           <p>No product found</p>
         )}
+      <div className="ProductReviews">
+  {product && (product as any).ProductsReview && (product as any).ProductsReview.length > 0 ? ( 
+    <>
+    
+     {isAddingReview && (
+
+            <div className="AddReviewForm">
+              <textarea
+                className="ReviewTextInput"
+                placeholder="Enter your review here..."
+                value={reviewText}
+                onChange={handleReviewTextChange}
+              />
+                  <div className="RatingStarsContainer">
+                    <p>Rate this product:</p>
+                    <RatingStars totalStars={5} onRatingChange={(rating: number) => {}} />
+                  </div>
+              <div className="revbutts">
+              <button className="SaveReviewButton" onClick={handleSaveReview}>Save Review</button>
+              <button className="CancelReviewButton" onClick={handleCancelAddReview}>Cancel</button>
+            </div>
+            </div>
+            
+          )}
+        
+    <div className="ProductReviewHeader">
+      <h2>Reviews</h2>
+      <button className="add-review-button"onClick={handleAddReviewClick} ><FontAwesomeIcon icon={faAdd} className="profile-icon" />
+</button>
+</div>
+      <div className="ReviewContainer">
+        {(product as any).ProductsReview.map((review: { id: string, review: string , rating : number }, index: number) => (
+          <div key={index} className="Review">
+            <FontAwesomeIcon icon={faUser} className="profile-icon" />
+            <p className="ReviewAuthor"> <strong> Author:</strong> {(review.id)}</p>
+            <p className="ReviewText"> <strong> Review:</strong> {review.review}</p>
+            <p className="ProductRating">
+  <span><b>Rating : </b></span> 
+  <CardRatingStars rating={review.rating} totalStars={5} />
+  <span>({review.rating})</span>
+</p>
+
+          </div>
+        ))}
       </div>
+    </>
+  ):(
+    <p>No product found</p>
+
+  )}
+</div>
+      </div>
+      
       <FooterComponent /> 
     </div>
   );
