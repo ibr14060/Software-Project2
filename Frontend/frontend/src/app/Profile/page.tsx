@@ -5,7 +5,7 @@ import "./globals.css";
 import Navbar from "../NavBar/page";
 import FooterComponent from "../Footer/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faCartShopping, faComment, faEdit, faHome, faShop, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faCartShopping, faComment, faEdit, faHome, faShop, faTrash, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { FaFirstOrder, FaJediOrder, FaRegComment } from "react-icons/fa";
 import { faAddressBook } from "@fortawesome/free-solid-svg-icons/faAddressBook";
 const Profile: React.FC = () => {
@@ -93,6 +93,10 @@ return (
                 </div>
                 <div className="past-orders">
                   <button className="past-orders" onClick={() => {window.location.href = `/Reviews?token=${token}`}}><strong>Reviews  </strong> <FontAwesomeIcon icon={faComment} />
+
+                  </button>
+                </div> <div className="past-orders">
+                  <button className="past-orders" onClick={() => {window.location.href = `/Payments?token=${token}`}}><strong>Payments  </strong> <FontAwesomeIcon icon={faWallet} />
 
                   </button>
                 </div>
