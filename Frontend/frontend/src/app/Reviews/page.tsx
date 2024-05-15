@@ -20,22 +20,26 @@ const Cart: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDelete = async (id: string) => {
+    
     try {
-      const response = await fetch(`http://localhost:4000/products/deleteReview/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `${token}`
+        console.log("called");
+        console.log(id);
+        const response = await fetch(`http://localhost:4000/products/deleteReview/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `${token}`
+            }
+        });
+        console.log(response.status);
+        if (response.status === 200) {
+          setProducts(prevProducts => prevProducts.filter((product: { id: string }) => product.id !== id));
+          window.location.reload();
+
         }
-      });
-      if (response.status === 200) {
-        // Remove the deleted product from the state
-        setProducts(prevProducts => prevProducts.filter((product: { _id: string }) => product._id !== id));
-      } else {
-        console.error('Failed to delete review:', response.statusText);
-      }
     } catch (error) {
-      console.error('Error deleting review:', error);
+        console.error('Error fetching data:', error);
     }
+    
   }
   useEffect(() => {
     setLoading(true);
@@ -69,17 +73,19 @@ const Cart: React.FC = () => {
   
   const handleEdit = async (productId: string,  newReview: string) => {
     try {
-        const response = await fetch(`http://localhost:4000/products/editReview/${productId}}`, {
-            method: 'PUT',
+        const response = await fetch(`http://localhost:4000/products/editReview/${productId}`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `${token}`
             },
             body: JSON.stringify({ review: newReview })
         });
-        if (response.status === 200) {
+        console.log(response.status);
+        if (response.status === 201) {
             // Handle success
             console.log("Review edited successfully");
+            window.location.reload();
             // You may want to update the state or display a message to indicate success
         } else {
             // Handle other status codes

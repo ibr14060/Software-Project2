@@ -158,14 +158,27 @@ export class ProductService {
     }
     
     
-    async editReview(token: string, id: string, review: number): Promise<Product> {
+    async editReview(token: string, productid: string, review: string): Promise<Product> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
-        const newProductItem = { id: id, review: review }; // Construct as an object
-        return await this.productModel.findOneAndUpdate(
-            { UserID: userID },
-            { $push: { ProductsReview: newProductItem } },
-            { new: true, upsert: true }
-        );
+        const newProductItem = { id: userID, review: review }; // Construct as an object
+    
+        try {
+            // Remove the old review associated with the user ID
+            await this.productModel.findOneAndUpdate(
+                { _id: productid },
+                { $pull: { ProductsReview: { id: userID } } }
+            );
+    
+            // Add the new review
+            return await this.productModel.findOneAndUpdate(
+                { _id: productid },
+                { $push: { ProductsReview: newProductItem } },
+                { new: true, upsert: true }
+            );
+        } catch (error) {
+            console.error('Error editing review:', error);
+            throw new Error('Error editing review');
+        }
     }
 }

@@ -117,9 +117,8 @@ export class ProductController {
     async editReview(command) {
         console.log(command);
         console.log("token"+ command.token);
-        const review = command.body.ProuctsReview[1];
-        const id = command.body.ProuctsReview[0];
-        return this.productService.editReview(command.token, id,review);
+        const review = command.body.review;
+        return this.productService.editReview(command.token,command.productid,review);
     }
 
     @MessagePattern('deleteReview')

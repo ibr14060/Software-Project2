@@ -80,10 +80,10 @@ export class ProductController implements OnModuleInit {
         console.log(this.productService.getUserReviews(token) +"from api gateway m");
         return this.productService.getUserReviews(token);
     }
-    @Post('editReview') 
-    async editReview(@Headers('authorization') token: string, @Request() req) {
+    @Post('editReview/:id') 
+    async editReview(@Headers('authorization') token: string, @Request() req,@Param('id') id: string) {
         console.log(req.body);
-        return this.productService.editReview(token, req.body); // Pass 'id' as a parameter
+        return this.productService.editReview(token, id, req.body); // Pass 'id' as a parameter
     }
     
     // For deleteProduct endpoint
