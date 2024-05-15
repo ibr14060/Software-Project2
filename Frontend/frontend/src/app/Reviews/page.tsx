@@ -135,20 +135,27 @@ console.log("productinfos: ", productinfo);
                   </div>
                 </td>
                 <td>
+                  <div className="reviewsw"> 
                 {product.ProductsReview.map((review: any, index: number) => (
           <p key={index} className="product-review">{review.review}</p>
-        ))}                </td>
-                <td>
-                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
 
-                </td>
+        ))}         
+        </div>
+               </td>
                 <td>
+                  <div className="delbuut">
+
+                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
+</div>
+                </td>
+                <td >
                     <div className="editrev">
                         <input type="text" 
                         placeholder="Edit Review" 
                         onChange={(e) => setNewReview(e.target.value)}
+                        className="edit-review"
                         />
-                        <button className="del" onClick={() => handleEdit(product._id, newReview)}><FontAwesomeIcon icon={faEdit} /></button>
+                        <button className="edit" onClick={() => handleEdit(product._id, newReview)}><FontAwesomeIcon icon={faEdit} /></button>
                     </div>
                 </td>
                
