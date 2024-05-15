@@ -116,7 +116,7 @@ export class ProductService {
         return await this.productModel.findByIdAndUpdate(productId, EditProductDto, { new: true });
     }
 
-    async deleteProduct(productId: string, token : string): Promise<Product> {
+    async deleteProduct( token : string,productId: string): Promise<Product> {
         this.validateToken(token);
         return await this.productModel.findByIdAndDelete(productId);
     }
@@ -125,28 +125,32 @@ export class ProductService {
         const userID = this.validateTokenAndGetUserID(token);
         
         try {
+            console.log(productId + "productId")
+            console.log(userID + "userID")
             // Find the cart document for the user
-            const products = await this.productModel.findOne({ 'ProductsReview.id': userID }).exec();
+            const products = await this.productModel.findById(productId).exec();
     
             // Check if the cart exists
             if (!products) {
-                throw new Error('Cart not found');
+                throw new Error('product not found');
             }
   
             // Find the index of the product with the specified id in the products array
-            const index = products.ProductsReview.findIndex((item: any) => item.id === productId);
+            const index = products.ProductsReview.findIndex((item: any) => item.id === userID);
             console.log(index + "index  ")
             // If the product is found, remove it from the products array
             if (index !== -1) {
                 products.ProductsReview.splice(index, 1);
+                await products.save();
+
+                console.log('Review removed from product successfully');
+                return { message: 'Review removed from product successfully' };
             } else {
                 throw new Error('Product not found in cart');
             }
-    console.log(products.ProductsReview + "cart.products")
             // Update the cart document in the database with the modified products array
             
     
-            return { message: 'review removed from cart successfully' };
         } catch (error) {
             console.error('Error updating cart:', error);
             throw new Error('Error updating cart');

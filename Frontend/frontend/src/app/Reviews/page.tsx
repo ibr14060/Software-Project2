@@ -20,26 +20,22 @@ const Cart: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleDelete = async (id: string) => {
-    
     try {
-        console.log("called");
-        console.log(id);
-        const response = await fetch(`http://localhost:4000/products/deleteReview/${id}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `${token}`
-            }
-        });
-        console.log(response.status);
-        if (response.status === 200) {
-          setProducts(prevProducts => prevProducts.filter((product: { id: string }) => product.id !== id));
-          window.location.reload();
-
+      const response = await fetch(`http://localhost:4000/products/deleteReview/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `${token}`
         }
+      });
+      if (response.status === 200) {
+        // Remove the deleted product from the state
+        setProducts(prevProducts => prevProducts.filter((product: { _id: string }) => product._id !== id));
+      } else {
+        console.error('Failed to delete review:', response.statusText);
+      }
     } catch (error) {
-        console.error('Error fetching data:', error);
+      console.error('Error deleting review:', error);
     }
-    
   }
   useEffect(() => {
     setLoading(true);
@@ -63,7 +59,7 @@ const Cart: React.FC = () => {
       .then((data) => {
         const { products } = data; // Access the products array correctly
         setProducts(data); // Update the products state with the products array
-                 console.log("efdsfsdf" ,data.products)
+                 console.log("efdsfsdf" ,data.ProductsReview)
         setLoading(false);
       })
       .catch((error) => {
