@@ -11,6 +11,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './order/Order.module';
 import { FavItemsModule } from './FavItems/FavItems.module';
 import { TopOffersModule } from './TopOffers/TopOffers.module';
+import {CouponModule} from './coupon/coupon.module';
 @Module({
   imports: [
     // connection el kafka
@@ -123,10 +124,23 @@ import { TopOffersModule } from './TopOffers/TopOffers.module';
             groupId:'topOffers-consumer',
           }
         }
+      },
+      {
+        name:'COUPON_SERVICE',
+        transport:Transport.KAFKA,
+        options:{
+          client:{
+            clientId:'auth',
+            brokers:['localhost:9092']
+          },
+          consumer:{
+            groupId:'coupon-consumer',
+          }
+        }
       }
     ])
     //
-  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule ,FavItemsModule ,TopOffersModule], // bcall el module el feh el APIs bta3t el account
+  ,AccountModule,ProductModule ,CartModule ,OrderModule,WishlistModule ,ProfileModule ,FavItemsModule ,TopOffersModule ,CouponModule], // bcall el module el feh el APIs bta3t el account
   controllers: [AppController],
   providers: [AppService],
 })
