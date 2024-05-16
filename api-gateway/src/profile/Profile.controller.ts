@@ -35,6 +35,13 @@ export class ProfileController implements OnModuleInit {
         console.log(req.body);
         return this.profileService.editprofile(token, req.body); // Pass 'id' as a parameter
     }
+    @Post('addpayment')
+    async addpayment(@Headers('authorization') token: string, @Request() req) {
+        
+        console.log("sssss",req.body.Payment);
+
+        return this.profileService.addpayment(token, req.body.Payment); // Pass 'id' as a parameter
+    }
 
 
     onModuleInit() {
@@ -43,6 +50,7 @@ export class ProfileController implements OnModuleInit {
         this.profileClient.subscribeToResponseOf('getprofiles');
         this.profileClient.subscribeToResponseOf('getprofileById');
         this.profileClient.subscribeToResponseOf('editprofile');
+        this.profileClient.subscribeToResponseOf('addpayment');
      
     }
 }

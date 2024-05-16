@@ -26,5 +26,7 @@ export class EditProfileDto {
 
   @IsString()
   readonly Address: string;
+  @IsString()
+  readonly Payment: string;
 
 }

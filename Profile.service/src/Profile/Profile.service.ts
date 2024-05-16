@@ -51,7 +51,21 @@ export class ProfileService {
         const profileId = this.validateTokenAndGetUserID(token);
         return (await this.profileModel.findByIdAndUpdate(profileId, EditProfileDto, { new: true })).toJSON();
     }
-
+    async addpayment(token: string, type: string, name: string,expiry:string,cvv:string): Promise<Profile> {
+        console.log("here", type, name, expiry, cvv);
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        console.log("userID:", userID);
+        const newPaymentItem = { type: type, name: name, expiry: expiry, cvv: cvv };
+        console.log("newPaymentItem:", newPaymentItem);
+        const updatedProfile = await this.profileModel.findOneAndUpdate(
+            { _id: userID },
+            { $push: { Payment: newPaymentItem } },
+            { new: true, upsert: true }
+        );
+        console.log("updatedProfile:", updatedProfile);
+        return updatedProfile.toJSON();
+    }
 
 
 }

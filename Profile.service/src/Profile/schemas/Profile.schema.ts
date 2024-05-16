@@ -35,6 +35,15 @@ export const Profileschema = new mongoose.Schema({
     Address: {
         type: Array,
         required: true,
-    }
+    },
+    Payment: [
+        {
+            type: { type: String, required: true },
+            name: { type: String, required: true },
+            number: { type: String, required: true },
+            expiry: { type: String, required: true },
+            cvv: { type: String, required: true }
+        }
+      ]
 
 });

@@ -11,6 +11,19 @@ const Payment: React.FC = () => {
   const [profile, setProfile] = useState([]);
   const [Payment, setPayment] = useState<any[]>([]);
   const [newPayment, setNewPayment] = useState("");
+  const [newPaymentType, setNewPaymentType] = useState("");
+  const [newPaymentName, setNewPaymentName] = useState("");
+  const [newPaymentNumber, setNewPaymentNumber] = useState("");
+  const [newPaymentExpiry, setNewPaymentExpiry] = useState("");
+  const [newPaymentCvv, setNewPaymentCvv] = useState("");
+  const [newPaymentNamem, setNewPaymentNamem] = useState("");
+  const [newPaymentNumberm, setNewPaymentNumberm] = useState("");
+  const [newPaymentExpirym, setNewPaymentExpirym] = useState("");
+  const [newPaymentCvvm, setNewPaymentCvvm] = useState("");
+  const [newPaymentAccount, setNewPaymentAccount] = useState("");
+  const [newPaymentTypep, setNewPaymentTypep] = useState("");
+
+  
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -101,21 +114,62 @@ const Payment: React.FC = () => {
     try {
       // Get the new Payment value from the state
       const newPaymentValue = newPayment.trim();
+      const newPaymentType1 = newPaymentType.trim();
+      const newPaymentName1 = newPaymentName.trim();
+      const newPaymentNumber1 = newPaymentNumber.trim();
+      const newPaymentExpiry1 = newPaymentExpiry.trim();
+      const newPaymentCvv1 = newPaymentCvv.trim();
+      const newPaymentNamem1 = newPaymentNamem.trim();
+      const newPaymentNumberm1 = newPaymentNumberm.trim();
+      const newPaymentExpirym1 = newPaymentExpirym.trim();
+      const newPaymentCvvm1 = newPaymentCvvm.trim();
+      const newPaymentAccount1 = newPaymentAccount.trim();
+      const newPaymentTypep1 = newPaymentTypep.trim();
+  console.log("called")
+  console.log(newPaymentName1);
+      // Check if the new Payment value is empty
   
-      // If the new Payment is empty, do nothing
-      if (!newPaymentValue) return;
+      // Determine the payment type based on the selected option
+      let paymentType = "";
+      if (isCreditCard) {
+        paymentType = "Credit Card";
+        if (!newPaymentName1 || !newPaymentNumber1 || !newPaymentExpiry1 || !newPaymentCvv1) return;
+      } else if (isMasterCard) {
+        paymentType = "MasterCard";
+        if (!newPaymentNamem1 || !newPaymentNumberm1 || !newPaymentExpirym1 || !newPaymentCvvm1) return;
+      } else if (isPaypal) {
+        paymentType = "Paypal";
+        if (!newPaymentAccount1 || !newPaymentTypep1) return;
+      }
   
-      // Create a copy of the current Payment array
-      const updatedPayment = [...Payment, newPaymentValue];
+      // Construct the payment object based on the payment type
+      let paymentData = {};
+      if (paymentType === "Credit Card" || paymentType === "MasterCard") {
+        paymentData = {
+          type: paymentType,
+          name: paymentType === "Credit Card" ? newPaymentName1 : newPaymentNamem1,
+          number: paymentType === "Credit Card" ? newPaymentNumber1 : newPaymentNumberm1,
+          expiry: paymentType === "Credit Card" ? newPaymentExpiry1 : newPaymentExpirym1,
+          cvv: paymentType === "Credit Card" ? newPaymentCvv1 : newPaymentCvvm1,
+        };
+      } else if (paymentType === "Paypal") {
+        paymentData = {
+          type: paymentType,
+          account: newPaymentAccount1,
+          accountType: newPaymentTypep1,
+        };
+      }
+  
+      // Create a copy of the current Payment array and add the new payment data
+      const updatedPayment = [...Payment, paymentData];
   
       // Send the updated Payment array to the server
-      const requestBody = { "Payment": updatedPayment };
-  
-      const response = await fetch(`http://localhost:4000/profile/editprofile`, {
+      const requestBody = { Payment: paymentData };
+      const response = await fetch(`http://localhost:4000/profile/addpayment`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', 
-          Authorization: `${token}`
+          'Content-Type': 'application/json',
+          Authorization: `${token}`,
         },
         body: JSON.stringify(requestBody),
       });
@@ -128,15 +182,25 @@ const Payment: React.FC = () => {
       } else {
         const data = await response.json();
         console.log(data);
-        window.location.reload();
         setPayment(updatedPayment);
-        // Clear the new Payment input field
+        // Clear the new Payment input fields
         setNewPayment("");
+        setNewPaymentName("");
+        setNewPaymentNumber("");
+        setNewPaymentExpiry("");
+        setNewPaymentCvv("");
+        setNewPaymentNamem("");
+        setNewPaymentNumberm("");
+        setNewPaymentExpirym("");
+        setNewPaymentCvvm("");
+        setNewPaymentAccount("");
+        setNewPaymentTypep("");
       }
     } catch (error) {
       console.error('Error adding Payment:', error);
     }
-  } 
+  }
+  
   
 
   useEffect(() => {
@@ -224,14 +288,14 @@ const Payment: React.FC = () => {
 <div className="creditcard">
 <div className="creditcardinfo">
 <h2>CreditCard info</h2>
-  <input type="text" id="fname" className="cardholder" name="fname" placeholder="Name on Card"/>
+  <input type="text" id="fname" className="cardholder" name="fname" placeholder="Name on Card" onChange={(e) => setNewPaymentName(e.target.value)}/>
   <div className="cardnumbeer">
-    <input type="text" id="lname" className="cardnumber" name="lname" placeholder="Card Number"/>
+    <input type="text" id="lname" className="cardnumber" name="lname" placeholder="Card Number" onChange={(e) => setNewPaymentNumber(e.target.value)}/>
     <p><FontAwesomeIcon className="creditcardd" icon={faCreditCard}/></p>
     </div>
     <div className="expiry-cvv">
-    <input type="expirydate" id="lname" className="expiry" name="lname" placeholder="MM/YY"/>
-    <input type="text" id="lname" className="cvv" name="lname" placeholder="CVV"/>
+    <input type="expirydate" id="lname" className="expiry" name="lname" placeholder="MM/YY" onChange={(e) => setNewPaymentExpiry(e.target.value)}/>
+    <input type="text" id="lname" className="cvv" name="lname" placeholder="CVV" onChange={(e) => setNewPaymentCvv(e.target.value)}/>
     </div>
     </div>
     </div>
@@ -242,14 +306,14 @@ const Payment: React.FC = () => {
 <div className="creditcard">
 <div className="creditcardinfo">
 <h2>CreditCard info</h2>
-  <input type="text" id="fname" className="cardholder" name="fname" placeholder="Name on Card"/>
+  <input type="text" id="fname" className="cardholder" name="fname" placeholder="Name on Card" onChange={(e) => setNewPaymentNamem(e.target.value)} />
   <div className="cardnumbeer">
-    <input type="text" id="lname" className="cardnumber" name="lname" placeholder="Card Number"/>
+    <input type="text" id="lname" className="cardnumber" name="lname" placeholder="Card Number" onChange={(e) => setNewPaymentNumberm(e.target.value)}/>
     <p><FontAwesomeIcon className="mastercard" icon={faCcMastercard}/></p>
     </div>
     <div className="expiry-cvv">
-    <input type="expirydate" id="lname" className="expiry" name="lname" placeholder="MM/YY"/>
-    <input type="text" id="lname" className="cvv" name="lname" placeholder="CVV"/>
+    <input type="expirydate" id="lname" className="expiry" name="lname" placeholder="MM/YY" onChange={(e) => setNewPaymentExpirym(e.target.value)}/>
+    <input type="text" id="lname" className="cvv" name="lname" placeholder="CVV" onChange={(e) => setNewPaymentCvvm(e.target.value)}/>
     </div>
     </div>
     </div>
@@ -261,11 +325,11 @@ const Payment: React.FC = () => {
 <div className="paypalinfo">
 <h2>Paypal account info</h2>
   <div className="cardnumbeer">
-  <input type="email" id="fname" className="paypayaccount" name="fname" placeholder="Paypal Account "/>
+  <input type="email" id="fname" className="paypayaccount" name="fname" placeholder="Paypal Account " onChange={(e) => setNewPaymentAccount(e.target.value)}/>
     <p><FontAwesomeIcon className="paypalinon" icon={faPaypal}/></p>
     </div>
     <div className="expiry-cvv">
-    <input type="text" id="lname" className="expiry" name="lname" placeholder="Account Type"/>
+    <input type="text" id="lname" className="expiry" name="lname" placeholder="Account Type" onChange={(e) => setNewPaymentTypep(e.target.value)}/>
     </div>
     </div>
     </div>

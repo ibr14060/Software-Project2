@@ -42,6 +42,22 @@ public createprofile(data: any): Promise<any> {
     });
 }
 
+public addpayment(token: string, data: any): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.profileClient.send('addpayment', { token, data }).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
 
 public getprofileById(token:string): Promise<any> {
    

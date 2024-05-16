@@ -37,7 +37,13 @@ export class ProfileController {
         return this.profileService.editprofile(command.token, command.body);
     }
 
-
+@MessagePattern('addpayment')
+    async addpayment(command) {
+        console.log("cmkakdma");
+        console.log(command.data.type,command.data.name,command.data.expiry,command.data.cvv);
+        console.log(command);
+        return this.profileService.addpayment(command.token, command.data.type, command.data.name,command.data.expiry,command.data.cvv);
+    }
     
 
     @UseGuards(JwtAuthGuard)
