@@ -260,13 +260,15 @@ window.location.reload();
                 <tr key={ADD._id} className="items">
                   <td>
                     <div className="product">
-                      <p className="product-d"><strong>Type :</strong> {ADD.type}</p>
-                      <p className="product-d"><strong>Name :</strong> {ADD.name}</p>
-                      <p className="product-d"><strong>Expiry Date :</strong> {ADD.expiry}</p>
-                      <p className="product-d"><strong>Number :</strong> {ADD.number}</p>
-                      <p className="product-d"><strong>CVV :</strong> {ADD.cvv}</p>
-                      {ADD.type === "Paypal" && <p className="product-d"><strong>Account Type :</strong> {ADD.accountType}</p>}
-        {ADD.type !== "Paypal" && <p className="product-d"><strong>CVV :</strong> {ADD.cvv}</p>}
+                    {ADD.type === "Paypal" &&<p className="product-d"><strong>Type :</strong> {ADD.type} <FontAwesomeIcon className="creditcardd" icon={faPaypal}/> </p>} 
+                    {ADD.type === "MasterCard" &&<p className="product-d"><strong>Type :</strong> {ADD.type} <FontAwesomeIcon className="creditcardd" icon={faCcMastercard}/> </p>}
+                    {ADD.type === "Credit Card" &&<p className="product-d"><strong>Type :</strong> {ADD.type} <FontAwesomeIcon className="creditcardd" icon={faCreditCard}/> </p>}
+                      {ADD.type !== "Paypal" &&<p className="product-d"><strong>Name :</strong> {ADD.name}</p>}
+                      {ADD.type !== "Paypal" &&<p className="product-d"><strong>Expiry Date :</strong> {ADD.expiry}</p>}
+                      {ADD.type !== "Paypal" &&<p className="product-d"><strong>Number :</strong> {ADD.number}</p>}
+                      {ADD.type !== "Paypal" && <p className="product-d"><strong>CVV :</strong> {ADD.cvv}</p>}
+                      {ADD.type === "Paypal" && <p className="product-d"><strong>Account :</strong> {ADD.account}</p>}
+                      {ADD.type === "Paypal" && <p className="product-d"><strong>Account Type :</strong> {ADD.accounttype}</p>}
       
 
                     </div>
