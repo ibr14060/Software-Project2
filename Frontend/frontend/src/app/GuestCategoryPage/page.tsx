@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
-import Navbar from "../NavBar/page";
+import Navbar from "../GuestNavBar/page";
 import FooterComponent from "../Footer/page";
 
 

@@ -83,6 +83,23 @@ public editCart(token: string, data: any): Promise<any> {
     });
 }
 
+public editrentCart(token: string, data: any): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.cartClient.send('editrentCart', { token, body: data }).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+
 public deleteCart(token: string , id : string): Promise<any> {
        
     return new Promise((resolve, reject) => {

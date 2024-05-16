@@ -41,7 +41,18 @@ export class CartController {
         console.log("token"+ command.token);
         const quantity = command.body.products[1];
         const id = command.body.products[0];
-        return this.cartService.editCart(command.token, id,quantity);
+        const type = command.body.products[2];
+        return this.cartService.editCart(command.token, id,quantity,type);
+    }
+    @MessagePattern('editrentCart')
+    async editrentCart(command) {
+        console.log(command);
+        console.log("token"+ command.token);
+        const startdate = command.body.products[1];
+        const id = command.body.products[0];
+        const enddate = command.body.products[2];
+        const type = command.body.products[3];
+        return this.cartService.editrentCart(command.token, id,startdate,enddate,type);
     }
 
     @MessagePattern('deleteCart')

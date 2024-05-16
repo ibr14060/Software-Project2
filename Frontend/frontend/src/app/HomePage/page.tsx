@@ -123,7 +123,7 @@ const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({ products: [`${product._id}`, 1] }), 
+        body: JSON.stringify({ products: [`${product._id}`, 1,"purchase"] }), 
       });
   
       // Handle response

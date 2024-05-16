@@ -95,10 +95,20 @@ console.log(cart);
     }
     
     
-    async editCart(token: string, id: string, newQuantity: number): Promise<Cart> {
+    async editCart(token: string, id: string, newQuantity: number ,type:string): Promise<Cart> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
-        const newProductItem = { id: id, quantity: newQuantity }; // Construct as an object
+        const newProductItem = { id: id, quantity: newQuantity ,type:type}; // Construct as an object
+        return await this.cartModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
+    }
+    async editrentCart(token: string, id: string, startdate: Date ,enddate: Date ,type:string): Promise<Cart> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, startdate: startdate ,enddate:enddate ,type:type}; // Construct as an object
         return await this.cartModel.findOneAndUpdate(
             { UserID: userID },
             { $push: { products: newProductItem } },

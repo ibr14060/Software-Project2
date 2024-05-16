@@ -1,178 +1,316 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import React, { useState, useEffect } from 'react';
 import "./globals.css";
 import Navbar from "../NavBar/page";
-import FooterComponent from "../Footer/page";
+import FooterComponent from '../Footer/page';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faFire, faPercentage, faShare, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import { faSalesforce } from "@fortawesome/free-brands-svg-icons";
+import { TbFlagDiscount } from "react-icons/tb";
+const RatingStars = ({ totalStars, onRatingChange }: { totalStars: number, onRatingChange: (rating: number) => void }) => {
+  const [rating, setRating] = useState(0);
 
-const Rent: React.FC = () => {
-  const [products, setProducts] = useState([]);
-  const [productinfo, setProductInfo] = useState<any[]>([]);
-  const [productdata, setProductData] = useState<any[]>([]);
-  const searchParams = useSearchParams();
-  const [isLoading, setLoading] = useState(true)
-  const [error, setError] = useState(null);
-  const token = searchParams.get("token") ?? "";
-  const [wishlistData, setWishlistData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleDelete = async (id: string) => {
-    
-    try {
-        console.log("called");
-        console.log(id);
-        const response = await fetch(`http://localhost:4000/cart/deleteCart/${id}`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `${token}`
-            }
-        });
-        console.log(response.status);
-        if (response.status === 200) {
-          setProducts(products.filter((product: { id: string }) => product.id !== id));
-          window.location.reload();
-
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-    
-  }
-  const updateQuantity = (productId: string, newQuantity: number) => {
-    if (newQuantity === 0) {
-      handleDelete(productId);
-    } else {
-      setProductData(productdata.map(product => {
-        if (product._id === productId) {
-          return { ...product, quantity: newQuantity };
-        }
-        return product;
-      }));
-    }
+  const handleStarClick = (starIndex: number) => {
+    setRating(starIndex + 1);
+    onRatingChange(starIndex + 1);
   };
-  
-
-  const calculateTotalPrice = () => {
-    return productdata.reduce((total, product) => total + (product.ProductPrice * product.quantity), 0);
-  };
-  
-
-  useEffect(() => {
-    fetch("http://localhost:4000/cart/getCart", {
-      headers: {
-        Authorization: `${token}`,
-      },
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          console.log("Unauthorized");
-          window.location.href = "/Login";
-          return [];
-        }
-        if (!res.ok) {
-          console.log("An error occurred");
-          return [];
-        }
-        return res.json();
-      })
-      .then((data) => {
-        
-        const { products } = data;
-        setProducts(products); // Update the products state with the products array
-        
-        console.log("Products: ", products)
-       
-        
-        const productInfoRequests = products.map((product: any) =>
-          fetch(`http://localhost:4000/products/getProduct/${product.id}`, {
-            headers: {
-              Authorization: `${token}`,
-            },
-          })
-        );
-  
-        Promise.all(productInfoRequests)
-          .then((responses) => Promise.all(responses.map((res) => res.json())))
-          .then((productInfoData) => {
-            console.log("Product Info Data: ", productInfoData);
-            setProductInfo(productInfoData);
-  
-            // Combine product info and product data
-            const combinedData = productInfoData.map((info, index) => ({
-              ...info,
-              quantity: parseInt(products[index].quantity), // Convert string to number
-            }));
-            setProductData(combinedData);
-          })
-          .catch((error) => {
-            console.error("Error fetching product info:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      })
-      .finally(() => setLoading(false));
-  }, [token]);
-  
- console.log("productdata: ", productdata); 
-console.log("productinfos: ", productinfo);
-  console.log("token: ", token);
-  console.log("products: ", products);
 
   return (
-    <div className="CartPage">
-      <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
-    <header></header>
-    <nav></nav>
-    {!isLoading && (
-      <main className='cartmain'>
-        <h1 className="title">Your Cart</h1>
-        <table>
-          <thead className="table-header">
-            <tr>
-              <th>Item</th>
-              <th>Quantity</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productdata.map((product: any) => (
-              <tr key={product._id} className="items">
-                <td>
-                  <div className="product">
-                    <img src={product.ProductImage} alt={product.ProductName} className="product-img" />
-                    <div className="product-info">
-                      <p className="product-name">{product.ProductName}</p>
-                      <p className="product-price">{product.ProductPrice} $</p>
-                      <p className="product-category">{product.ProductSpecifications}</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div className="quantity">
-                    <button className="btn-minus" onClick={() => updateQuantity(product._id, Math.max(1, product.quantity - 1))}>-</button>
-                    <p>{product.quantity}</p>
-                    <button className="btn-plus" onClick={() => updateQuantity(product._id, product.quantity + 1)}>+</button>
-                  </div>
-                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
-                </td>
-                <td>
-                  <p className="total">{product.ProductPrice * product.quantity} $</p>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="checkout">
-          <button className="checkoutbtn" type="button">Checkout</button>
-        </div>
-      </main>
-    )}
-    <FooterComponent />
-  </div>
-);
+    <div>
+      {[...Array(totalStars)].map((_, index) => (
+        <span key={index} onClick={() => handleStarClick(index)}>
+          {index < rating ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={regularStar} />}
+        </span>
+      ))}
+    </div>
+  );
+};
+
+const CardRatingStars = ({ rating, totalStars }: { rating: number, totalStars: number }) => {
+  const filledStars = Math.floor(rating);
+  const emptyStars = totalStars - filledStars;
+  
+  const stars = [];
+  for (let i = 0; i < filledStars; i++) {
+    stars.push(<FontAwesomeIcon key={i} icon={solidStar} />);
+  }
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<FontAwesomeIcon key={filledStars + i} icon={regularStar} />);
+  }
+  
+  return (
+    <div>
+      {stars.map((star, index) => (
+        <span key={index}>{star}</span>
+      ))}
+    </div>
+  );
+};
+
+const ProductPage = () => {
+ 
+  const [product, setProduct] = useState<any[]>([]);
+  const [ProductsReview, setProductsReview] = useState<any[]>([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [profile, setprofile] = useState<any[]>([]);
+  const [productinfo, setProductInfo] = useState<any[]>([]);
+  const [category, setcategory] = useState(null);
+  const [CategoryName, setCategoryName] = useState(null);
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const token = searchParams.get("token") ?? "";
+  const  id  = searchParams.get("id") ?? ""; 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isAddingReview, setIsAddingReview] = useState(false);
+  const [reviewText, setReviewText] = useState(""); // New state for review text input
+  const [rating, setRating] = useState(0); // Move rating state here
+
+  // Function to handle rating change
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating);
+  };
+  // Function to handle input change for review text
+  const handleReviewTextChange = (event :any) => {
+    setReviewText(event.target.value);
+  };
+  const handleAddReviewClick = () => {
+    setIsAddingReview(true);
+  };
+
+  const handleCancelAddReview = () => {
+    setIsAddingReview(false);
+  };
+
+  const  handleSaveReview = async (productID :string) => {
+    try {
+    
+      const response = await fetch(`http://localhost:4000/products/addReview/${productID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({ review: reviewText, rating: rating}), 
+      });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+    // Logic to save the review
+    setIsAddingReview(false);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log(id);
+        const response = await fetch(`http://localhost:4000/products/getProduct/${id}`, {
+          headers: {
+            Authorization: `${token}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch product data');
+        }
+        const productData = await response.json();
+        setProduct(productData);
+        console.log("Product data:", productData);
+
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+      }
+    };
+  
+    fetchData();
+  }, [id, token]);
+  
+
+  console.log("ProductsReview data:", ProductsReview);
+  const handlecart = async () => {
+    try {
+      console.log("product id: ", id);
+      const response = await fetch('http://localhost:4000/cart/editrentCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({ products: [`${id}`, startDate,endDate,"rent"] }), 
+      });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+  const handleCopyUrl = () => {
+    const url = window.location.href;
+    const newUrl = url.replace(/&token=.*$/, '').replace('Product', 'GuestProduct');
+    navigator.clipboard.writeText(newUrl)
+      .then(() => {
+        alert("URL copied to clipboard!");
+      })
+      .catch((error) => {
+        console.error('Error copying URL to clipboard:', error);
+      });
+  };
+const handledateformonth = () => {
+  const start = new Date();
+  const end = new Date();
+  end.setMonth(end.getMonth() + 1);
+  setStartDate(start);
+  setEndDate(end);
+  handlecart()
+}
+const handledatefor3month = () => {
+  const start = new Date();
+  const end = new Date();
+  end.setMonth(end.getMonth() + 3);
+  setStartDate(start);
+  setEndDate(end);
+  handlecart()
+}
+const handledatefor6month = () => {
+  const start = new Date();
+  const end = new Date();
+  end.setMonth(end.getMonth() + 6);
+  setStartDate(start);
+  setEndDate(end);
+  handlecart()
 }
 
-export default Rent;
+
+  return (
+    <div className="ProductPage">
+      <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
+      <div className="ProductBoody">
+        {product ? (
+            <div className="productboddy">
+              <div className="ProductHeader">
+                
+                <h1 className="ProductTitle">{(product as any).ProductName}</h1>
+                <button className="copybut" onClick={handleCopyUrl}><FontAwesomeIcon icon={faShare} className="profile-icon" />
+</button>
+</div>
+                <div className="ProductContainer">
+                    <img alt={(product as any).ProductName} src={(product as any).ProductImage} className="ProductImage"/>
+                    <div className="ProductInfo">
+                        <p className="ProductCategory"> <span><b>Category : </b></span>{(product as any).ProductCategory}</p>
+                        <p className="ProductDescribtion"><span><b>Description : </b></span> {(product as any).ProductDescription}</p>
+                        <p className="ProductPrice"> <span><b>Price : </b></span> {(product as any).ProductPrice}<span>$ </span></p>
+                        <p className="ProductSpecifications"> <span><b>Specifications : </b></span> {(product as any).ProductSpecifications}</p>
+                        <p className="ProductRating"> <span><b>Rating : </b></span> {(product as any).ProductCategory}</p>
+                        <p className="ProductAvailability"> <span><b>Stock : </b></span> {(product as any).ProductAvailability}</p>
+                
+                    </div>
+                </div>
+
+
+            </div>
+        ) : (
+          <p>No product found</p>
+        )}
+      <div className="ProductReviews">
+  {product ? ( 
+    <>
+
+        
+  
+      <h2>Rent Options</h2>
+      <h4>Offers</h4>
+
+<div className="fixedtime">
+<div className="timecard">
+  <h3>1 Month <FontAwesomeIcon icon={faFire} className="fire-icon" /></h3>
+  <p>Get a special offer 10 <FontAwesomeIcon icon={faPercentage} className="percent-icon" /> off when you rent for a whole month</p>
+<p><strong>Price :</strong> ${((product as any).ProductPrice/300 * 0.1 *30).toFixed(3)}</p>
+<button className="add-to-cart-button" onClick={() => handledateformonth()}>Add to Cart</button>
+</div>
+<div className="timecard">
+  <h3>3 Months <FontAwesomeIcon icon={faFire} className="fire-icon" /></h3>
+  <p>Get a special offer 15 <FontAwesomeIcon icon={faPercentage} className="percent-icon" /> off when you rent for  3 month</p>
+  <p><strong>Price :</strong> ${((product as any).ProductPrice/300 * 0.15 * 90).toFixed(3)}</p>
+  <button className="add-to-cart-button" onClick={handledatefor3month}>Add to Cart</button>
+
+</div>
+<div className="timecard">
+  <h3>6 Months <FontAwesomeIcon icon={faFire} className="fire-icon" /></h3>
+  <p>Get a special offer 20 <FontAwesomeIcon icon={faPercentage} className="percent-icon" /> off when you rent for 6 month</p>
+  <p><strong>Price :</strong> ${((product as any).ProductPrice/300 * 0.2*180).toFixed(3)}</p>
+  <button className="add-to-cart-button" onClick={handledatefor6month}>Add to Cart</button>
+
+</div>
+ 
+</div>
+
+      <div className="ReviewContainer">
+        <h4>Rent for a while</h4>
+        <p></p>
+        <div className="calendar-container">
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date ?? new Date())}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="From"
+            className="date-picker"
+          />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => {
+              console.log("Selected End Date:", date);
+              setEndDate(date ?? new Date());
+            }}
+          
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            placeholderText="To"
+            className="date-picker"
+
+          />
+          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+        </div>
+        </div>
+    </>
+  ):(
+    <p>No product found</p>
+
+  )}
+</div>
+</div>
+
+      
+      <FooterComponent /> 
+    </div>
+  );
+};
+
+export default ProductPage;

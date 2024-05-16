@@ -35,6 +35,12 @@ export class CartController implements OnModuleInit {
         console.log(req.body);
         return this.cartService.editCart(token, req.body); // Pass 'id' as a parameter
     }
+
+    @Post('editrentCart')
+    async editrentCart(@Headers('authorization') token: string, @Request() req) {
+        console.log(req.body);
+        return this.cartService.editrentCart(token, req.body); // Pass 'id' as a parameter
+    }
     
     // For deleteProduct endpoint
     @Delete('deleteCart/:id') // Define the route parameter ':id'
@@ -49,5 +55,6 @@ export class CartController implements OnModuleInit {
         this.cartClient.subscribeToResponseOf('getCart');
         this.cartClient.subscribeToResponseOf('editCart');
         this.cartClient.subscribeToResponseOf('deleteCart');
+        this.cartClient.subscribeToResponseOf('editrentCart');
     }
 }
