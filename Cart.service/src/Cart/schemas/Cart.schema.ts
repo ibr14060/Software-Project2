@@ -5,10 +5,10 @@ export const CartSchema = new mongoose.Schema({
   products: [
     {
       id: { type: String, required: true },
-      quantity: { type: Number, required: true },
+      quantity: { type: Number },
       type: { type: String, required: true },
-      startdate: { type: Date, required: true },
-      enddate: { type: Date, required: true }
+      startdate: { type: Date},
+      enddate: { type: Date  }
     }
   ]
 });

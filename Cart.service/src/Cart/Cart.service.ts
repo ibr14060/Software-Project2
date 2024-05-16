@@ -83,6 +83,9 @@ console.log(cart);
             } else {
                 throw new Error('Product not found in cart');
             }
+            // Update the cart document in the database with the modified products array
+await cart.save();
+
     console.log(cart.products + "cart.products")
             // Update the cart document in the database with the modified products array
             

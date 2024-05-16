@@ -37,8 +37,7 @@ const Cart: React.FC = () => {
         console.log(response.status);
         if (response.status === 200) {
           setProducts(products.filter((product: { id: string }) => product.id !== id));
-          window.location.reload();
-
+window.location.reload();
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -66,9 +65,10 @@ const Cart: React.FC = () => {
           if(!couponApplied) {
           // Process the response data here
           let discountPercentage = responseData.value;
-          let totalPrice = calculateTotalPrice();
+          let totalPrice: number = Number(calculateTotalPrice()); // Convert totalPrice to number
           let discountAmount = totalPrice * (discountPercentage / 100); // Calculate discount amount
-          totalPrice -= discountAmount; // Subtract discount amount from total price
+          totalPrice -= discountAmount;
+          totalPrice = Number(totalPrice.toFixed(2)); // Round totalPrice to 2 decimal places
           console.log(totalPrice, "sssdd");
           setDiscountedTotalPrice(totalPrice);
           setCouponApplied(true); // Set couponApplied to true after applying the coupon
@@ -99,8 +99,22 @@ const Cart: React.FC = () => {
   
 
   const calculateTotalPrice = () => {
-    return productdata.reduce((total, product) => total + (product.ProductPrice * product.quantity), 0);
+    let purchaseTotal = 0;
+    let rentTotal = 0;
+  
+    productdata.forEach(product => {
+      if (product.type === 'purchase') {
+        purchaseTotal += product.ProductPrice * product.quantity;
+      } else if (product.type === 'rent') {
+        const days = (new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24);
+        rentTotal += days * (product.ProductPrice / 300);
+      }
+    });
+  
+    return (purchaseTotal + rentTotal).toFixed(2);
   };
+  
+  
   
 
   useEffect(() => {
@@ -124,7 +138,16 @@ const Cart: React.FC = () => {
       .then((data) => {
         
         const { products } = data;
-        setProducts(products); // Update the products state with the products array
+        const modifiedProducts = products.map((product: any) => {
+          if (product.type === "purchase") {
+            return { ...product, quantity: product.quantity ,type: "purchase"};
+          }
+          else if (product.type === "rent"){
+            return { ...product, type: "rent", startdate: product.startdate, enddate: product.enddate ,quantity:0};
+          }
+          return product;
+        });
+        setProducts(modifiedProducts); // Update the products state with the products array
         
         console.log("Products: ", products)
        
@@ -146,7 +169,12 @@ const Cart: React.FC = () => {
             // Combine product info and product data
             const combinedData = productInfoData.map((info, index) => ({
               ...info,
-              quantity: parseInt(products[index].quantity), // Convert string to number
+              
+              quantity: parseInt(products[index].quantity),
+              startdate: products[index].startdate,
+              enddate: products[index].enddate,
+              type: products[index].type
+              
             }));
             setProductData(combinedData);
           })
@@ -194,16 +222,42 @@ console.log("productinfos: ", productinfo);
                     </div>
                   </div>
                 </td>
+                
                 <td>
-                  <div className="quantity">
-                    <button className="btn-minus" onClick={() => updateQuantity(product._id, Math.max(1, product.quantity - 1))}>-</button>
-                    <p>{product.quantity}</p>
-                    <button className="btn-plus" onClick={() => updateQuantity(product._id, product.quantity + 1)}>+</button>
-                  </div>
-                  <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
+                {product.type === 'rent' && (
+            <div className="renttqutt">
+              <div className="startend">
+                <div className="start">
+              <p className="dates"> <strong>Start Date: </strong>{new Date(product.startdate).toLocaleDateString()}</p>
+              <p className="dates"><strong>End Date:</strong> {new Date(product.enddate).toLocaleDateString()}</p>
+              </div>
+              <button className="dell" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
+              </div>
+            </div>
+          )}
+           {product.type === 'purchase' && (
+              <div className="quantity">
+              <button className="btn-minus" onClick={() => updateQuantity(product._id, Math.max(1, product.quantity - 1))}>-</button>
+              <p>{product.quantity}</p>
+              <button className="btn-plus" onClick={() => updateQuantity(product._id, product.quantity + 1)}>+</button>
+              <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
+
+            </div>
+          )}
+                
                 </td>
                 <td>
+                {product.type === 'purchase' && (
                   <p className="total">{product.ProductPrice * product.quantity} $</p>
+                   )}
+             {product.type === 'rent' && (
+  <p className="total">
+  ${
+     (((new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24)) * (product.ProductPrice / 300)).toFixed(2)
+    } $
+  </p>
+)}
+
                 </td>
               </tr>
             ))}
