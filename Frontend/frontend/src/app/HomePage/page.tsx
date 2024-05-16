@@ -70,6 +70,9 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
   }
+  const handlecustomize = async () => {
+    window.location.href = `/Customize?id=${product._id}&token=${token}`;
+  }
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -103,6 +106,8 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
+          <button className="rent-button" onClick={handlecustomize}>Customize</button>
+
         </div>
       </div>
     </div>
@@ -169,6 +174,9 @@ const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
   }
+  const handlecustomize = async () => {
+    window.location.href = `/Customize?id=${product._id}&token=${token}`;
+  }
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -196,8 +204,10 @@ const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist
         <p className="price">${product.ProductPrice}</p>{" "}
         <p className="category">{product.ProductCategory}</p>{""}
         <div className="buttons-container">
-          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="add-to-cart-button" onClick={handlecart}>Add to cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
+          <button className="rent-button" onClick={handlecustomize}>Customize</button>
+
         </div>
       </div>
     </div>

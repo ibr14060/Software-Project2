@@ -387,6 +387,7 @@ ul {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    gap: 15px;
   }
   
   .add-to-cart-button {
