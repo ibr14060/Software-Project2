@@ -42,7 +42,7 @@ export class ProfileController {
         console.log("cmkakdma");
         console.log(command.data.type,command.data.name,command.data.expiry,command.data.cvv);
         console.log(command);
-        return this.profileService.addpayment(command.token, command.data.type, command.data.name,command.data.expiry,command.data.cvv);
+        return this.profileService.addpayment(command.token, command.data.type, command.data.name,command.data.expiry,command.data.cvv ,command.data.account,command.data.accounttype);
     }
     
 

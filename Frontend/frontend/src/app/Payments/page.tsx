@@ -156,7 +156,7 @@ const Payment: React.FC = () => {
         paymentData = {
           type: paymentType,
           account: newPaymentAccount1,
-          accountType: newPaymentTypep1,
+          accounttype: newPaymentTypep1,
         };
       }
   
@@ -181,8 +181,10 @@ const Payment: React.FC = () => {
         }
       } else {
         const data = await response.json();
+
         console.log(data);
         setPayment(updatedPayment);
+window.location.reload();
         // Clear the new Payment input fields
         setNewPayment("");
         setNewPaymentName("");
@@ -249,7 +251,7 @@ const Payment: React.FC = () => {
             <thead className="table-header">
               <tr>
                 <th>Payment</th>
-                <th>Edit</th>
+
                 <th>Delete</th>
               </tr>
             </thead>
@@ -258,15 +260,18 @@ const Payment: React.FC = () => {
                 <tr key={ADD._id} className="items">
                   <td>
                     <div className="product">
-                      <p className="product-category"><strong>{labels[index]} : </strong>{ADD}</p>
+                      <p className="product-d"><strong>Type :</strong> {ADD.type}</p>
+                      <p className="product-d"><strong>Name :</strong> {ADD.name}</p>
+                      <p className="product-d"><strong>Expiry Date :</strong> {ADD.expiry}</p>
+                      <p className="product-d"><strong>Number :</strong> {ADD.number}</p>
+                      <p className="product-d"><strong>CVV :</strong> {ADD.cvv}</p>
+                      {ADD.type === "Paypal" && <p className="product-d"><strong>Account Type :</strong> {ADD.accountType}</p>}
+        {ADD.type !== "Paypal" && <p className="product-d"><strong>CVV :</strong> {ADD.cvv}</p>}
+      
+
                     </div>
                   </td>
-                  <td>
-                    <div className="quantsity">
-                      <input className="email" type="email" id="email" name="email" placeholder="New Payment" onChange={(e) => setNewPayment(e.target.value)} />
-                      <button className="edit-button" onClick={() => handleEdit(index, newPayment)}><FontAwesomeIcon icon={faEdit} /></button>
-                    </div>
-                  </td>
+                  
                   <td>
                     <div className="deletee">
                       <button className="edit-button" onClick={() => handleDelete(index, newPayment)}><FontAwesomeIcon icon={faTrash} /></button>

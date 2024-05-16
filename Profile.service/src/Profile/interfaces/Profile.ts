@@ -11,7 +11,7 @@ export interface Profile extends Document {
    readonly Phone_Number: String;
    readonly Company: String;
    readonly Address: Array<String>;
-   readonly Payment: Array<{ type: string; name: string,expiry:string,cvv:string }>;
+   readonly Payment: Array<{ type: string; name: string,expiry:string,cvv:string,account:string,accounttype:string }>;
 
 
 }
