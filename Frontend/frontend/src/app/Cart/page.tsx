@@ -11,12 +11,17 @@ const Cart: React.FC = () => {
   const [products, setProducts] = useState([]);
   const [productinfo, setProductInfo] = useState<any[]>([]);
   const [productdata, setProductData] = useState<any[]>([]);
+  const [coupon, setCoupon] = useState("");
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
   const [wishlistData, setWishlistData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [discountedTotalPrice, setDiscountedTotalPrice] = useState<number | null>(null);
+  const [couponApplied, setCouponApplied] = useState(false);
+
+
 
   const handleDelete = async (id: string) => {
     
@@ -34,6 +39,45 @@ const Cart: React.FC = () => {
           setProducts(products.filter((product: { id: string }) => product.id !== id));
           window.location.reload();
 
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    
+  }
+  const handlecoupon = async () => {
+    try {
+        console.log("called");
+        console.log("coupon");
+        const response = await fetch(`http://localhost:4000/coupon/getCoupon/${coupon}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `${token}`
+          }
+        });
+        console.log(response.status);
+        console.log(response);
+        const responseData = await response.json(); // Await the response.json() promise
+        console.log(responseData);
+        if (responseData.statusCode === 500) { // Access the statusCode property
+          console.log("Coupon wrong ");
+          alert("Coupon is wrong");
+        } else {
+          if(!couponApplied) {
+          // Process the response data here
+          let discountPercentage = responseData.value;
+          let totalPrice = calculateTotalPrice();
+          let discountAmount = totalPrice * (discountPercentage / 100); // Calculate discount amount
+          totalPrice -= discountAmount; // Subtract discount amount from total price
+          console.log(totalPrice, "sssdd");
+          setDiscountedTotalPrice(totalPrice);
+          setCouponApplied(true); // Set couponApplied to true after applying the coupon
+          }
+          else{
+            alert("You have already applied a coupon");
+
+          }
+          // Set the updated total price to state or wherever needed
         }
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -168,8 +212,12 @@ console.log("productinfos: ", productinfo);
        
         <div className="checkout">
         <div className="total-price">
-          <p>Total: {calculateTotalPrice()} $</p>
+        <p>Total: {discountedTotalPrice !== null ? discountedTotalPrice : calculateTotalPrice()} $</p>
         </div>
+
+        <input type="text" placeholder="Enter Coupon Code" className="coupon"  onChange={(e) => setCoupon(e.target.value)}/>
+        <button className="applybtn" type="button" onClick={handlecoupon}>Apply</button>
+
           <button className="checkoutbtn" type="button">Checkout</button>
 
         </div>

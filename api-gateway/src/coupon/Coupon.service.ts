@@ -59,19 +59,25 @@ public addpayment(token: string, data: any): Promise<any> {
     });
 }
 
-public getCouponById(token:string): Promise<any> {
+public getCouponById(token:string ,couponId:string): Promise<any> {
    
     return new Promise((resolve, reject) => {
        console.log("id in token:", token)
     
-        this.CouponClient.send('getCouponById',  token ).subscribe({
+        this.CouponClient.send('getCouponById',  {token ,couponId}).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 
             },
             error: (error) => {
                 console.error("Error:", error);
-                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+                if (error instanceof HttpException) {
+                    // If the error is an HttpException, forward it as is
+                    reject(error);
+                } else {
+                    // If it's not an HttpException, create a new HttpException with status code 500
+                    reject(new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR));
+                }
             }
         });
     });

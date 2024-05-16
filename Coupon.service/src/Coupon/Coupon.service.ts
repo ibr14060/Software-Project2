@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { Coupon } from './interfaces/Coupon';
 import { CreateCouponDto } from './dto/create.Coupon.dto';
@@ -35,14 +35,18 @@ export class CouponService {
         return await newProduct.save();
     }
 
-    async getCoupon(token:string): Promise<string> {
+    async getCoupon(token:string ,couponId:string): Promise<string> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
         console.log("Called with :", token);
-        const user = await this.CouponModel.findById( userID ).exec(); 
-        
-        console.log(JSON.stringify(user) + " from service s" );
-        return JSON.stringify(user);
+        console.log("Called with coupon :", couponId);
+        const coupon = await this.CouponModel.findOne({ name: couponId }).exec(); 
+        if(!coupon){
+            throw new HttpException('Coupon not found', HttpStatus.NOT_FOUND);
+
+        }
+        console.log(JSON.stringify(coupon) + " from service s" );
+        return JSON.stringify(coupon);
     }
 
 
