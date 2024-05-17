@@ -157,6 +157,16 @@ box-shadow: #888282;
     display: inline-block;
 width: 100%;
   }
+  .colorr{
+    display: flex;
+    flex-direction: row;
+  }
+  .product-categoryss{
+    margin-left: 5%;
+  }
+  .product-categorysy{
+    margin-bottom: 10%;
+  }
   @media only screen and (max-width: 600px) {
   
     .del{

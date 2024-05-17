@@ -96,22 +96,63 @@ window.location.reload();
       }));
     }
   };
+  const calculateTotalforcustomizationPrice = () => {
+    let totalPrice = 0;
   
+    productdata.forEach((product) => {
+      if (product.type === 'Customization') {
+        let price = product.ProductPrice;
+  
+        // Apply logic based on color
+        if (product.color) {
+          price *= 1.3; // Multiply by 1.3 if there is a color
+        }
+  
+        // Apply logic based on height
+        if (product.height === '40') {
+          price *= 1.2; // Multiply by 1.2 if height is 40
+        } else if (product.height === '50') {
+          price *= 1.5; // Multiply by 1.5 if height is 50
+        }
+  
+        // Apply logic based on material
+        switch (product.material) {
+          case 'Wood':
+            price *= 1.3; // Multiply by 1.3 if material is wood
+            break;
+          case 'Stainless steel':
+            price *= 1.5; // Multiply by 1.5 if material is stainless steel
+            break;
+       
+          default:
+            break;
+        }
+  
+        totalPrice += price * product.quantity;
+      } 
+    });
+  
+    return totalPrice.toFixed(2); // Round totalPrice to 2 decimal places
+  };
 
   const calculateTotalPrice = () => {
     let purchaseTotal = 0;
     let rentTotal = 0;
+    let customizationTotal = 0; // Add a variable to keep track of the total price for customization products
   
-    productdata.forEach(product => {
+    productdata.forEach((product) => {
       if (product.type === 'purchase') {
         purchaseTotal += product.ProductPrice * product.quantity;
       } else if (product.type === 'rent') {
         const days = (new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24);
         rentTotal += days * (product.ProductPrice / 300);
+      } else if (product.type === 'Customization') {
+        // Calculate the total price for customization products using the new function
+        customizationTotal += Number(calculateTotalforcustomizationPrice()); // Convert the result to a number
       }
     });
   
-    return (purchaseTotal + rentTotal).toFixed(2);
+    return (purchaseTotal + rentTotal + customizationTotal).toFixed(2);
   };
   
   
@@ -145,6 +186,10 @@ window.location.reload();
           else if (product.type === "rent"){
             return { ...product, type: "rent", startdate: product.startdate, enddate: product.enddate ,quantity:0};
           }
+          else if(product.type === "Customization"){
+            return { ...product, type: "Customization", color: product.color, material: product.material ,quantity:0, height: product.height, width: product.width};
+
+          }
           return product;
         });
         setProducts(modifiedProducts); // Update the products state with the products array
@@ -173,7 +218,11 @@ window.location.reload();
               quantity: parseInt(products[index].quantity),
               startdate: products[index].startdate,
               enddate: products[index].enddate,
-              type: products[index].type
+              type: products[index].type,
+              color: products[index].color,
+              height: products[index].height,
+              width: products[index].width,
+              material: products[index].material
               
             }));
             setProductData(combinedData);
@@ -192,7 +241,8 @@ window.location.reload();
 console.log("productinfos: ", productinfo);
   console.log("token: ", token);
   console.log("products: ", products);
-
+  
+  
   return (
     <div className="CartPage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -213,14 +263,42 @@ console.log("productinfos: ", productinfo);
             {productdata.map((product: any) => (
               <tr key={product._id} className="items">
                 <td>
+                {product.type === 'rent' && (
                   <div className="product">
                     <img src={product.ProductImage} alt={product.ProductName} className="product-img" />
                     <div className="product-info">
                       <p className="product-name">{product.ProductName}</p>
                       <p className="product-price">{product.ProductPrice} $</p>
-                      <p className="product-category">{product.ProductSpecifications}</p>
+                      <p className="product-category">Specifications :{product.ProductSpecifications}</p>
                     </div>
                   </div>
+                     )}
+                                     {product.type === 'purchase' && (
+                  <div className="product">
+                    <img src={product.ProductImage} alt={product.ProductName} className="product-img" />
+                    <div className="product-info">
+                      <p className="product-name">{product.ProductName}</p>
+                      <p className="product-price">{product.ProductPrice} $</p>
+                      <p className="product-category">Specifications :{product.ProductSpecifications}</p>
+                    </div>
+                  </div>
+                     )}
+                  {product.type === 'Customization' && (
+                             <div className="product">
+                             <img src={product.ProductImage} alt={product.ProductName} className="product-img" />
+                             <div className="product-info">
+                               <p className="product-name">{product.ProductName}</p>
+                               <p className="product-price">{product.ProductPrice} $</p>
+                               <p className="product-category">Specifications :{product.ProductSpecifications}</p>
+                               <p className="product-category">Material :{product.material}</p>
+
+                               <div className="product-categoryss" style={{ backgroundColor: product.color, width: '20px', height: '20px' }}></div>
+
+                               <p className="product-category">Size :{product.width}X{product.height}</p>
+
+                             </div>
+                           </div>
+          )}
                 </td>
                 
                 <td>
@@ -244,6 +322,15 @@ console.log("productinfos: ", productinfo);
 
             </div>
           )}
+              {product.type === 'Customization' && (
+              <div className="quantity">
+              <button className="btn-minus" onClick={() => updateQuantity(product._id, Math.max(1, product.quantity - 1))}>-</button>
+              <p>{product.quantity}</p>
+              <button className="btn-plus" onClick={() => updateQuantity(product._id, product.quantity + 1)}>+</button>
+              <button className="del" onClick={() => handleDelete(product._id)}><FontAwesomeIcon icon={faTrash} /></button>
+
+            </div>
+          )}
                 
                 </td>
                 <td>
@@ -257,6 +344,9 @@ console.log("productinfos: ", productinfo);
     } $
   </p>
 )}
+              {product.type === 'Customization' && (
+                  <p className="total">{calculateTotalforcustomizationPrice()} $</p>
+                   )}
 
                 </td>
               </tr>
