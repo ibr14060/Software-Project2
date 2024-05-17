@@ -218,3 +218,16 @@
     border: 2px solid gold; /* Example border style */
     box-shadow: 0 0 10px gold; /* Example box shadow */
   }
+  .height{
+    display: flex;
+    flex-direction: column;
+
+  }
+  .wid{
+    width: 20%;
+    height: 20px;
+    border: #991e66;
+    border-radius: 5px;
+  }
+
+  

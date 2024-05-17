@@ -64,6 +64,8 @@ const ProductPage = () => {
   const [material, setMaterial] = useState("");
   const [selectedMaterial, setSelectedMaterial] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState("#000000"); // Default color
+  const[height, setHeight] = useState("30");
+  const[width, setWidth] = useState("30");
   const [profile, setprofile] = useState<any[]>([]);
   const [productinfo, setProductInfo] = useState<any[]>([]);
   const [category, setcategory] = useState(null);
@@ -77,21 +79,37 @@ const ProductPage = () => {
   const [isAddingReview, setIsAddingReview] = useState(false);
   const [reviewText, setReviewText] = useState(""); // New state for review text input
   const [rating, setRating] = useState(0); // Move rating state here
+  const [priceforheight, setPriceforheight] = useState(0); // New state for price
 
-  // Function to handle rating change
-  const handleRatingChange = (newRating: number) => {
-    setRating(newRating);
-  };
-  // Function to handle input change for review text
-  const handleReviewTextChange = (event :any) => {
-    setReviewText(event.target.value);
-  };
-  const handleAddReviewClick = () => {
-    setIsAddingReview(true);
+
+  const handleHeightChange = (event: any) => {
+    const selectedHeight = event.target.value;
+    setHeight(selectedHeight);
+  
+    // Calculate the new price based on the selected height
+    let newPrice = 0;
+    switch (selectedHeight) {
+      case "30":
+        newPrice = ((product as any).ProductPrice * 1.2); // Change the multiplier as needed
+        break;
+      case "40":
+        newPrice = ((product as any).ProductPrice * 1.5); // Change the multiplier as needed
+        break;
+      case "50":
+        newPrice = ((product as any).ProductPrice * 1.8); // Change the multiplier as needed
+        break;
+      default:
+        newPrice = (product as any).ProductPrice; // Default price
+        break;
+    }
+  
+    // Update the price state
+    setPriceforheight(newPrice);
   };
 
-  const handleCancelAddReview = () => {
-    setIsAddingReview(false);
+  // Event handler for width selection
+  const handleWidthChange = (event:any) => {
+    setWidth(event.target.value);
   };
 
   const  handleSaveReview = async (productID :string) => {
@@ -271,10 +289,40 @@ const handleSelectMaterial = (material: string) => {
 
 <div className="ReviewContainer">
         <h4>Colour</h4>
-        <p>Choose your colour</p>
+        <p>Choose the colour of the pallete</p>
         <div className="color-picker">
           <ChromePicker color={selectedColor} onChange={handleColorChange} />
         </div>
+        <p><strong>Price :</strong> ${((product as any).ProductPrice*1.2).toFixed(1)}</p>
+
+      </div>
+      <div className="ReviewContainer">
+        <h4>Size</h4>
+        <p>Choose the size of the pallete </p>
+
+        <div className="size-container">
+            <div className="height">
+    <label htmlFor="height">Height:</label>
+    <select id="height" name="height" className="wid"  onChange={handleHeightChange}>
+      <option value="30">30 cm</option>
+      <option value="40">40 cm</option>
+      <option value="50">50 cm</option>
+      
+      {/* Add more options as needed */}
+    </select>
+    </div>
+    <div className="height">
+    <label htmlFor="width">Width:</label>
+    <select id="widthh" name="widthh" className="wid" onChange={handleWidthChange}>
+      <option value="30">30 cm</option>
+      <option value="40">40 cm</option>
+      <option value="50">50 cm</option>
+      {/* Add more options as needed */}
+    </select>
+    </div>
+    <p><strong>Price :</strong> ${(priceforheight).toFixed(1)}</p>
+
+  </div>
         <div className="calendar-container">
           <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
         </div>
