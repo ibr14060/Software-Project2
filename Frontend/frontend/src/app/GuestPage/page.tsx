@@ -9,65 +9,16 @@ import FooterComponent from "../Footer/page";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const TopOffersCard = ({ product, isInWishlist, isInFavItems, token, toggleWishlist, toggleFavItems, handleCart }: { product: any, isInWishlist: boolean, isInFavItems: boolean, token: string, toggleWishlist: () => void, toggleFavItems: () => void, handleCart: (product: any) => void }) => {
 
-const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string , toggleWishlist: () => void ,toggleFavItems :() => void}) => {
-  
+  const handleAddToCart = () => {
+    handleCart({ id: product._id, name: product.TopOffersName, image: product.TopOffersImage, price: product.TopOffersPrice, quantity: 1,type:"purchase" });
+  };
 
-  const handlecart = async () => {
-    try {
-      console.log("product id: ", product._id);
-      const response = await fetch('http://localhost:4000/cart/editCart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`
-        },
-        body: JSON.stringify({ products: [`${product._id}`, 1] }), 
-      });
-  
-      // Handle response
-      if (!response.ok) {
-        console.error('Adding failed');
-        if(response.status === 409) {
-        //  window.location.href = '/Login';
-        }
-      } else {
-        const data = await response.json();
-        console.log(data);
-      }
-    } catch (error) {
-      console.error('Error adding product to cart:', error);
-    }
-  };
-  const handlewishlist = async () => {
-    try {
-      console.log("product id: ", product._id);
-      const response = await fetch('http://localhost:4000/Wishlist/editWishlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`
-        },
-        body: JSON.stringify({ products: [`${product._id}`] }), 
-      });
-  
-      // Handle response
-      if (!response.ok) {
-        console.error('Adding failed');
-        if(response.status === 409) {
-        //  window.location.href = '/Login';
-        }
-      } else {
-        const data = await response.json();
-        console.log(data);
-      }
-    } catch (error) {
-      console.error('Error adding product to cart:', error);
-    }
-  };
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
-  }
+  };
+
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -76,25 +27,21 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
           View Product
         </Link>
         <div className="Actionns">
-
-        <button
-          className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}
-          onClick={toggleWishlist}
-        >
-          {isInWishlist ? "★" : "☆"}
-        </button>
+          <button className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`} onClick={toggleWishlist}>
+            {isInWishlist ? "★" : "☆"}
+          </button>
         </div>
       </div>
       <div className="product-details">
         <h2>{product.TopOffersName}</h2>
-        <p className="price">${product.TopOffersPrice}</p>{" "}
-        <p className="category">{product.TopOffersCategory}</p>{""}
+        <p className="price">${product.TopOffersPrice}</p>
+        <p className="category">{product.TopOffersCategory}</p>
         <div className="offerval">
-        <p className="category">{product.TopOffersDiscount}</p>{""}
-        <p className="category">{product.TopOffersPeriod}</p>{""}
+          <p className="category">{product.TopOffersDiscount}</p>
+          <p className="category">{product.TopOffersPeriod}</p>
         </div>
         <div className="buttons-container">
-          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
         </div>
       </div>
@@ -102,41 +49,19 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
   );
 };
 
+const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart }: { product: any, isInWishlist: boolean, token: string, toggleWishlist: () => void, handleCart: (product: any) => void }) => {
 
-const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product: any, isInWishlist: boolean, token : string , toggleWishlist: () => void }) => {
-  
-
-  const handlecart = async () => {
-    try {
-      console.log("product id: ", product._id);
-      const response = await fetch('http://localhost:4000/cart/editCart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`
-        },
-        body: JSON.stringify({ products: [`${product._id}`, 1] }), 
-      });
-  
-      // Handle response
-      if (!response.ok) {
-        console.error('Adding failed');
-        if(response.status === 409) {
-        //  window.location.href = '/Login';
-        }
-      } else {
-        const data = await response.json();
-        console.log(data);
-      }
-    } catch (error) {
-      console.error('Error adding product to cart:', error);
-    }
+  const handleAddToCart = () => {
+    handleCart({ id: product._id, name: product.ProductName, image: product.ProductImage, price: product.ProductPrice, quantity: 1 ,type:"purchase"});
   };
+
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
-  }
-  const stars =["★★★★★","★★★★","★★★","★★★★★","★★★","★★","★","★★★★★","★★★★"]
- const numreview =[12,98,34,33,56,75,43,26,78,66,54,78,67,254,109]
+  };
+
+  const stars = ["★★★★★", "★★★★", "★★★", "★★★★★", "★★★", "★★", "★", "★★★★★", "★★★★"];
+  const numreview = [12, 98, 34, 33, 56, 75, 43, 26, 78, 66, 54, 78, 67, 254, 109];
+
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -144,35 +69,31 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
         <Link href={`/GuestProduct?id=${product._id}`} className="view-product-button">
           View Product
         </Link>
-        <button
-          className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}
-          onClick={toggleWishlist}
-        >
+        <button className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`} onClick={toggleWishlist}>
           {isInWishlist ? "★" : "☆"}
         </button>
       </div>
       <div className="product-details">
         <h2>{product.ProductName}</h2>
-        <p className="price">${product.ProductPrice}</p>{" "}
-        <p className="category">{product.ProductCategory}</p>{""}
+        <p className="price">${product.ProductPrice}</p>
+        <p className="category">{product.ProductCategory}</p>
         <div className="buttons-container">
-          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
         </div>
         <div className="rating">
-            <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
-            <span className="num-reviews">({numreview[Math.floor(Math.random() * numreview.length)]})</span>
+          <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
+          <span className="num-reviews">({numreview[Math.floor(Math.random() * numreview.length)]})</span>
         </div>
-
       </div>
     </div>
   );
 };
 
-
 const HomePage: React.FC = () => {
   const [products, setProducts] = useState([]);
   const [TopOffers, setTopOffers] = useState([]);
+  const [cart, setCart] = useState<any[]>([]);
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -180,45 +101,18 @@ const HomePage: React.FC = () => {
   const [wishlistData, setWishlistData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
-    fetch("http://localhost:4000/topOffers/getGuestTopOffers", {
-
-    })
-      .then((res) => {
-        if (res.status === 401) {
-          console.log("Unauthorized");
-          window.location.href = "/Login";
-          return [];
-        }
-        if(!res.ok) {
-          console.error("Error fetching data");
-          return [];
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-
-        setTopOffers(data);
-
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setError(error);
-        setLoading(false);
-      });
+    const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCart(storedCart);
   }, []);
   useEffect(() => {
-    fetch("http://localhost:4000/products/getGuestProducts", {
-
-    })
+    fetch("http://localhost:4000/topOffers/getGuestTopOffers", {})
       .then((res) => {
         if (res.status === 401) {
           console.log("Unauthorized");
           window.location.href = "/Login";
           return [];
         }
-        if(!res.ok) {
+        if (!res.ok) {
           console.error("Error fetching data");
           return [];
         }
@@ -226,9 +120,7 @@ const HomePage: React.FC = () => {
       })
       .then((data) => {
         console.log(data);
-
-        setProducts(data);
-
+        setTopOffers(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -237,71 +129,117 @@ const HomePage: React.FC = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/products/getGuestProducts", {})
+      .then((res) => {
+        if (res.status === 401) {
+          console.log("Unauthorized");
+          window.location.href = "/Login";
+          return [];
+        }
+        if (!res.ok) {
+          console.error("Error fetching data");
+          return [];
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleCart = (product: any) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      let updatedCart;
+      if (existingProduct) {
+        updatedCart = prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        updatedCart = [...prevCart, product];
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      console.log(updatedCart);
+      return updatedCart;
+    });
+  };
+  console.log(localStorage,"localStorage");
+
   const filteredTopOffers = TopOffers.filter((toy: any) =>
     toy.TopOffersName.toLowerCase().includes(searchQuery.toLowerCase())
-);
-const filteredProducts = products.filter((toy: any) =>
-    toy.ProductName.toLowerCase().includes(searchQuery.toLowerCase())
-);
+  );
 
-console.log("token: ", token);
+  const filteredProducts = products.filter((toy: any) =>
+    toy.ProductName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  console.log("token: ", token);
   console.log("products: ", products);
+  console.log("cart: ", cart);
 
   return (
     <div className="homepage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
       <div className="mostselling">
-    <h2> Extra Sale</h2>
- <div className="mostselling-container-wrapper">
- <div className="mostselling-container">
-
-        {filteredTopOffers.map((product: any) => (
-           <TopOffersCard 
-           key={product.id}
-           product={product}
-           isInWishlist={false}
-           isInFavItems={false}  // Check if product is in wishlist
-           token={token} 
-           toggleWishlist={() => ""} 
-           toggleFavItems={() => ""} 
-                 />
-        ))}
+        <h2>Extra Sale</h2>
+        <div className="mostselling-container-wrapper">
+          <div className="mostselling-container">
+            {filteredTopOffers.map((product: any) => (
+              <TopOffersCard
+                key={product.id}
+                product={product}
+                isInWishlist={false}
+                isInFavItems={false}
+                token={token}
+                toggleWishlist={() => ""}
+                toggleFavItems={() => ""}
+                handleCart={handleCart}
+              />
+            ))}
             <div className="exploremore-container">
-      <ul>
-        <li>
-          <a href="/GuestPage" className="animated-arrow">
-            <span className="main">
-              <span className="text">Explore More</span>
-              <span className="the-arrow -right">
-                <span className="shaft"></span>
-              </span>
-            </span>
-            <span className="the-arrow -left">
-              <span className="shaft"></span>
-            </span>
-          </a>
-        </li>
-      </ul>
-    </div>
+              <ul>
+                <li>
+                  <a href="/GuestPage" className="animated-arrow">
+                    <span className="main">
+                      <span className="text">Explore More</span>
+                      <span className="the-arrow -right">
+                        <span className="shaft"></span>
+                      </span>
+                    </span>
+                    <span className="the-arrow -left">
+                      <span className="shaft"></span>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
- </div>
-    <div className="content">
-      { (
-        filteredProducts.map((product: any) => (
-          <ProductCard 
+      <div className="content">
+        {filteredProducts.map((product: any) => (
+          <ProductCard
             key={product.id}
             product={product}
             isInWishlist={false}
-            token={token} 
-            toggleWishlist={() => ""}          />
-        ))
-      )}
+            token={token}
+            toggleWishlist={() => ""}
+            handleCart={handleCart}
+          />
+        ))}
+      </div>
+      <FooterComponent />
     </div>
-    <FooterComponent /> 
-
-    </div>
-);
+  );
 };
 
 export default HomePage;

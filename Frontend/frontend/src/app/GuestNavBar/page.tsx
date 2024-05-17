@@ -61,10 +61,16 @@ const GuestNavBar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolea
   >
     <FontAwesomeIcon icon={faRegistered} className="profile-icon" />
   </Link>
+
   <Link className="guestt"
     href={"/GuestPage"}
   >
     Continue as guest
+  </Link>
+  <Link
+    href={"/GuestCartPage"}
+  >
+    <FontAwesomeIcon icon={faCartShopping} className="profile-icon" />
   </Link>
  
 

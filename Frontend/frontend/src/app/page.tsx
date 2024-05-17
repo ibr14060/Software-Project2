@@ -125,7 +125,6 @@ const FirstPage = () => {
             <Link href={`/guestcategory/${slideImage.catid}` } style={{ textDecoration: 'none' }}>
             <div className="each-slide-effect" key={slideImage.id}>
               <div style={{ 'backgroundImage': `url(${slideImage.Image})` }}>
-                <button className='slidebut'>{slideImage.category}</button>
               </div>
             </div>
           </Link>

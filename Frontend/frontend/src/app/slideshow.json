@@ -2,22 +2,22 @@
 [
     {
        "id": 1,
-       "Image":"https://assets.website-files.com/614d175db24864c3fcc12901/61ba617f95cda8233ed29b22_Stickers.png",
-       "category":"Stickers",
-       "catid":"83d5155b-d2b3-4b36-829e-b2042476f76d"
+       "Image":"https://www.goplasticpallets.com/wp-content/uploads/2020/09/bii.jpg",
+       "category":"Plastic",
+       "catid":""
    
     } ,
     {
        "id": 2,
-       "Image":"https://m.media-amazon.com/images/I/618qTeiOh9L.jpg",
-         "category":"KeyChains",
+       "Image":"https://auto-khaled.com/wp-content/uploads/2020/02/auto-khaled-wooden-pallet-lebanon.jpg",
+         "category":"Wood",
          "catid":"3c019b6f-8787-46d2-b445-dcead15dd315"
     } ,
     
     {
        "id": 3,
-       "Image":"https://img.freepik.com/free-vector/different-slippers-kids-adults-illustrations-set_74855-16860.jpg?w=1800&t=st=1711735491~exp=1711736091~hmac=e41bedf9e3d426dd173e1200bf63958e6fff3e67027db3d42c7a6eb05332a45b",
-         "category":"Slippers",
+       "Image":"https://m.heavydutypalletracking.com/photo/pl3145829-lightweight_industrial_stainless_steel_pallets_with_4_way_2_way_entry_custom.jpg",
+         "category":"stailness steel",
          "catid":"f3d7c7e-415a-4f30-8dbb-985d0dc923c4"
     } 
    
