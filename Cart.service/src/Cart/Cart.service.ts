@@ -118,6 +118,17 @@ await cart.save();
             { new: true, upsert: true }
         );
     }
+    
+    async editcustomizeCart(token: string, id: string,color :string,material:string,height:string,width:string): Promise<Cart> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, color: color ,material:material ,height:height,width:width}; // Construct as an object
+        return await this.cartModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
+    }
     async deleteCart(userID: string): Promise<any> {
         try {
             const result = await this.cartModel.updateOne({ UserID: userID }, { ProductIDs: [] });

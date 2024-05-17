@@ -65,11 +65,7 @@ const ProductPage = () => {
   const [selectedMaterial, setSelectedMaterial] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState("#000000"); // Default color
   const[height, setHeight] = useState("30");
-  const[width, setWidth] = useState("30");
-  const [profile, setprofile] = useState<any[]>([]);
-  const [productinfo, setProductInfo] = useState<any[]>([]);
-  const [category, setcategory] = useState(null);
-  const [CategoryName, setCategoryName] = useState(null);
+  const[width, setWidth] = useState("30");;
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -169,20 +165,20 @@ const ProductPage = () => {
   const handlecart = async () => {
     try {
       console.log("product id: ", id);
-      const response = await fetch('http://localhost:4000/cart/editrentCart', {
+      const response = await fetch('http://localhost:4000/cart/editcustomizeCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({ products: [`${id}`, startDate,endDate,"rent"] }), 
+        body: JSON.stringify({ products: [`${id}`, selectedColor,selectedMaterial,height,width] }), 
       });
   
       // Handle response
       if (!response.ok) {
         console.error('Adding failed');
         if(response.status === 409) {
-        //  window.location.href = '/Login';
+
         }
       } else {
         const data = await response.json();
