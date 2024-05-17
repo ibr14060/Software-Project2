@@ -171,7 +171,7 @@ const ProductPage = () => {
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({ products: [`${id}`, selectedColor,selectedMaterial,height,width] }), 
+        body: JSON.stringify({ products: [`${id}`, selectedColor,selectedMaterial,height,width ,"Customization",1] }), 
       });
   
       // Handle response

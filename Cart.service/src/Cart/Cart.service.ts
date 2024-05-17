@@ -119,10 +119,10 @@ await cart.save();
         );
     }
     
-    async editcustomizeCart(token: string, id: string,color :string,material:string,height:string,width:string): Promise<Cart> {
+    async editcustomizeCart(token: string, id: string,color :string,material:string,height:string,width:string,type:string,quantity:number): Promise<Cart> {
         this.validateToken(token);
         const userID = this.validateTokenAndGetUserID(token);
-        const newProductItem = { id: id, color: color ,material:material ,height:height,width:width}; // Construct as an object
+        const newProductItem = { id: id, color: color ,material:material ,height:height,width:width,type:type,quantity:quantity}; // Construct as an object
         return await this.cartModel.findOneAndUpdate(
             { UserID: userID },
             { $push: { products: newProductItem } },

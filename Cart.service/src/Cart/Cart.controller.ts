@@ -63,7 +63,9 @@ export class CartController {
         const material = command.body.products[2];
         const height = command.body.products[3];
         const width = command.body.products[4];
-        return this.cartService.editcustomizeCart(command.token, id,color,material,height,width);
+        const type = command.body.products[5];
+        const quantity = command.body.products[6];
+        return this.cartService.editcustomizeCart(command.token, id,color,material,height,width,type,quantity);
     }
 
     @MessagePattern('deleteCart')
