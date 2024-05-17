@@ -16,7 +16,7 @@ const TopOffersCard = ({ product, isInWishlist, isInFavItems, token, toggleWishl
   };
 
   const handleRent = async () => {
-    window.location.href = `/Rent?id=${product._id}&token=${token}`;
+    window.location.href = `/GuestRent?id=${product._id}`;
   };
 
   return (
@@ -54,10 +54,11 @@ const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart 
   const handleAddToCart = () => {
     handleCart({ id: product._id, name: product.ProductName, image: product.ProductImage, price: product.ProductPrice, quantity: 1 ,type:"purchase"});
   };
-
   const handleRent = async () => {
-    window.location.href = `/Rent?id=${product._id}&token=${token}`;
-  };
+    window.location.href = `/GuestRent?id=${product._id}`;
+  }
+
+
 
   const stars = ["★★★★★", "★★★★", "★★★", "★★★★★", "★★★", "★★", "★", "★★★★★", "★★★★"];
   const numreview = [12, 98, 34, 33, 56, 75, 43, 26, 78, 66, 54, 78, 67, 254, 109];
@@ -157,6 +158,22 @@ const HomePage: React.FC = () => {
   }, []);
 
   const handleCart = (product: any) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      let updatedCart;
+      if (existingProduct) {
+        updatedCart = prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        updatedCart = [...prevCart, product];
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      console.log(updatedCart);
+      return updatedCart;
+    });
+  };
+  const handlerent = (product: any) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       let updatedCart;

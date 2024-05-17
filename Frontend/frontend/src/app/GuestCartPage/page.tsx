@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import "./globals.css";
-import Navbar from "../NavBar/page";
+import Navbar from "../GuestNavBar/page";
 import FooterComponent from "../Footer/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -159,6 +159,11 @@ const Cart: React.FC = () => {
     } 
   }, [token]);
 console.log("productdata",productdata)
+const calculateRentTotal = (product: any) => {
+        const days = Number(((((new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24)))*(product.ProductPrice / 300)).toFixed(1));
+     
+        return days;
+    };
   return (
     <div className="CartPage">
     <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -255,9 +260,9 @@ console.log("productdata",productdata)
                  )}
            {product.type === 'rent' && (
 <p className="total">
-${
-   (((new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24)) * (product.ProductPrice / 300)).toFixed(2)
-  } $
+{
+    calculateRentTotal(product)
+} $
 </p>
 )}
             {product.type === 'Customization' && (
