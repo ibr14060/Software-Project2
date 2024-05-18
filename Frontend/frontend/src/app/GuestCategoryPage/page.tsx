@@ -8,37 +8,16 @@ import Navbar from "../GuestNavBar/page";
 import FooterComponent from "../Footer/page";
 
 
-const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product: any, isInWishlist: boolean, token : string , toggleWishlist: () => void }) => {
+const ProductCard = ({ product, isInWishlist ,token, handleCart}: { product: any, isInWishlist: boolean, token : string , handleCart: (product: any) => void }) => {
   
-
-  const handlecart = async () => {
-    try {
-      console.log("product id: ", product._id);
-      const response = await fetch('http://localhost:4000/cart/editCart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`
-        },
-        body: JSON.stringify({ products: [`${product._id}`, 1] }), 
-      });
-  
-      // Handle response
-      if (!response.ok) {
-        console.error('Adding failed');
-        if(response.status === 409) {
-        //  window.location.href = '/Login';
-        }
-      } else {
-        const data = await response.json();
-        console.log(data);
-      }
-    } catch (error) {
-      console.error('Error adding product to cart:', error);
-    }
+  const handleAddToCart = () => {
+    handleCart({ id: product._id, name: product.TopOffersName, image: product.TopOffersImage, price: product.TopOffersPrice, quantity: 1,type:"purchase" });
   };
   const handleRent = async () => {
     window.location.href = `/Rent?id=${product._id}&token=${token}`;
+  }
+  const handlecustomize = async () => {
+    window.location.href = `/GuestCustomization?id=${product._id}`;
   }
   return (
     <div className="product-card">
@@ -47,20 +26,18 @@ const ProductCard = ({ product, isInWishlist ,token, toggleWishlist}: { product:
         <Link href={`/GuestProduct?id=${product._id}`} className="view-product-button">
           View Product
         </Link>
-        <button
-          className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}
-          onClick={toggleWishlist}
-        >
-          {isInWishlist ? "★" : "☆"}
-        </button>
+
       </div>
       <div className="product-details">
         <h2>{product.ProductName}</h2>
         <p className="price">${product.ProductPrice}</p>{" "}
         <p className="category">{product.ProductCategory}</p>{""}
         <div className="buttons-container">
-          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
+          <button className="rent-button" onClick={handlecustomize}>Customize</button>
+
+
         </div>
       </div>
     </div>
@@ -73,11 +50,32 @@ const HomePage: React.FC = () => {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [cart, setCart] = useState<any[]>([]);
+
   const token = searchParams.get("token") ?? "";
   const categoryname = searchParams.get("categoryname") ?? "";
   const [wishlistData, setWishlistData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCart(storedCart);
+  }, []);
+  const handleCart = (product: any) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      let updatedCart;
+      if (existingProduct) {
+        updatedCart = prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        updatedCart = [...prevCart, product];
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      console.log(updatedCart);
+      return updatedCart;
+    });
+  };
   useEffect(() => {
     fetch(`http://localhost:4000/products/getGuestCategoryProducts/${categoryname}`, {
 
@@ -125,7 +123,8 @@ const HomePage: React.FC = () => {
             product={product}
             isInWishlist={false}
             token={token} 
-            toggleWishlist={() => ""}          />
+            handleCart = {handleCart}
+                     />
         ))
       )}
     </div>

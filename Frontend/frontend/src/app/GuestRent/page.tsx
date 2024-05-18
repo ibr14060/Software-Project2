@@ -8,10 +8,6 @@ import Navbar from "../GuestNavBar/page";
 import FooterComponent from '../Footer/page';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faFire, faPercentage, faShare, faUser } from "@fortawesome/free-solid-svg-icons";
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
-import { faSalesforce } from "@fortawesome/free-brands-svg-icons";
-import { TbFlagDiscount } from "react-icons/tb";
 const ProductPage = () => {
  
   const [product, setProduct] = useState<any[]>([]);
@@ -27,7 +23,6 @@ const ProductPage = () => {
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
   const [cart, setCart] = useState<any[]>([]);
-
   const  id  = searchParams.get("id") ?? ""; 
   const [searchQuery, setSearchQuery] = useState("");
   const [isAddingReview, setIsAddingReview] = useState(false);

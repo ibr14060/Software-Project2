@@ -47,12 +47,7 @@ const ProductCard = ({ product }: { product: any }) => {
         <Link href={`/guestproduct/${product._id}`} className="view-product-button">
   View Product
 </Link>
-        <button
-          className={`add-to-wishlist-button ${isWishlistSelected ? "selected" : ""}`}
-          onClick={toggleWishlist}
-        >
-          {isWishlistSelected ? "★" : "☆"}
-        </button>
+        
       </div>
       <div className="product-details">
         <h2>{product.TopOffersName}</h2>
@@ -64,10 +59,7 @@ const ProductCard = ({ product }: { product: any }) => {
         <p className="category">{product.TopOffersPeriod}</p>{""}
         </div>
 
-        <div className="buttons-container">
-        <button className="add-to-cart-button" onClick={NavigateTologin}>Add to Cart</button>
-        
-        </div>
+
         {showLoginPopup && <LoginPopup onClose={closeLoginPopup} />}
       </div>
       

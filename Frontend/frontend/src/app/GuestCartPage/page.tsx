@@ -166,6 +166,7 @@ const calculateRentTotal = (product: any) => {
     };
   
     const handlelogin = async () => {
+      console.log("clicked");
         window.location.href = `/Login`;
       }
   return (
@@ -287,7 +288,7 @@ const calculateRentTotal = (product: any) => {
       <input type="text" placeholder="Enter Coupon Code" className="coupon"  onChange={(e) => setCoupon(e.target.value)}/>
       <button className="applybtn" type="button" onClick={handlecoupon}>Apply</button>
 
-        <button className="checkoutbtn" type="button">Login To Checkout <FontAwesomeIcon icon={faSignIn} onClick={handlelogin} /></button>
+        <button className="checkoutbtn" type="button" onClick={handlelogin}>Login To Checkout <FontAwesomeIcon icon={faSignIn}></FontAwesomeIcon></button>
 
       </div>
     </main>

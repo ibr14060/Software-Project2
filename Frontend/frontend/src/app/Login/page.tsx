@@ -23,12 +23,17 @@ export default function LoginPage() {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
+  const [guestcart, setGuestCart] = useState<any[]>([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const closeErrorPopup = () => {
     setShowErrorPopup(false);
 };
-   
+useEffect(() => {
+  const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  setGuestCart(storedCart);
+}, []);
+console.log(guestcart)
   // Function to handle login
   const handleLogin = async () => {
     try {

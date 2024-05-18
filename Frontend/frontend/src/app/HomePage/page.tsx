@@ -118,10 +118,11 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
 
 const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string , toggleWishlist: () => void ,toggleFavItems :() => void}) => {
   
-
+ 
   const handlecart = async () => {
     try {
       console.log("product id: ", product._id);
+      
       const response = await fetch('http://localhost:4000/cart/editCart', {
         method: 'POST',
         headers: {
@@ -225,6 +226,122 @@ const HomePage: React.FC = () => {
   const [wishlistData, setWishlistData] = useState<string[]>([]);
   const [FavItemsData, setFavItemsData] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [guestcart, setGuestCart] = useState<any[]>([]);
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setGuestCart(storedCart);
+  }, []);
+  console.log(guestcart)
+  useEffect(() => {
+    const postGuestCartToUserCart = async () => {
+      try {
+        // Iterate over the guestcart array
+        while (guestcart.length > 0) {
+          const item = guestcart[0]; // Get the first item in the guestcart array
+    if(item.type==="purchase"){
+      const response = await fetch('http://localhost:4000/cart/editCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({
+          products: [
+            item.id,
+            item.quantity,
+            item.type,
+            item.height,
+            item.width,
+            item.material,
+            item.color,
+            item.startdate,
+            item.enddate
+          ]
+        }), 
+      });
+      if (response.ok) {
+        console.log(`Product with ID ${item.id} sent successfully.`);
+
+        guestcart.shift(); 
+        if (guestcart.length === 0) {
+          localStorage.removeItem("cart");
+          console.log("Guest cart emptied successfully.");
+        }
+      } else {
+        console.error(`Failed to send product with ID ${item.id}.`);
+        break;
+      }
+    }
+        else if (item.type==="rent"){
+          const response = await fetch('http://localhost:4000/cart/editrentCart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${token}`
+            },
+            body: JSON.stringify({
+              products: [
+                item.id,
+                
+                item.startdate,
+                item.enddate,
+                item.type
+              ]
+            }), 
+          });
+          if (response.ok) {
+            console.log(`Product with ID ${item.id} sent successfully.`);
+    
+            guestcart.shift(); 
+            if (guestcart.length === 0) {
+              localStorage.removeItem("cart");
+              console.log("Guest cart emptied successfully.");
+            }
+          } else {
+            console.error(`Failed to send product with ID ${item.id}.`);
+            break;
+          }
+        }  
+        else if (item.type==="Customization"){
+          const response = await fetch('http://localhost:4000/cart/editcustomizeCart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `${token}`
+            },
+            body: JSON.stringify({
+              products: [
+                item.id,
+                item.type,
+                item.height,
+                item.width,
+                item.material,
+                item.color
+
+              ]
+            }), 
+          });
+          if (response.ok) {
+            console.log(`Product with ID ${item.id} sent successfully.`);
+    
+            guestcart.shift(); 
+            if (guestcart.length === 0) {
+              localStorage.removeItem("cart");
+              console.log("Guest cart emptied successfully.");
+            }
+          } else {
+            console.error(`Failed to send product with ID ${item.id}.`);
+            break;
+          }
+        }  
+        }
+      } catch (error) {
+        console.error('Error posting guest cart to user cart:', error);
+      }
+    };
+    
+    postGuestCartToUserCart();
+  }, [guestcart, token]);
   useEffect(() => {
     fetch("http://localhost:4000/Wishlist/getWishlist", {
       headers: {
