@@ -91,10 +91,7 @@ const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart 
           <button className="rent-button" onClick={handlecustomize}>Customize</button>
 
         </div>
-        <div className="rating">
-          <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
-          <span className="num-reviews">({numreview[Math.floor(Math.random() * numreview.length)]})</span>
-        </div>
+       
       </div>
     </div>
   );

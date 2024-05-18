@@ -236,124 +236,17 @@ const HomePage: React.FC = () => {
   const token = searchParams.get("token") ?? "";
   const [wishlistData, setWishlistData] = useState<string[]>([]);
   const [CArtDAta, setCArtDAta] = useState<string[]>([]);
+  const [cartinsideguest, setcartinsideguest] = useState<string[]>([]);
   const [FavItemsData, setFavItemsData] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [guestcart, setGuestCart] = useState<any[]>([]);
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    console.log("storedCart",storedCart);
     setGuestCart(storedCart);
   }, []);
   console.log(guestcart)
-  useEffect(() => {
-    const postGuestCartToUserCart = async () => {
-      try {
-        // Iterate over the guestcart array
-        while (guestcart.length > 0) {
-          const item = guestcart[0]; // Get the first item in the guestcart array
-    if(item.type==="purchase"){
-      const response = await fetch('http://localhost:4000/cart/editCart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `${token}`
-        },
-        body: JSON.stringify({
-          products: [
-            item.id,
-            item.quantity,
-            item.type,
-            item.height,
-            item.width,
-            item.material,
-            item.color,
-            item.startdate,
-            item.enddate
-          ]
-        }), 
-      });
-      if (response.ok) {
-        console.log(`Product with ID ${item.id} sent successfully.`);
-
-        guestcart.shift(); 
-        if (guestcart.length === 0) {
-          localStorage.removeItem("cart");
-          console.log("Guest cart emptied successfully.");
-        }
-      } else {
-        console.error(`Failed to send product with ID ${item.id}.`);
-        break;
-      }
-    }
-        else if (item.type==="rent"){
-          const response = await fetch('http://localhost:4000/cart/editrentCart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${token}`
-            },
-            body: JSON.stringify({
-              products: [
-                item.id,
-                
-                item.startdate,
-                item.enddate,
-                item.type
-              ]
-            }), 
-          });
-          if (response.ok) {
-            console.log(`Product with ID ${item.id} sent successfully.`);
-    
-            guestcart.shift(); 
-            if (guestcart.length === 0) {
-              localStorage.removeItem("cart");
-              console.log("Guest cart emptied successfully.");
-            }
-          } else {
-            console.error(`Failed to send product with ID ${item.id}.`);
-            break;
-          }
-        }  
-        else if (item.type==="Customization"){
-          const response = await fetch('http://localhost:4000/cart/editcustomizeCart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${token}`
-            },
-            body: JSON.stringify({
-              products: [
-                item.id,
-                item.type,
-                item.height,
-                item.width,
-                item.material,
-                item.color
-
-              ]
-            }), 
-          });
-          if (response.ok) {
-            console.log(`Product with ID ${item.id} sent successfully.`);
-    
-            guestcart.shift(); 
-            if (guestcart.length === 0) {
-              localStorage.removeItem("cart");
-              console.log("Guest cart emptied successfully.");
-            }
-          } else {
-            console.error(`Failed to send product with ID ${item.id}.`);
-            break;
-          }
-        }  
-        }
-      } catch (error) {
-        console.error('Error posting guest cart to user cart:', error);
-      }
-    };
-    
-    postGuestCartToUserCart();
-  }, [guestcart, token]);
+ 
   useEffect(() => {
     fetch("http://localhost:4000/Wishlist/getWishlist", {
       headers: {
@@ -495,6 +388,169 @@ console.log("favitems: ", FavItemsData);
         setLoading(false);
       });
   }, [token]);
+  useEffect(() => {
+    const postGuestCartToUserCart = async () => {
+      try {
+        const cartResponse = await fetch("http://localhost:4000/cart/getCart", {
+          headers: {
+            Authorization: `${token}`,
+          },
+        });
+  
+        if (cartResponse.status === 401) {
+          console.log("Unauthorized");
+          window.location.href = "/Login";
+          return;
+        }
+  
+        if (!cartResponse.ok) {
+          console.log("An error occurred");
+          return;
+        }
+  
+        const cartData = await cartResponse.json();
+        console.log(cartData);
+        const cartinsideguestt = cartData.products;
+  
+        for (let i = 0; i < guestcart.length; i++) {
+          const item = guestcart[i];
+          console.log(item);
+          console.log("p");
+          console.log(item.id, "aaa");
+  
+          let isInCart = false;
+  
+          if (item.type === "purchase") {
+            isInCart = cartinsideguestt.some((cartItem: any) => cartItem.id === item.id);
+
+            if (isInCart) {
+              console.log("Product is already in the cart");
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              continue;
+            }
+  
+            const response = await fetch('http://localhost:4000/cart/editCart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+              },
+              body: JSON.stringify({
+                products: [
+                  item.id,
+                  item.quantity,
+                  item.type,
+                  item.height,
+                  item.width,
+                  item.material,
+                  item.color,
+                  item.startdate,
+                  item.enddate
+                ]
+              }),
+            });
+  
+            if (response.ok) {
+              console.log(`Product with ID ${item.id} sent successfully.`);
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              if (guestcart.length === 0) {
+                localStorage.removeItem("cart");
+                console.log("Guest cart emptied successfully.");
+              }
+            } else {
+              console.error(`Failed to send product with ID ${item.id}.`);
+              break;
+            }
+          } else if (item.type === "Customization") {
+            isInCart = cartinsideguestt.some((cartItem : any) => cartItem.id === item.id);
+  
+            if (isInCart) {
+              console.log("Product is already in the cart");
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              continue;
+            }
+  
+            const response = await fetch('http://localhost:4000/cart/editcustomizeCart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+              },
+              body: JSON.stringify({
+                products: [
+                  item.id,
+                  item.type,
+                  item.height,
+                  item.width,
+                  item.material,
+                  item.color
+                ]
+              }),
+            });
+  
+            if (response.ok) {
+              console.log(`Product with ID ${item.id} sent successfully.`);
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              if (guestcart.length === 0) {
+                localStorage.removeItem("cart");
+                console.log("Guest cart emptied successfully.");
+              }
+            } else {
+              console.error(`Failed to send product with ID ${item.id}.`);
+              break;
+            }
+          } else if (item.type === "rent") {
+            isInCart = cartinsideguestt.some((cartItem : any) => cartItem.id === item.id);
+  
+            if (isInCart) {
+              console.log("Product is already in the cart");
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              continue;
+            }
+  
+            const response = await fetch('http://localhost:4000/cart/editrentCart', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`
+              },
+              body: JSON.stringify({
+                products: [
+                  item.id,
+                  item.type,
+                  item.startdate,
+                  item.enddate
+                ]
+              }),
+            });
+  
+            if (response.ok) {
+              console.log(`Product with ID ${item.id} sent successfully.`);
+              guestcart.shift();
+              i--; // Adjust index after removing the item
+              if (guestcart.length === 0) {
+                localStorage.removeItem("cart");
+                console.log("Guest cart emptied successfully.");
+              }
+            } else {
+              console.error(`Failed to send product with ID ${item.id}.`);
+              break;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error posting guest cart to user cart:', error);
+      }
+    };
+  
+    postGuestCartToUserCart();
+  }, [guestcart, token]);
+  
   const filteredTopOffers = TopOffers.filter((toy: any) =>
     toy.TopOffersName.toLowerCase().includes(searchQuery.toLowerCase())
 );
