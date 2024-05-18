@@ -18,16 +18,16 @@ export default function Footer() {
         <div className='social-media'>
           <span>Get connected with us on social networks:</span>
 <div className='social-media-icons'>
-          <a href='https://www.instagram.com/ibr14060/' className='me-4 text-reset'>
+          <a href='' className='me-4 text-reset'>
             <FaInstagram className="instagram-icon" />
           </a>
-          <a href='https://www.instagram.com/ibr14060/' className='me-4 text-reset'>
+          <a href='' className='me-4 text-reset'>
           <FaFacebook className="facebook-icon"/>
           </a>
-          <a href='https://twitter.com/ibr14060' className='me-4 text-reset'>
+          <a href='' className='me-4 text-reset'>
             <FaTwitter className="twitter-icon" />
           </a>
-          <a href='https://www.instagram.com/ibr14060/' className='me-4 text-reset'>
+          <a href='' className='me-4 text-reset'>
             <FaGoogle className='FaGoogle'/>
           </a>
 </div>
@@ -48,18 +48,18 @@ export default function Footer() {
             <MDBCol className='col'>
               <h6 >Products</h6>
               <p>
-              <Link href={`/category/3c019b6f-8787-46d2-b445-dcead15dd315/${token}`}>
-          category1
+              <Link href={`/GuestCategoryPage?categoryname=Plastic Pallets`}>
+          Plastic
         </Link>
               </p>
               <p>
-              <Link href={`/category/3dcd7c7e-415a-4f30-8dbb-985d0dc923c4/${token}`}>
-          category2
+              <Link href={`/GuestCategoryPage?categoryname=Wood Pallets`}>
+          Wood
         </Link>
               </p>
               <p>
-              <Link href={`/category/83d5155b-d2b3-4b36-829e-b2042476f76d/${token}`}>
-          category3
+              <Link href={`/GuestCategoryPage?categoryname=Stainless steel Pallets`}>
+              Stainless Steel
         </Link>
               </p>
 

@@ -53,7 +53,7 @@ export class IdentityService {
     }
     
     async sendVerificationEmail(email : string, password : string, firstName : string, lastName : string, phoneNumber : string, address : string, company : string, username : string): Promise<void> {
-        const verificationLink = `http://localhost:3001/verify-email?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}&phoneNumber=${phoneNumber}&address=${address}&company=${company}&username=${username}`;
+        const verificationLink = `http://localhost:3000/verify-email?email=${email}&password=${password}&firstName=${firstName}&lastName=${lastName}&phoneNumber=${phoneNumber}&address=${address}&company=${company}&username=${username}`;
 
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -126,7 +126,7 @@ async getuserbyid(id:string){
             throw new Error("User not found");
         }
         const newPassword = Math.random().toString(36).slice(-8);
-        const verificationLink = `http://localhost:3001/reset-email-password?email=${email}`;
+        const verificationLink = `http://localhost:3000/reset-email-password?email=${email}`;
 
         await this.sendResetPasswordEmail(email, verificationLink);
         const payload = {

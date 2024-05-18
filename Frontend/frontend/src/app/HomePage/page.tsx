@@ -12,11 +12,16 @@ import { faHeart as farHeart, faHeart as fasHeart } from "@fortawesome/free-regu
 
 
 
-const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string , toggleWishlist: () => void ,toggleFavItems :() => void}) => {
+const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token,CArtDAta, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string ,CArtDAta: any, toggleWishlist: () => void ,toggleFavItems :() => void}) => {
   
 
   const handlecart = async () => {
     try {
+      if (CArtDAta.some((item: any) => item.id === product._id)) {
+        console.log("Product is already in the cart");
+        alert("Product is already in the cart")
+        return;
+      }
       console.log("product id: ", product._id);
       const response = await fetch('http://localhost:4000/cart/editCart', {
         method: 'POST',
@@ -116,13 +121,18 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishli
 
 //////////////////////////////////////////////
 
-const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string , toggleWishlist: () => void ,toggleFavItems :() => void}) => {
+const ProductCard = ({ product, isInWishlist ,isInFavItems,token,CArtDAta, toggleWishlist ,toggleFavItems}: { product: any, isInWishlist: boolean,isInFavItems:boolean, token : string ,CArtDAta:any, toggleWishlist: () => void ,toggleFavItems :() => void}) => {
   
  
   const handlecart = async () => {
     try {
+      if (CArtDAta.some((item: any) => item.id === product._id)) {
+        console.log("Product is already in the cart");
+        alert("Product is already in the cart")
+        return;
+      }
       console.log("product id: ", product._id);
-      
+
       const response = await fetch('http://localhost:4000/cart/editCart', {
         method: 'POST',
         headers: {
@@ -141,6 +151,7 @@ const ProductCard = ({ product, isInWishlist ,isInFavItems,token, toggleWishlist
       } else {
         const data = await response.json();
         console.log(data);
+        alert("Product is added to your cart")
       }
     } catch (error) {
       console.error('Error adding product to cart:', error);
@@ -224,6 +235,7 @@ const HomePage: React.FC = () => {
   const [error, setError] = useState(null);
   const token = searchParams.get("token") ?? "";
   const [wishlistData, setWishlistData] = useState<string[]>([]);
+  const [CArtDAta, setCArtDAta] = useState<string[]>([]);
   const [FavItemsData, setFavItemsData] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [guestcart, setGuestCart] = useState<any[]>([]);
@@ -366,6 +378,32 @@ const HomePage: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error fetching wishlist data:", error);
+      });
+  }, [token]);
+  useEffect(() => {
+    fetch("http://localhost:4000/cart/getCart", {
+      headers: {
+        Authorization: `${token}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          console.log("Unauthorized");
+          window.location.href = "/Login";
+          return [];
+        }
+        if (!res.ok) {
+          console.log("An error occurred");
+          return [];
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCArtDAta(data.products); // Set the wishlist data
+      })
+      .catch((error) => {
+        console.error("Error fetching setCArtDAta data:", error);
       });
   }, [token]);
   useEffect(() => {
@@ -572,6 +610,7 @@ console.log("favitems: ", FavItemsData);
            isInWishlist={wishlistData.some((item: any) => item.id === product._id)}
            isInFavItems={FavItemsData.some((item: any) => item.id === product._id)}  // Check if product is in wishlist
            token={token} 
+           CArtDAta={CArtDAta}
            toggleWishlist={() => toggleWishlist(product._id)} 
            toggleFavItems={() => toggleFavItems(product._id)} 
                  />
@@ -606,6 +645,7 @@ console.log("favitems: ", FavItemsData);
             isInWishlist={wishlistData.some((item: any) => item.id === product._id)}
             isInFavItems={FavItemsData.some((item: any) => item.id === product._id)}  // Check if product is in wishlist
             token={token} 
+            CArtDAta={CArtDAta}
             toggleWishlist={() => toggleWishlist(product._id)} 
             toggleFavItems={() => toggleFavItems(product._id)} 
                   />

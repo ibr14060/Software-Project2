@@ -176,6 +176,8 @@ const HomePage: React.FC = () => {
         );
       } else {
         updatedCart = [...prevCart, product];
+        alert("Product is added to your cart")
+
       }
       localStorage.setItem("cart", JSON.stringify(updatedCart));
       console.log(updatedCart);
