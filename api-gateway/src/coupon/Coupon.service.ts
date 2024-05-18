@@ -59,12 +59,11 @@ public addpayment(token: string, data: any): Promise<any> {
     });
 }
 
-public getCouponById(token:string ,couponId:string): Promise<any> {
+public getCouponById(couponId:string): Promise<any> {
    
     return new Promise((resolve, reject) => {
-       console.log("id in token:", token)
     
-        this.CouponClient.send('getCouponById',  {token ,couponId}).subscribe({
+        this.CouponClient.send('getCouponById',  {couponId}).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data); 

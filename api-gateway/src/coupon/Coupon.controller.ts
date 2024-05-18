@@ -25,9 +25,9 @@ export class CouponController implements OnModuleInit {
 
 
     @Get('getCoupon/:id') 
-    async getCouponById(@Headers('authorization') token: string, @Param('id') couponId: string){
+    async getCouponById(@Param('id') couponId: string){
         //console.log(id); // Access the 'id' directly from the route parameters
-        return this.CouponService.getCouponById(token,couponId);
+        return this.CouponService.getCouponById(couponId);
     }
 
     @Post('editCoupon') 

@@ -24,7 +24,7 @@ export class CouponController {
     async getCoupon(command) {
         try {
 
-             const products = await this.CouponService.getCoupon(command.token,command.couponId);
+             const products = await this.CouponService.getCoupon(command.couponId);
             return products;
         } catch (error) {
             console.error("Error fetching users:", error);

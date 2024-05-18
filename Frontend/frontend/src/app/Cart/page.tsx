@@ -50,9 +50,7 @@ window.location.reload();
         console.log("coupon");
         const response = await fetch(`http://localhost:4000/coupon/getCoupon/${coupon}`, {
           method: 'GET',
-          headers: {
-            Authorization: `${token}`
-          }
+
         });
         console.log(response.status);
         console.log(response);

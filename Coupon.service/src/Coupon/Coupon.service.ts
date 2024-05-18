@@ -35,10 +35,10 @@ export class CouponService {
         return await newProduct.save();
     }
 
-    async getCoupon(token:string ,couponId:string): Promise<string> {
-        this.validateToken(token);
-        const userID = this.validateTokenAndGetUserID(token);
-        console.log("Called with :", token);
+    async getCoupon(couponId:string): Promise<string> {
+     
+        
+     
         console.log("Called with coupon :", couponId);
         const coupon = await this.CouponModel.findOne({ name: couponId }).exec(); 
         if(!coupon){

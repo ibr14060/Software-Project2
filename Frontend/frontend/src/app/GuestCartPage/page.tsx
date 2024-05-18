@@ -5,7 +5,7 @@ import "./globals.css";
 import Navbar from "../GuestNavBar/page";
 import FooterComponent from "../Footer/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSignIn, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Cart: React.FC = () => {
   const [products, setProducts] = useState([]);
@@ -164,6 +164,10 @@ const calculateRentTotal = (product: any) => {
      
         return days;
     };
+  
+    const handlelogin = async () => {
+        window.location.href = `/Login`;
+      }
   return (
     <div className="CartPage">
     <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -283,7 +287,7 @@ const calculateRentTotal = (product: any) => {
       <input type="text" placeholder="Enter Coupon Code" className="coupon"  onChange={(e) => setCoupon(e.target.value)}/>
       <button className="applybtn" type="button" onClick={handlecoupon}>Apply</button>
 
-        <button className="checkoutbtn" type="button">Checkout</button>
+        <button className="checkoutbtn" type="button">Login To Checkout <FontAwesomeIcon icon={faSignIn} onClick={handlelogin} /></button>
 
       </div>
     </main>
