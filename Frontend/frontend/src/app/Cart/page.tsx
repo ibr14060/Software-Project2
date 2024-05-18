@@ -239,8 +239,27 @@ window.location.reload();
 console.log("productinfos: ", productinfo);
   console.log("token: ", token);
   console.log("products: ", products);
-  
-  
+  const handleCheckout = async () => {
+    const items = productdata.map(product => ({
+      id: product._id,
+      type: product.type,
+      quantity: product.quantity,
+      price: product.ProductPrice,
+      startdate: product.startdate,
+      enddate: product.enddate,
+      color: product.color,
+      material: product.material,
+      height: product.height,
+      width: product.width
+      
+    }));
+    const query = new URLSearchParams({
+      token,
+      coupon,
+      items: JSON.stringify(items)
+    }).toString();
+    window.location.href = `/OrderPage?${query}`;
+  };
   return (
     <div className="CartPage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
@@ -360,7 +379,7 @@ console.log("productinfos: ", productinfo);
         <input type="text" placeholder="Enter Coupon Code" className="coupon"  onChange={(e) => setCoupon(e.target.value)}/>
         <button className="applybtn" type="button" onClick={handlecoupon}>Apply</button>
 
-          <button className="checkoutbtn" type="button">Checkout</button>
+          <button className="checkoutbtn" type="button" onClick={handleCheckout}>Checkout</button>
 
         </div>
       </main>

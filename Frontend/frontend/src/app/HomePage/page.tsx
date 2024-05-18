@@ -236,7 +236,6 @@ const HomePage: React.FC = () => {
   const token = searchParams.get("token") ?? "";
   const [wishlistData, setWishlistData] = useState<string[]>([]);
   const [CArtDAta, setCArtDAta] = useState<string[]>([]);
-  const [cartinsideguest, setcartinsideguest] = useState<string[]>([]);
   const [FavItemsData, setFavItemsData] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [guestcart, setGuestCart] = useState<any[]>([]);

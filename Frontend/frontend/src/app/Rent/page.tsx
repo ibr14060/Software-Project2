@@ -142,7 +142,7 @@ const ProductPage = () => {
   
 
   console.log("ProductsReview data:", ProductsReview);
-  const handlecart = async () => {
+  const handleCart = async (product : any) => {
     try {
       console.log("product id: ", id);
       const response = await fetch('http://localhost:4000/cart/editrentCart', {
@@ -151,7 +151,7 @@ const ProductPage = () => {
           'Content-Type': 'application/json',
           'Authorization': `${token}`
         },
-        body: JSON.stringify({ products: [`${id}`, startDate,endDate,"rent"] }), 
+        body: JSON.stringify({ products: [`${id}`,product.startdate,product.enddate,"rent" ] }), 
       });
   
       // Handle response
@@ -179,31 +179,36 @@ const ProductPage = () => {
         console.error('Error copying URL to clipboard:', error);
       });
   };
-const handledateformonth = () => {
-  const start = new Date();
-  const end = new Date();
-  end.setMonth(end.getMonth() + 1);
-  setStartDate(start);
-  setEndDate(end);
-  handlecart()
-}
-const handledatefor3month = () => {
-  const start = new Date();
-  const end = new Date();
-  end.setMonth(end.getMonth() + 3);
-  setStartDate(start);
-  setEndDate(end);
-  handlecart()
-}
-const handledatefor6month = () => {
-  const start = new Date();
-  const end = new Date();
-  end.setMonth(end.getMonth() + 6);
-  setStartDate(start);
-  setEndDate(end);
-  handlecart()
-}
+  const handledateformonth = () => {
+    const start = new Date();
+    const end = new Date();
+    end.setMonth(start.getMonth() + 1);
+    setStartDate(start);
+    setEndDate(end);
+    handleCart({ id: `${id}`, type: "rent" ,startdate : start ,enddate:end});
+  };
 
+  const handledatefor3month = () => {
+    const start = new Date();
+    const end = new Date();
+    end.setMonth(start.getMonth() + 3);
+    setStartDate(start);
+    setEndDate(end);
+    handleCart({ id: `${id}`, type: "rent" ,startdate : start ,enddate:end});
+  };
+
+  const handledatefor6month = () => {
+    const start = new Date();
+    const end = new Date();
+    end.setMonth(start.getMonth() + 6);
+    setStartDate(start);
+    setEndDate(end);
+    handleCart({ id: `${id}`, type: "rent" ,startdate : start ,enddate:end});
+
+  };
+  const handleAddToCart = () => {
+    handleCart({ id: `${id}`, startdate: startDate , enddate: endDate,type:"rent"});
+  };
 
   return (
     <div className="ProductPage">
@@ -296,7 +301,7 @@ const handledatefor6month = () => {
             className="date-picker"
 
           />
-          <button className="add-to-cart-button" onClick={handlecart}>Add to Cart</button>
+          <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
         </div>
         </div>
     </>
