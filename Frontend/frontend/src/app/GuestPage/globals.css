@@ -383,6 +383,13 @@ li {
   margin-top: 10px;
 }
 
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 15px;
+}
+
 .add-to-cart-button {
   background-color: #991e66;
   color: white;

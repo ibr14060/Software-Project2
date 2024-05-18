@@ -19,6 +19,9 @@ const TopOffersCard = ({ product, isInWishlist, isInFavItems, token, toggleWishl
     window.location.href = `/GuestRent?id=${product._id}`;
   };
 
+  const handlecustomize = async () => {
+    window.location.href = `/GuestCustomization?id=${product._id}`;
+  }
   return (
     <div className="product-card">
       <div className="product-image-container">
@@ -43,6 +46,8 @@ const TopOffersCard = ({ product, isInWishlist, isInFavItems, token, toggleWishl
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
+          <button className="rent-button" onClick={handlecustomize}>Customize</button>
+
         </div>
       </div>
     </div>
@@ -58,7 +63,9 @@ const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart 
     window.location.href = `/GuestRent?id=${product._id}`;
   }
 
-
+  const handlecustomize = async () => {
+    window.location.href = `/GuestCustomization?id=${product._id}`;
+  }
 
   const stars = ["★★★★★", "★★★★", "★★★", "★★★★★", "★★★", "★★", "★", "★★★★★", "★★★★"];
   const numreview = [12, 98, 34, 33, 56, 75, 43, 26, 78, 66, 54, 78, 67, 254, 109];
@@ -81,6 +88,8 @@ const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart 
         <div className="buttons-container">
           <button className="add-to-cart-button" onClick={handleAddToCart}>Add to Cart</button>
           <button className="rent-button" onClick={handleRent}>Rent</button>
+          <button className="rent-button" onClick={handlecustomize}>Customize</button>
+
         </div>
         <div className="rating">
           <span className="stars">{stars[Math.floor(Math.random() * stars.length)]}</span>
