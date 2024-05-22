@@ -1,3 +1,7 @@
+html {
+    color: #F5EFE6;
+    background-color: #F5EFE6;
+}
 .logincontainer{
     display: flex;
     flex-direction: column;
@@ -8,6 +12,7 @@
 .logintitle{
     font-size: 150%;
     font-weight: 500;
+    color: #1A4D2E;
 }
 .email{
     width: 25%;
@@ -27,7 +32,7 @@
 }
 .loginPage{
     height: 100vh;
-    background-color: white;
+    background-color: #F5EFE6;
 }
 .email::placeholder,
 .password::placeholder {
@@ -39,7 +44,7 @@
 .login{
     width: 13%;
     color: white;
-    background-color: black;
+    background-color: #1A4D2E;
     margin-top: 2.5%;
     padding-top: 1%;
     padding-bottom: 1%;

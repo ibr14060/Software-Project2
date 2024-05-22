@@ -1,4 +1,8 @@
+html {
+    color: #F5EFE6;
+    background-color: #F5EFE6;
 
+}
 .signupcontainer{
     display: flex;
     flex-direction: column;
@@ -9,6 +13,7 @@
 .signuptitle{
     font-size: 150%;
     font-weight: 500;
+    color: #1A4D2E;
 }
 .email::placeholder,
 .Password::placeholder,
@@ -103,7 +108,7 @@
 .signup{
     width: 13%;
     color: white;
-    background-color: black;
+    background-color: #1A4D2E;
     margin-top: 2.5%;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -111,7 +116,7 @@
 }
 .signupPage{
     height: 100vb;
-    background-color: white;
+    background-color: #F5EFE6;
 }
 .popuperror-inner{
     display: flex;

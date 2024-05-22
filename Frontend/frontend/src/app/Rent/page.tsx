@@ -12,46 +12,6 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { faSalesforce } from "@fortawesome/free-brands-svg-icons";
 import { TbFlagDiscount } from "react-icons/tb";
-const RatingStars = ({ totalStars, onRatingChange }: { totalStars: number, onRatingChange: (rating: number) => void }) => {
-  const [rating, setRating] = useState(0);
-
-  const handleStarClick = (starIndex: number) => {
-    setRating(starIndex + 1);
-    onRatingChange(starIndex + 1);
-  };
-
-  return (
-    <div>
-      {[...Array(totalStars)].map((_, index) => (
-        <span key={index} onClick={() => handleStarClick(index)}>
-          {index < rating ? <FontAwesomeIcon icon={solidStar} /> : <FontAwesomeIcon icon={regularStar} />}
-        </span>
-      ))}
-    </div>
-  );
-};
-
-const CardRatingStars = ({ rating, totalStars }: { rating: number, totalStars: number }) => {
-  const filledStars = Math.floor(rating);
-  const emptyStars = totalStars - filledStars;
-  
-  const stars = [];
-  for (let i = 0; i < filledStars; i++) {
-    stars.push(<FontAwesomeIcon key={i} icon={solidStar} />);
-  }
-  for (let i = 0; i < emptyStars; i++) {
-    stars.push(<FontAwesomeIcon key={filledStars + i} icon={regularStar} />);
-  }
-  
-  return (
-    <div>
-      {stars.map((star, index) => (
-        <span key={index}>{star}</span>
-      ))}
-    </div>
-  );
-};
-
 const ProductPage = () => {
  
   const [product, setProduct] = useState<any[]>([]);

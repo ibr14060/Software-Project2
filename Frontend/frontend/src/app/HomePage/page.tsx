@@ -90,7 +90,7 @@ const TopOffersCard = ({ product, isInWishlist ,isInFavItems,token,CArtDAta, tog
   className={`add-to-favitems-button ${isInFavItems ? "selected" : ""}`}
   onClick={toggleFavItems}
 >
-<FontAwesomeIcon icon={isInFavItems ? faHeart : fasHeart } style={{ color: "red" }} />
+<FontAwesomeIcon icon={isInFavItems ? faHeart : fasHeart } style={{ color: "white" }} />
 </button>
         <button
           className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}
@@ -201,7 +201,7 @@ const ProductCard = ({ product, isInWishlist ,isInFavItems,token,CArtDAta, toggl
   className={`add-to-favitems-button ${isInFavItems ? "selected" : ""}`}
   onClick={toggleFavItems}
 >
-<FontAwesomeIcon icon={isInFavItems ? faHeart : fasHeart } style={{ color: "red" }} />
+<FontAwesomeIcon icon={isInFavItems ? faHeart : fasHeart } style={{ color: "white" }} />
 </button>
         <button
           className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`}

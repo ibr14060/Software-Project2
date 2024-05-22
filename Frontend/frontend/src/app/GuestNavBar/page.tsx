@@ -57,7 +57,7 @@ const GuestNavBar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolea
     <FontAwesomeIcon icon={faUser} className="profile-icon" />
   </Link>
   <Link
-    href={"/Signup"}
+    href={"/SignUp"}
   >
     <FontAwesomeIcon icon={faRegistered} className="profile-icon" />
   </Link>

@@ -78,7 +78,7 @@ export default function ForgetPassword() {
   return (
     <div className="ForgetPass">
         <div className="ForgetPass-inner">
-           <p>Enter your email to reset password</p>
+           <h3 className="enteryou">Enter your email to reset password</h3>
            <input className="email" type="email" id="email" name="email" placeholder="Email" onChange={(e) => setUsername(e.target.value)} >
 
            </input>

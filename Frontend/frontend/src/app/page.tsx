@@ -140,7 +140,7 @@ const FirstPage = () => {
             <span>A </span>
             <span>D </span>
             <span>I</span>
-            <span>C </span>
+            <span>S </span>
             <span>E </span>
 
         </h1>

@@ -7,6 +7,7 @@
   justify-content: space-around;
   padding: 20px;
   height: 100%;
+  background-color: #F5EFE6;
 }
 .mostselling{
   display: flex;
@@ -15,12 +16,13 @@
   padding: 20px;
   height: 100%;
   flex-direction: column;
+  background-color: #F5EFE6;
 }
 .h2{
   margin-top: 10%;
 }
 .product-card {
-  background-color: #fff4e9; /* Set the background color */
+  background-color: #4F6F52; /* Set the background color */
   border: 1px solid #ccc;
   border-radius: 8px;
   margin: 10px;
@@ -68,8 +70,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #991e66;
-  color: white;
+  background-color: #E8DFCA;
+  color: black;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -110,7 +112,7 @@
 
 .mostsellingproduct-card {
   flex: 0 0 270px; 
-  background-color: #fff4e9;
+  background-color: #4F6F52;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -360,6 +362,7 @@ li {
   flex-direction: column;
   padding: 15px;
   text-align: center;  
+  color: #E8DFCA;
 }
 
 .product-details h2 {
@@ -391,28 +394,31 @@ li {
 }
 
 .add-to-cart-button {
-  background-color: #991e66;
-  color: white;
+  background-color: #E8DFCA;
+  color: black;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+  box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
   transition: box-shadow 0.3s ease;
 }
 .rent-button{
-  background-color: #991e66;
+  background-color: #E8DFCA;
   width: 40%;
-  color: white;
+  color: black;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+  box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
   transition: box-shadow 0.3s ease;
 }
 .add-to-cart-button:hover {
-  box-shadow: 0 0 10px rgba(219, 52, 144, 0.8); /* Increase glow on hover */
+  box-shadow: 0 0 10px #161a30; /* Increase glow on hover */
+}
+.rent-button:hover {
+  box-shadow: 0 0 10px #161a30; /* Increase glow on hover */
 }
 .homepage{
   background-color: white;

@@ -58,6 +58,12 @@ table {
 
 
   }
+  .title{
+    margin-top: 2%;
+    margin-bottom: 6%;
+    color: #1A4D2E;
+  
+  }
 .edit{
   background-color: #fff4e9;
   border: none;

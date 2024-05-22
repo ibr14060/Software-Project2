@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color:#991e66;
+  background-color:#1A4D2E;
   position: relative; /* Add position relative */
   z-index: 1; /* Ensure navbar stays above other content */
 }
@@ -14,7 +14,7 @@
   position: absolute; /* Change position to absolute */
   top: calc(60% + 1px); /* Position the dropdown below the navbar */
 
-  background-color: #991e66; /* Darker color */
+  background-color: #1A4D2E; /* Darker color */
   list-style: none;
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

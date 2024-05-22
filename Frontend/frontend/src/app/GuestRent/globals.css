@@ -34,18 +34,18 @@
     flex-direction: row;
   }
   .add-to-cart-button {
-    background-color: #991e66;
+    background-color: #1A4D2E;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
     transition: box-shadow 0.3s ease;
   }
   
   .add-to-cart-button:hover {
-    box-shadow: 0 0 10px rgba(219, 52, 144, 0.8); /* Increase glow on hover */
+    box-shadow: 0 0 10px black; /* Increase glow on hover */
   }
   .productboddy{
     display: flex;
@@ -70,15 +70,18 @@
     gap: 20px;
   }
   .copybut{
-    background-color:#991e66;
+    background-color:#1A4D2E;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
     transition: box-shadow 0.3s ease;
     margin-top: 15%;
   
+  }
+  .copybut:hover{
+    box-shadow: 0 0 10px black; /* Increase glow on hover */
   }
   .profile-icon{
     color: black;
@@ -93,7 +96,7 @@
   
   }
   .add-review-button{
-    background-color: #991e66;
+    background-color: #1A4D2E;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -112,7 +115,7 @@
     flex-direction: column;
     margin-top: 2%;
     margin-left: 2%;
-    border: 1px solid #991e66;
+    border: 1px solid #1A4D2E;
     border-radius: 8px;
     padding: 10px;
     max-height: 500px; /* Adjust the max-height as needed */
@@ -191,7 +194,7 @@
     flex-direction: column;
     margin-top: 2%;
     margin-left: 2%;
-    border: 3px solid #991e66;
+    border: 3px solid #4F6F52;
     box-shadow: #777777;
     border-radius: 8px;
     padding: 10px;

@@ -14,7 +14,7 @@ const ProductCard = ({ product, isInWishlist ,token, handleCart}: { product: any
     handleCart({ id: product._id, name: product.TopOffersName, image: product.TopOffersImage, price: product.TopOffersPrice, quantity: 1,type:"purchase" });
   };
   const handleRent = async () => {
-    window.location.href = `/Rent?id=${product._id}&token=${token}`;
+    window.location.href = `/GuestRent?id=${product._id}`;
   }
   const handlecustomize = async () => {
     window.location.href = `/GuestCustomization?id=${product._id}`;
