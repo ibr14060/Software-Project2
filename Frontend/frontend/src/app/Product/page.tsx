@@ -264,7 +264,7 @@ const ProductPage = () => {
           )}
         
     <div className="ProductReviewHeader">
-      <h2>Reviews</h2>
+      <h2 className="gerrge">Reviews</h2>
       <button className="add-review-button"onClick={handleAddReviewClick} ><FontAwesomeIcon icon={faAdd} className="profile-icon" />
 </button>
 </div>

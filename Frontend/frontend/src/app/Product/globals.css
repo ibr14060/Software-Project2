@@ -61,6 +61,7 @@
   .ProductTitle{
     font-size: 250%;
     margin-bottom: 0%;
+    color: #1A4D2E;
   }
   .ProductCategory{
     white-space: nowrap;
@@ -74,15 +75,18 @@
     gap: 20px;
   }
   .copybut{
-    background-color:#991e66;
+    background-color:#1A4D2E;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
     transition: box-shadow 0.3s ease;
     margin-top: 15%;
 
+  }
+  .gerrge{
+    color: #1A4D2E;
   }
   .profile-icon{
     color: black;
@@ -97,13 +101,13 @@
 
   }
   .add-review-button{
-    background-color: #991e66;
+    background-color: #1A4D2E;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 5px rgba(245, 0, 122, 0.6); /* Adjust the spread (third value) for a softer glow */
+    box-shadow: 0 0 5px white; /* Adjust the spread (third value) for a softer glow */
     transition: box-shadow 0.3s ease;
   }
   .ProductReviewHeader{
