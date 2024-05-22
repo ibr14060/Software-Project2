@@ -22,5 +22,7 @@ export const Orderschema = new mongoose.Schema({
    address: String,
    phone: String,
    email: String,
+   paymentMethod: String,
+   Date: { type: Date, default: Date.now }
 
 });
