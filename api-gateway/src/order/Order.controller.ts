@@ -27,10 +27,23 @@ export class OrderController implements OnModuleInit {
         return this.orderService.getOrder(token);
     }
 
+
     @Post('editOrder') 
     async editOrder(@Headers('authorization') token: string, @Request() req) {
         console.log(req.body);
-        return this.orderService.editOrder(token , req.body); // Pass 'id' as a parameter
+        return this.orderService.editOrder(token, req.body); // Pass 'id' as a parameter
+    }
+
+    @Post('editrentOrder')
+    async editrentOrder(@Headers('authorization') token: string, @Request() req) {
+        console.log(req.body);
+        return this.orderService.editrentOrder(token, req.body); // Pass 'id' as a parameter
+    }
+    
+    @Post('editcustomizeOrder')
+    async editcustomizeOrder(@Headers('authorization') token: string, @Request() req) {
+        console.log(req.body);
+        return this.orderService.editcustomizeOrder(token, req.body); // Pass 'id' as a parameter
     }
     
     // For deleteProduct endpoint
@@ -45,6 +58,8 @@ export class OrderController implements OnModuleInit {
         this.OrderClient.subscribeToResponseOf('createOrder');
         this.OrderClient.subscribeToResponseOf('getOrder');
         this.OrderClient.subscribeToResponseOf('editOrder');
+        this.OrderClient.subscribeToResponseOf('editrentOrder');
+        this.OrderClient.subscribeToResponseOf('editcustomizeOrder');
         this.OrderClient.subscribeToResponseOf('deleteOrder');
     }
 }

@@ -50,14 +50,38 @@ export class OrderService {
         return this.orderModel.updateOne({ UserID: userID }, { $set: { products: [] } }).exec();
     }
 
-    async editOrder(token: string, EditOrderDto: EditOrderDto): Promise<Order> {
-      
+
+    async editOrder(token: string, id: string, newQuantity: number ,type:string): Promise<Order> {
         this.validateToken(token);
-        const OrderId = this.validateTokenAndGetUserID(token);
-        return await this.orderModel.findOneAndUpdate({ UserID: OrderId }, EditOrderDto, { new: true });
-
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, quantity: newQuantity ,type:type}; // Construct as an object
+        return await this.orderModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
     }
-
+    async editrentOrder(token: string, id: string, startdate: Date ,enddate: Date ,type:string): Promise<Order> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, startdate: startdate ,enddate:enddate ,type:type}; // Construct as an object
+        return await this.orderModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
+    }
+    
+    async editcustomizeOrder(token: string, id: string,color :string,material:string,height:string,width:string,type:string,quantity:number): Promise<Order> {
+        this.validateToken(token);
+        const userID = this.validateTokenAndGetUserID(token);
+        const newProductItem = { id: id, color: color ,material:material ,height:height,width:width,type:type,quantity:quantity}; // Construct as an object
+        return await this.orderModel.findOneAndUpdate(
+            { UserID: userID },
+            { $push: { products: newProductItem } },
+            { new: true, upsert: true }
+        );
+    }
     async deleteOrder(token: string): Promise<any> {
         try {
             this.validateToken(token);

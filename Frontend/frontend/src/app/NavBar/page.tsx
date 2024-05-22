@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faHeart, faStar, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHeart, faHome, faStar, faUser } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, setSearchQuery: Function ,token :string}) => {
@@ -57,6 +57,11 @@ const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, se
                 href={`/Wishlist?token=${token}`}
               >
                 <FontAwesomeIcon icon={faStar} className="wishlist-icon" />
+              </Link>
+              <Link
+                href={`/HomePage?token=${token}`}
+              >
+                <FontAwesomeIcon icon={faHome} className="home-icon" />
               </Link>
             </li>
 
@@ -115,6 +120,11 @@ const Navbar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolean, se
         >
           <FontAwesomeIcon icon={faHeart} className="heart-icon" />
         </Link>
+        <Link
+                href={`/HomePage?token=${token}`}
+              >
+                <FontAwesomeIcon icon={faHome} className="home-icon" />
+              </Link>
       </div>
     </nav>
   );

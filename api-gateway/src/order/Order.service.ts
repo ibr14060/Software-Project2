@@ -65,11 +65,46 @@ public getOrder(token:string): Promise<any> {
 
 
 // Adjust the return type to Promise<any>
-public editOrder(token:string, data: any): Promise<any> {
+
+public editOrder(token: string, data: any): Promise<any> {
        
     return new Promise((resolve, reject) => {
-          // const command = `${id},${token}`
+           
         this.orderClient.send('editOrder', { token, body: data }).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+
+public editrentOrder(token: string, data: any): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.orderClient.send('editrentOrder', { token, body: data }).subscribe({
+            next: (data) => {
+                console.log("Data received:", data);
+                resolve(data);   
+            },
+            error: (error) => {
+                console.error("Error:", error);
+                reject(new HttpException(error, HttpStatus.CONFLICT)); // Reject the promise with status code 409
+            }
+        });
+    });
+}
+
+public editcustomizeOrder(token: string, data: any): Promise<any> {
+       
+    return new Promise((resolve, reject) => {
+           
+        this.orderClient.send('editcustomizeOrder', { token, body: data }).subscribe({
             next: (data) => {
                 console.log("Data received:", data);
                 resolve(data);   

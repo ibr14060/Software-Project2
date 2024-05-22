@@ -33,10 +33,40 @@ export class OrderController {
         }
     }
     
+
+
     @MessagePattern('editOrder')
     async editOrder(command) {
         console.log(command);
-        return this.orderService.editOrder(command.token, command.body);
+        console.log("token"+ command.token);
+        const quantity = command.body.products[1];
+        const id = command.body.products[0];
+        const type = command.body.products[2];
+        return this.orderService.editOrder(command.token, id,quantity,type);
+    }
+    
+    @MessagePattern('editrentOrder')
+    async editrentOrder(command) {
+        console.log(command);
+        console.log("token"+ command.token);
+        const startdate = command.body.products[1];
+        const id = command.body.products[0];
+        const enddate = command.body.products[2];
+        const type = command.body.products[3];
+        return this.orderService.editrentOrder(command.token, id,startdate,enddate,type);
+    }
+    @MessagePattern('editcustomizeOrder')
+    async editcustomizeOrder(command) {
+        console.log(command);
+        console.log("token"+ command.token);
+        const color = command.body.products[1];
+        const id = command.body.products[0];
+        const material = command.body.products[2];
+        const height = command.body.products[3];
+        const width = command.body.products[4];
+        const type = command.body.products[5];
+        const quantity = command.body.products[6];
+        return this.orderService.editcustomizeOrder(command.token, id,color,material,height,width,type,quantity);
     }
 
     @MessagePattern('deleteOrder')

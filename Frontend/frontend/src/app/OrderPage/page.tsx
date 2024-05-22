@@ -9,43 +9,155 @@ import { faCreditCard, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faCcMastercard, faPaypal } from "@fortawesome/free-brands-svg-icons";
 
 const Cart: React.FC = () => {
-  const [productdata, setProductData] = useState<any[]>([]);
+  const [productData, setProductData] = useState<any[]>([]);
   const searchParams = useSearchParams();
   const [isLoading, setLoading] = useState(true);
   const token = searchParams.get("token") ?? "";
   const coupon = searchParams.get("coupon") ?? "";
   const [discountedTotalPrice, setDiscountedTotalPrice] = useState<number | null>(null);
   const [couponApplied, setCouponApplied] = useState(false);
-  const [tot, setTot] = useState(0);
+  const [total, setTotal] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [profile, setProfile] = useState([]);
-  const [Address, setAddress] = useState<any[]>([]);
-  const [Payment, setPayment] = useState<any[]>([]);
+  const [address, setAddress] = useState<any[]>([]);
+  const [payment, setPayment] = useState<any[]>([]);
   const [selectedPayment, setSelectedPayment] = useState<string>("");
   const [selectedAddress, setSelectedAddress] = useState<string>("");
 
+  const handlecheckout = async () => {
+    try {
+      for (let i = 0; i < productData.length; i++) {
+        const item = productData[i];
+        console.log(item);
+        console.log("p");
+        console.log(item.id, "aaa");
+
+      if (item.type === 'purchase') {
+      console.log("product id: ", item._id);
+
+      const response = await fetch('http://localhost:4000/Order/editOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({
+          products: [
+            item.id,
+            item.quantity,
+            item.type,
+            item.height,
+            item.width,
+            item.material,
+            item.color,
+            item.startdate,
+            item.enddate
+          ]
+        }),
+            });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+        alert("Product is added to your cart")
+      }
+    }
+    else if (item.type === 'rent') {
+      console.log("product id: ", item._id);
+
+      const response = await fetch('http://localhost:4000/Order/editrentOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({
+          products: [
+            item.id,
+            item.type,
+            item.startdate,
+            item.enddate
+          ]
+        }), 
+            });
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+        alert("Product is added to your cart")
+      }
+    }
+    else if (item.type === 'Customization') {
+      console.log("product id: ", item._id);
+
+      const response = await fetch('http://localhost:4000/Order/editcustomizeOrder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify({
+          products: [
+            item.id,
+            item.type,
+            item.height,
+            item.width,
+            item.material,
+            item.color
+          ]
+        }), 
+      });
+  
+  
+      // Handle response
+      if (!response.ok) {
+        console.error('Adding failed');
+        if(response.status === 409) {
+        //  window.location.href = '/Login';
+        }
+      } else {
+        const data = await response.json();
+        console.log(data);
+        alert("Product is added to your cart")
+      }
+    }
+  }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  
+  };
 
 
-  const calculateTotalforcustomizationPrice = () => {
+  const calculateTotalForCustomizationPrice = () => {
     let totalPrice = 0;
 
-    productdata.forEach((product) => {
+    productData.forEach((product) => {
       if (product.type === 'Customization') {
         let price = product.ProductPrice;
 
-        // Apply logic based on color
         if (product.color) {
           price *= 1.3; // Multiply by 1.3 if there is a color
         }
 
-        // Apply logic based on height
         if (product.height === '40') {
           price *= 1.2; // Multiply by 1.2 if height is 40
         } else if (product.height === '50') {
           price *= 1.5; // Multiply by 1.5 if height is 50
         }
 
-        // Apply logic based on material
         switch (product.material) {
           case 'Wood':
             price *= 1.3; // Multiply by 1.3 if material is wood
@@ -63,56 +175,41 @@ const Cart: React.FC = () => {
 
     return Number(totalPrice.toFixed(2)); // Return totalPrice as a number
   };
-console.log("calculateTotalforcustomizationPrice",calculateTotalforcustomizationPrice());
+
   const calculateTotalPrice = () => {
     let purchaseTotal = 0;
     let rentTotal = 0;
-    let customizationTotal = 0;
+    let customizationTotal = calculateTotalForCustomizationPrice();
 
-    productdata.forEach((product) => {
+    productData.forEach((product) => {
       if (product.type === 'purchase') {
         purchaseTotal += product.ProductPrice * product.quantity;
-
       } else if (product.type === 'rent') {
         const days = (new Date(product.enddate).getTime() - new Date(product.startdate).getTime()) / (1000 * 60 * 60 * 24);
         rentTotal += days * (product.ProductPrice / 300);
-
-      } else if (product.type === 'Customization') {
-        customizationTotal = calculateTotalforcustomizationPrice(); // Calculate the total price for customization products
       }
     });
-  setTot(Number(purchaseTotal + rentTotal + customizationTotal));
-    return Number((purchaseTotal + rentTotal + customizationTotal).toFixed(2));
+
+    const total = purchaseTotal + rentTotal + customizationTotal;
+    return Number(total.toFixed(2));
   };
 
-  useEffect(() => {
-   
-    const totalPrice = tot;
-    if (coupon) {
-      handlecoupon();
-    } else {
-      setDiscountedTotalPrice(totalPrice);
-    }
-  }, [tot, coupon]);
-  
-  // Remove the calculation of total price from the handlecoupon function
-  const handlecoupon = async () => {
+  const handleCoupon = async (totalPrice: number) => {
     try {
       const response = await fetch(`http://localhost:4000/coupon/getCoupon/${coupon}`, {
         method: 'GET',
       });
-  
+
       const responseData = await response.json();
       if (responseData.statusCode === 500) {
         console.log("Coupon wrong ");
       } else {
         if (!couponApplied) {
           const discountPercentage = responseData.value;
-          const discountAmount = calculateTotalPrice() * (discountPercentage / 100);
-          let totalPrice = tot;
-          totalPrice -= discountAmount;
-          totalPrice = Number(totalPrice.toFixed(2));
-          setDiscountedTotalPrice(totalPrice);
+          const discountAmount = totalPrice * (discountPercentage / 100);
+          let discountedPrice = totalPrice - discountAmount;
+          discountedPrice = Number(discountedPrice.toFixed(2));
+          setDiscountedTotalPrice(discountedPrice);
           setCouponApplied(true);
         }
       }
@@ -120,8 +217,7 @@ console.log("calculateTotalforcustomizationPrice",calculateTotalforcustomization
       console.error('Error fetching data:', error);
     }
   };
-    console.log(discountedTotalPrice,'discountedTotalPrice');
-console.log(couponApplied,'couponApplied');
+
   useEffect(() => {
     const items = JSON.parse(decodeURIComponent(searchParams.get("items") || "[]"));
 
@@ -162,7 +258,6 @@ console.log(couponApplied,'couponApplied');
     loadProducts();
   }, [token, searchParams]);
 
-
   useEffect(() => {
     fetch("http://localhost:4000/profile/getprofile", {
       headers: {
@@ -187,69 +282,42 @@ console.log(couponApplied,'couponApplied');
         setPayment(data.Payment);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching profile:", error);
       })
       .finally(() => setLoading(false));
-  }, [token ,tot]);
+  }, [token]);
 
+  useEffect(() => {
+    if (productData.length > 0) {
+      const totalPrice = calculateTotalPrice();
+      if (coupon) {
+        handleCoupon(totalPrice);
+      } else {
+        setDiscountedTotalPrice(totalPrice);
+      }
+      setTotal(totalPrice);
+    }
+  }, [productData, coupon]);
 
-  const labels = ["Home", "Work", "Other" ,"Other","Other" ,"Other" ,"Other" ,"Other" ,"Other"]; // Add more labels as needed
-    
-  
+  const labels = ["Home", "Work", "Other"];
+
   const handleSelectAddress = (address: string) => {
-        if(selectedAddress === address) {
-            setSelectedAddress("");
-            return;
-        }
-        setSelectedAddress(address);
-    };
-    const handleSelectPayment = (payment: string) => {
-        if(selectedPayment === payment) {
-            setSelectedPayment("");
-            return;
-        }
-        setSelectedPayment(payment);
-    };
-    const handleCheckout = async () => {
-        try {
-          const orderData = {
-            products: productdata.map(product => ({
-              _id: product.id, 
-              quantity: product.quantity
-            })),
-            Address: selectedAddress, // Assuming selectedAddress contains the chosen address
-            Payment: selectedPayment, // Assuming selectedPayment contains the chosen payment method
-            TotalPrice: discountedTotalPrice !== null ? discountedTotalPrice : calculateTotalPrice()
-          };
-      
-          const response = await fetch("http://localhost:4000/Order/editOrder", {
-            method: "POST",
-            headers: {
-                Authorization: `${token}`,
-              },
-            body: JSON.stringify(orderData)
-          });
-      
-          if (!response.ok) {
-            throw new Error("Error placing order");
-          }
-      
-          // Assuming you want to redirect the user to a confirmation page after successful checkout
-          // You can replace this with any desired behavior
-          window.location.href = "/confirmation";
-        } catch (error) {
-          console.error("Error during checkout:", error);
-          // Handle error, show error message, etc.
-        }
-      };
-      
+    setSelectedAddress((prev) => (prev === address ? "" : address));
+  };
+
+  const handleSelectPayment = (payment: string) => {
+    setSelectedPayment((prev) => (prev === payment ? "" : payment));
+  };
+
+
+
   return (
     <div className="CartPage">
       <Navbar setSearchQuery={setSearchQuery} isLoggedIn={false} token={token} />
       <header></header>
       <nav></nav>
       {!isLoading && (
-        <main className='cartmain'>
+        <main className="cartmain">
           <h1 className="title">Your Cart</h1>
           <table>
             <thead className="table-header">
@@ -260,7 +328,7 @@ console.log(couponApplied,'couponApplied');
               </tr>
             </thead>
             <tbody>
-              {productdata.map((product: any) => (
+              {productData.map((product: any) => (
                 <tr key={product.id} className="items">
                   <td>
                     <div className="product">
@@ -290,12 +358,7 @@ console.log(couponApplied,'couponApplied');
                         </div>
                       </div>
                     )}
-                    {product.type === 'purchase' && (
-                      <div className="quantity">
-                        <p>{product.quantity}</p>
-                      </div>
-                    )}
-                    {product.type === 'Customization' && (
+                    {(product.type === 'purchase' || product.type === 'Customization') && (
                       <div className="quantity">
                         <p>{product.quantity}</p>
                       </div>
@@ -311,7 +374,7 @@ console.log(couponApplied,'couponApplied');
                       </p>
                     )}
                     {product.type === 'Customization' && (
-                      <p className="total">{calculateTotalforcustomizationPrice()} $</p>
+                      <p className="total">{calculateTotalForCustomizationPrice()} $</p>
                     )}
                   </td>
                 </tr>
@@ -319,79 +382,77 @@ console.log(couponApplied,'couponApplied');
             </tbody>
           </table>
           <div className="Addressandpayment">
-  <div className="address">
-    <h3>Choose your delivery address</h3>
-   
-      {Address.map((ADD: any, index: number) => (
-         <div
-         className={`innerpayment ${selectedAddress === `${ADD}` ? "selected" : ""}`}
-         onClick={() => handleSelectAddress(`${ADD}`)}
-         >
-        <div key={index} className="address-item">
-          <p><strong>{labels[index]}: </strong> {ADD}</p>
-        </div>
-        </div>
-      ))}
-   
-  </div>
-  <div className="paymentt">
-    <h3>Choose your payment method</h3>
-      {Payment.map((PAY: any, index: number) => (
-            <div  className={`inneraddress ${selectedPayment === `${PAY.type}` ? "selected" : ""}`}
-            onClick={() => handleSelectPayment(`${PAY.type}`)}
-           >
-
-        <div key={index} className="payment-item">
-          {PAY.type === "Paypal" && (
-            <p className="product-d">
-              <strong>Type: </strong> {PAY.type} 
-              <FontAwesomeIcon className="creditcardd" icon={faPaypal}/>
-            </p>
-          )}
-          {PAY.type === "MasterCard" && (
-            <p className="product-d">
-              <strong>Type: </strong> {PAY.type} 
-              <FontAwesomeIcon className="creditcardd" icon={faCcMastercard}/>
-            </p>
-          )}
-          {PAY.type === "Credit Card" && (
-            <p className="product-d">
-              <strong>Type: </strong> {PAY.type} 
-              <FontAwesomeIcon className="creditcardd" icon={faCreditCard}/>
-            </p>
-          )}
-          {PAY.type !== "Paypal" && (
-            <>
-              <p className="product-d"><strong>Name: </strong> {PAY.name}</p>
-              <p className="product-d"><strong>Expiry Date: </strong> {PAY.expiry}</p>
-              <p className="product-d"><strong>Number: </strong> {PAY.number}</p>
-              <p className="product-d"><strong>CVV: </strong> {PAY.cvv}</p>
-            </>
-          )}
-          {PAY.type === "Paypal" && (
-            <>
-              <p className="product-d"><strong>Account: </strong> {PAY.account}</p>
-              <p className="product-d"><strong>Account Type: </strong> {PAY.accounttype}</p>
-            </>
-          )}
-        </div>
-        </div>
-      ))}
-
-  </div>
-</div>
-
+            <div className="address">
+              <h3>Choose your delivery address</h3>
+              {address.map((add: any, index: number) => (
+                <div
+                  key={index}
+                  className={`innerpayment ${selectedAddress === `${add}` ? "selected" : ""}`}
+                  onClick={() => handleSelectAddress(`${add}`)}
+                >
+                  <div className="address-item">
+                    <p><strong>{labels[index]}: </strong> {add}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="paymentt">
+              <h3>Choose your payment method</h3>
+              {payment.map((pay: any, index: number) => (
+                <div
+                  key={index}
+                  className={`inneraddress ${selectedPayment === `${pay.type}` ? "selected" : ""}`}
+                  onClick={() => handleSelectPayment(`${pay.type}`)}
+                >
+                  <div className="payment-item">
+                    {pay.type === "Paypal" && (
+                      <p className="product-d">
+                        <strong>Type: </strong> {pay.type}
+                        <FontAwesomeIcon className="creditcardd" icon={faPaypal} />
+                      </p>
+                    )}
+                    {pay.type === "MasterCard" && (
+                      <p className="product-d">
+                        <strong>Type: </strong> {pay.type}
+                        <FontAwesomeIcon className="creditcardd" icon={faCcMastercard} />
+                      </p>
+                    )}
+                    {pay.type === "Credit Card" && (
+                      <p className="product-d">
+                        <strong>Type: </strong> {pay.type}
+                        <FontAwesomeIcon className="creditcardd" icon={faCreditCard} />
+                      </p>
+                    )}
+                    {pay.type !== "Paypal" && (
+                      <>
+                        <p className="product-d"><strong>Name: </strong> {pay.name}</p>
+                        <p className="product-d"><strong>Expiry Date: </strong> {pay.expiry}</p>
+                        <p className="product-d"><strong>Number: </strong> {pay.number}</p>
+                        <p className="product-d"><strong>CVV: </strong> {pay.cvv}</p>
+                      </>
+                    )}
+                    {pay.type === "Paypal" && (
+                      <>
+                        <p className="product-d"><strong>Account: </strong> {pay.account}</p>
+                        <p className="product-d"><strong>Account Type: </strong> {pay.accounttype}</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="checkout">
             <div className="total-price">
               <p>Total: {discountedTotalPrice !== null ? discountedTotalPrice : calculateTotalPrice()} $</p>
             </div>
-            <button className="checkoutbtn" type="button">Checkout</button>
+            <button className="checkoutbtn" type="button" onClick={handlecheckout}>Checkout</button>
           </div>
         </main>
       )}
       <FooterComponent />
     </div>
   );
-}
+};
 
 export default Cart;

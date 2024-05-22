@@ -239,7 +239,7 @@ const ProductPage = () => {
           <p>No product found</p>
         )}
       <div className="ProductReviews">
-  {product && (product as any).ProductsReview && (product as any).ProductsReview.length > 0 ? ( 
+  {product && (product as any).ProductsReview && (product as any).ProductsReview.length >= 0 ? ( 
     <>
     
      {isAddingReview && (

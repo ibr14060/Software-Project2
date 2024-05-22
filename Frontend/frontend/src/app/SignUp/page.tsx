@@ -46,6 +46,14 @@ export default function SignUp() {
                 setShowErrorPopup(true);
                 return;
             }
+            if(Email.indexOf('@') === -1 || Email.indexOf('.') === -1){
+                setShowErrorPopup(true);
+                return;
+            }
+            if(Phone_Number.length !== 10 || Phone_Number.includes('e') || Phone_Number.includes('E') || Phone_Number.includes('.') || Phone_Number.includes('-') || Phone_Number.includes('+') || Phone_Number.includes(' ')){
+                setShowErrorPopup(true);
+                return;
+            }
           console.log("username: ", username);
           // Send POST request to backend API with username and password
           const response = await fetch('http://localhost:4000/account/sign-up', {
