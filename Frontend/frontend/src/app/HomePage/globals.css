@@ -100,8 +100,8 @@
     margin: 3%;
     margin-bottom: 3%;
     border: 1px solid #000;
-    -ms-overflow-style: none;
-    scrollbar-width: none; 
+    white-space: nowrap; /* Prevent line breaks for child elements */
+    scrollbar-width :auto; 
   }
   
   .mostselling-container-wrapper::-webkit-scrollbar {
@@ -116,6 +116,8 @@
     padding: 10px;
     align-items: center;
   }
+  
+
   
   .mostsellingproduct-card {
     flex: 0 0 270px; 
