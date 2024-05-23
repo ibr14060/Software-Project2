@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import "./globals.css";
 import Link from 'next/link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUserAlt } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faUser, faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import logo from '../Pics/logo4.png';
 import { faCartShopping, faStar } from "@fortawesome/free-solid-svg-icons";
@@ -72,7 +72,11 @@ const GuestNavBar = ({ isLoggedIn, setSearchQuery ,token }: { isLoggedIn: boolea
   >
     <FontAwesomeIcon icon={faCartShopping} className="profile-icon" />
   </Link>
- 
+  <Link
+    href={"/"}
+  >
+    <FontAwesomeIcon icon={faHome} className="profile-icon" />
+  </Link>
 
 </div>
 

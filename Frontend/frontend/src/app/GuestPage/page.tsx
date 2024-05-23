@@ -30,9 +30,7 @@ const TopOffersCard = ({ product, isInWishlist, isInFavItems, token, toggleWishl
           View Product
         </Link>
         <div className="Actionns">
-          <button className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`} onClick={toggleWishlist}>
-            {isInWishlist ? "★" : "☆"}
-          </button>
+
         </div>
       </div>
       <div className="product-details">
@@ -74,9 +72,7 @@ const ProductCard = ({ product, isInWishlist, token, toggleWishlist, handleCart 
         <Link href={`/GuestProduct?id=${product._id}`} className="view-product-button">
           View Product
         </Link>
-        <button className={`add-to-wishlist-button ${isInWishlist ? "selected" : ""}`} onClick={toggleWishlist}>
-          {isInWishlist ? "★" : "☆"}
-        </button>
+  
       </div>
       <div className="product-details">
         <h2>{product.ProductName}</h2>

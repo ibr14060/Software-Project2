@@ -286,7 +286,7 @@ const ProductPage = () => {
       </div>
     </>
   ):(
-    <p>No product found</p>
+    <p>No Review found</p>
 
   )}
 </div>
